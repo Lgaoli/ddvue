@@ -566,7 +566,7 @@ export default {
         method: "get",
         url: "https://api.ddjingxuan.cn/api/v2/order/pay",
         headers: {
-          token: "45477fc38e40b7de258d5868d4ceaa08"
+          token: this.getToken
         }
       }).then(res => {
         console.log(res);

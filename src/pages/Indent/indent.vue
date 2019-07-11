@@ -160,7 +160,7 @@
           token: this.getToken
         }
       }).then(rest => {
-        self.getdata = rest.data;
+        self.getJsSdkData = rest.data;
         wx.config({
           debug: false,
           appId: rest.data.appId,

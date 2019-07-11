@@ -226,7 +226,11 @@ export default {
         timestamp: rest.data.timestamp,
         nonceStr: rest.data.nonceStr,
         signature: rest.data.signature,
-        jsApiList: ["onMenuShareTimeline", "onMenuShareAppMessage"]
+        jsApiList: [
+          "onMenuShareTimeline",
+          "onMenuShareAppMessage",
+          "updateAppMessageShareData"
+        ]
       });
     });
   },
@@ -236,52 +240,57 @@ export default {
     },
     //分享朋友
     sharefriend(data) {
-      // this.$axios({
-      //   method: "get",
-      //   url: "https://api.ddjingxuan.cn/api/v2/user/jdk",
-      //   headers: {
-      //     token: this.getToken
-      //     // token: "4774c94460f64a01800f2672f7230f2d"
-      //   },
-      //   params: location.href.split("#")[0]
-      //   // params: "http://pub.hqyulin.com/?token=4774c94460f64a01800f2672f7230f2d"
-      // }).then(shareres => {
-      //   console.log(shareres);
-      //   wx.config({
-      //     debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-      //     appId: appId, // 必填，公众号的唯一标识
-      //     timestamp: timestamp, // 必填，生成签名的时间戳
-      //     nonceStr: nonceStr, // 必填，生成签名的随机串
-      //     signature: signature, // 必填，签名，见附录1
-      //     jsApiList: ["onMenuShareTimeline", "onMenuShareAppMessage"]
-      //   });
-      // });
+      this.$axios({
+        method: "get",
+        url: "https://api.ddjingxuan.cn/api/v2/user/jdk",
+        headers: {
+          token: this.getToken
+          // token: "4774c94460f64a01800f2672f7230f2d"
+        },
+        params: location.href.split("#")[0]
+        // params: "http://pub.hqyulin.com/?token=4774c94460f64a01800f2672f7230f2d"
+      }).then(shareres => {
+        console.log(shareres);
+        wx.config({
+          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          appId: appId, // 必填，公众号的唯一标识
+          timestamp: timestamp, // 必填，生成签名的时间戳
+          nonceStr: nonceStr, // 必填，生成签名的随机串
+          signature: signature, // 必填，签名，见附录1
+          jsApiList: ["onMenuShareTimeline", "onMenuShareAppMessage"]
+        });
+      });
       console.log(data);
-      console.log("分享朋友");
       wx.ready(function() {
         //需在用户可能点击分享按钮前就先调用
         wx.updateAppMessageShareData({
           title: data.goods_name, // 分享标题
           desc: "", // 分享描述
-          link: location.href.split("#")[0], // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          link: window.location.href.split("#")[0], // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           imgUrl: data.shopimg, // 分享图标
-          success: function() {
+          success: function(res) {
+            console.log(res);
             // 设置成功
+          },
+          cancal: function(res) {
+            //取消之后
+            console.log(res);
           }
         });
       });
     },
     //分享朋友圈
-    sharefriendqs() {
+    sharefriendqs(data) {
       console.log(this);
       wx.ready(function() {
         //需在用户可能点击分享按钮前就先调用
         wx.updateTimelineShareData({
           title: data.goods_name, // 分享标题
           desc: "", // 分享描述
-          link: location.href.split("#")[0], // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          link: window.location.href.split("#")[0], // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           imgUrl: data.shopimg, // 分享图标
-          success: function() {
+          success: function(res) {
+            console.log(res);
             // 设置成功
           }
         });

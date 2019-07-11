@@ -8,8 +8,8 @@ import './uitls/rem'
 import axios from 'axios'
 import Vuex from 'vuex'
 import store from './vuex/store'
-import fastClick from 'fastClick'
-fastClick.attach(document.body)
+import fastclick from 'fastclick'
+fastclick.attach(document.body)
 // import ajax from './lib/ajax/Ajax.js'//----------------注意这个地方--axios
 
 

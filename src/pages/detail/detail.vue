@@ -191,20 +191,20 @@ export default {
     };
   },
   beforeCreate() {
-    var that = this;
-    this.$axios({
-      method: "get",
-      url: "https://api.ddjingxuan.cn/api/v2/user/jdk",
-      headers: {
-        token: this.getToken
-        // token: "4774c94460f64a01800f2672f7230f2d"
-      },
-      params: location.href.split("#")[0]
-      // params: "http://pub.hqyulin.com/?token=4774c94460f64a01800f2672f7230f2d"
-    }).then(rest => {
-      that.getdata = rest.data;
-      console.log(that.getdata.appId);
-    });
+    // var that = this;
+    // this.$axios({
+    //   method: "get",
+    //   url: "https://api.ddjingxuan.cn/api/v2/user/jdk",
+    //   headers: {
+    //     token: this.getToken
+    //     // token: "4774c94460f64a01800f2672f7230f2d"
+    //   },
+    //   params: location.href.split("#")[0]
+    //   // params: "http://pub.hqyulin.com/?token=4774c94460f64a01800f2672f7230f2d"
+    // }).then(rest => {
+    //   that.getdata = rest.data;
+    //   console.log(that.getdata.appId);
+    // });
   },
   created() {
     this.list();
@@ -226,7 +226,7 @@ export default {
         timestamp: rest.data.timestamp,
         nonceStr: rest.data.nonceStr,
         signature: rest.data.signature,
-        jsApiList: ["chooseWXPay"]
+        jsApiList: ["onMenuShareTimeline", "onMenuShareAppMessage"]
       });
     });
   },

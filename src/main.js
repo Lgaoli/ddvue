@@ -8,7 +8,8 @@ import './uitls/rem'
 import axios from 'axios'
 import Vuex from 'vuex'
 import store from './vuex/store'
-import wx from 'weixin-jsapi'
+import fastClick from 'fastClick'
+fastClick.attach(document.body)
 // import ajax from './lib/ajax/Ajax.js'//----------------注意这个地方--axios
 
 
@@ -41,7 +42,7 @@ import 'swiper/dist/css/swiper.css'
 new Vue({
   el: '#app',
   router,
-  store, wx,
+  store,
   components: { App },
   template: '<App/>'
 })

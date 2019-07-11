@@ -8,6 +8,7 @@
 
 <script>
 import Vue from "vue";
+import wx from "weixin-js-sdk";
 import { Tab, Tabs, Popup, Loading } from "vant";
 Vue.use(Tab)
   .use(Tabs)
@@ -22,8 +23,8 @@ export default {
     let that = this;
     let url = window.location.href;
     let str = url.split("?")[1];
-    // let str1 = str.split("=")[1].split("#")[0];
-    let str1 = "92d0d88903107f6fa5a0730b9002cf3b";
+    let str1 = str.split("=")[1].split("#")[0];
+    // let str1 = "92d0d88903107f6fa5a0730b9002cf3b";
     var curTime = new Date().getTime();
     var notime = 7200000; // 过期时间
 

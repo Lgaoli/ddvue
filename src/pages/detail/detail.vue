@@ -50,7 +50,7 @@
               <van-popup v-model="show1" position="bottom" :overlay="true">
                 <div>
                   <div class="popup" style="text-aligh:center;padding:0.8rem">
-                    <div style @click="sharefriend">
+                    <div style @click="sharefriend(shopdetall1)">
                       <img
                         src="../../assets/img/share_ic_weixin.png"
                         alt
@@ -59,7 +59,7 @@
                       <p style="padding:1.2rem">微信好友</p>
                     </div>
                     <div style="background:rgb(247, 247, 247);height:8.6rem;width:0.19rem"></div>
-                    <div @click="sharefriendqs">
+                    <div @click="sharefriendqs(shopdetall1)">
                       <img
                         src="../../assets/img/share_ic_moments.png"
                         style="  width: 4.6875rem;height4.6875rem"
@@ -160,7 +160,7 @@
 import Vue from "vue";
 import { Tab, Tabs, Rate, Popup } from "vant";
 import { mapState, mapActions } from "vuex";
-
+import wx from "weixin-js-sdk";
 Vue.use(Tab)
   .use(Tabs)
   .use(Rate)
@@ -209,38 +209,83 @@ export default {
   created() {
     this.list();
     this.comment();
+    this.$axios({
+      method: "post",
+      url: "https://api.ddjingxuan.cn/api/v2/user/jdk",
+      data: {
+        url: location.href.split("#")[0]
+      },
+      headers: {
+        token: this.getToken
+      }
+    }).then(rest => {
+      self.getdata = rest.data;
+      wx.config({
+        debug: false,
+        appId: rest.data.appId,
+        timestamp: rest.data.timestamp,
+        nonceStr: rest.data.nonceStr,
+        signature: rest.data.signature,
+        jsApiList: ["chooseWXPay"]
+      });
+    });
   },
   methods: {
     prev() {
       this.$router.go(-1);
     },
     //分享朋友
-    sharefriend() {
-      this.$axios({
-        method: "get",
-        url: "https://api.ddjingxuan.cn/api/v2/user/jdk",
-        headers: {
-          token: this.getToken
-          // token: "4774c94460f64a01800f2672f7230f2d"
-        },
-        params: location.href.split("#")[0]
-        // params: "http://pub.hqyulin.com/?token=4774c94460f64a01800f2672f7230f2d"
-      }).then(shareres => {
-        console.log(shareres);
-        wx.config({
-          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-          appId: appId, // 必填，公众号的唯一标识
-          timestamp: timestamp, // 必填，生成签名的时间戳
-          nonceStr: nonceStr, // 必填，生成签名的随机串
-          signature: signature, // 必填，签名，见附录1
-          jsApiList: ["onMenuShareTimeline", "onMenuShareAppMessage"]
+    sharefriend(data) {
+      // this.$axios({
+      //   method: "get",
+      //   url: "https://api.ddjingxuan.cn/api/v2/user/jdk",
+      //   headers: {
+      //     token: this.getToken
+      //     // token: "4774c94460f64a01800f2672f7230f2d"
+      //   },
+      //   params: location.href.split("#")[0]
+      //   // params: "http://pub.hqyulin.com/?token=4774c94460f64a01800f2672f7230f2d"
+      // }).then(shareres => {
+      //   console.log(shareres);
+      //   wx.config({
+      //     debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+      //     appId: appId, // 必填，公众号的唯一标识
+      //     timestamp: timestamp, // 必填，生成签名的时间戳
+      //     nonceStr: nonceStr, // 必填，生成签名的随机串
+      //     signature: signature, // 必填，签名，见附录1
+      //     jsApiList: ["onMenuShareTimeline", "onMenuShareAppMessage"]
+      //   });
+      // });
+      console.log(data);
+      console.log("分享朋友");
+      wx.ready(function() {
+        //需在用户可能点击分享按钮前就先调用
+        wx.updateAppMessageShareData({
+          title: data.goods_name, // 分享标题
+          desc: "", // 分享描述
+          link: location.href.split("#")[0], // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          imgUrl: data.shopimg, // 分享图标
+          success: function() {
+            // 设置成功
+          }
         });
       });
-      console.log("分享朋友");
     },
     //分享朋友圈
     sharefriendqs() {
-      console.log("分享朋友圈");
+      console.log(this);
+      wx.ready(function() {
+        //需在用户可能点击分享按钮前就先调用
+        wx.updateTimelineShareData({
+          title: data.goods_name, // 分享标题
+          desc: "", // 分享描述
+          link: location.href.split("#")[0], // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          imgUrl: data.shopimg, // 分享图标
+          success: function() {
+            // 设置成功
+          }
+        });
+      });
     },
     setMaskShow() {
       this.maskShow = !this.maskShow;

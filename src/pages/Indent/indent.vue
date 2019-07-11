@@ -149,7 +149,7 @@
     created() {
       this.testlist();
 
-      let self = this;
+      let self = this;  
       this.$axios({
         method: "post",
         url: "https://api.ddjingxuan.cn/api/v2/user/jdk",

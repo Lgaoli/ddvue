@@ -78,15 +78,15 @@ export default {
         },
         {
           statusId: "1",
-          statusVal: "黄金会员"
+          statusVal: "省级"
         },
         {
           statusId: "2",
-          statusVal: "白金会员"
+          statusVal: "市级"
         },
         {
           statusId: "3 ",
-          statusVal: "钻石会员"
+          statusVal: "区级"
         }
       ],
       DISTRICTS

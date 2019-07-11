@@ -18,16 +18,44 @@ export default {
   data() {
     return {};
   } ,
-  // beforeCreate() {
-  //       this.$axios
-  //         .get("https://api.ddjingxuan.cn/api/v2/code/user")
-  //         .then(function(res) {
-  //           console.log(res);
-  //         })
-  //         .catch(function(error) {
-  //           console.log(error);
-  //         });
-  //     }
+  beforeCreate() {
+    let that = this;
+    let url = window.location.href;
+    let str = url.split("?")[1];
+    // let str1 = str.split("=")[1].split("#")[0];
+    let str1 = "92d0d88903107f6fa5a0730b9002cf3b";
+    var curTime = new Date().getTime();
+    var notime = 7200000; // 过期时间
+
+    let obj = {};
+    localStorage.setItem(
+      "token",
+      JSON.stringify({ data: str1, time: curTime, notime: notime })
+    );
+    var data = localStorage.getItem("token");
+    var dataObj = JSON.parse(data);
+
+    setInterval(() => {
+      if (
+        parseInt(dataObj.time) + parseInt(dataObj.notime) <
+        new Date().getTime()
+      ) {
+        localStorage.setItem("token", "");
+        var newdata = localStorage.getItem("token");
+        // var newdataObj = JSON.parse(newdata);
+
+        this.$store.commit("setToken", newdata.data);
+
+        //   if (this.$store.state.token) {
+        //     this.$router.push("/");
+        //   } else {
+        //  window.location.href = "https://api.ddjingxuan.cn/api/v2/code/user"
+        //   }
+      } else {
+        this.$store.commit("setToken", dataObj.data);
+      }
+    }, 1000);
+  },
 };
 </script>
 

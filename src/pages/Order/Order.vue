@@ -495,6 +495,8 @@ export default {
       noshipments: [], //待发货
       nopaymentli1: [], //待收货
       nopevaluate: [], //待评价
+      achieve: [], //已完成
+      retreat: [], //退货
       all: [] //全部订单
     };
   },
@@ -538,9 +540,14 @@ export default {
             if (item.id == 0) {
               console.log(res.data);
               that.noshipments = res.data;
-            } else if (item.id) {
-              that.nopaymentli1 = res.data;
-            } else if (item.id) {
+            } else if (item.id == 1) {
+              that.nopaymentli1 = res.data; //待收货
+            } else if (item.id == 3) {
+              that.nopevaluate = res.data; //待评价
+            } else if (item.id == 4) {
+              that.achieve = res.data; //已完成
+            } else if (tiem.id == 6) {
+              that.retreat = res.data; //退货
             }
           }
         });

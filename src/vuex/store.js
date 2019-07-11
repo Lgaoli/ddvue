@@ -17,6 +17,7 @@ const store = new Vuex.Store({
         //获取token方法
         //判断是否有token,如果没有重新赋值，返回给state的token
         getToken(state) {
+    
             if (!state.token) {
                 state.token = localStorage.getItem('token')
             }
@@ -87,10 +88,12 @@ const store = new Vuex.Store({
     mutations: {
         setToken(state, token) {
             state.token = token
-        }, del_token(state) {
-            state.token = ''
-            sessionStorage.removeItem('token')
+ 
         },
+        //  del_token(state) {
+        //     state.token = ''
+        //     localStorage.removeItem('token')
+        // },
 
         //添加到购物车并判断有没有，有则++
         addCart(state, data) {

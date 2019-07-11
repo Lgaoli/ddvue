@@ -5,7 +5,7 @@
       <div class>我的二维码</div>
       <div class="shop"></div>
     </div>
-    <div class="Catalog-main" :style="bg">
+    <div class="Catalog-main" :style="bg" v-if="calist.length">
       <div
         style="
     padding-top: 0.5rem;
@@ -28,9 +28,29 @@
           <div class="border border3"></div>
           <div class="border border4"></div>
           <div class="borderimg">
-            <img src="http://www.wwei.cn/qrcode-viewfile?type=qrcode_text&k=xU6Nz&hash=fc351c112b29546c0e06453d17e830b3&timeout=1561516258&size=100" alt="">
+            <img
+              src="http://www.wwei.cn/qrcode-viewfile?type=qrcode_text&k=xU6Nz&hash=fc351c112b29546c0e06453d17e830b3&timeout=1561516258&size=100"
+              alt
+            >
           </div>
         </div>
+      </div>
+    </div>
+    <div v-else style="padding:10rem;    text-align: center;">
+      <div>
+        <div class="shopimg" style="padding:1.3rem">
+          <img src="../../assets/img/img_no_message.png">
+        </div>
+        <p style="color:#9FA4A5;font-size:1.5rem">请先成为代理</p>
+        <router-link to="/My">
+          <div
+            class="shopbut"
+            style="color:#9FA4A5;font-size:1.5rm;padding:1.16rem;border:#dedede 1px solid;margin-top:1rem;border-radius: 10px;"
+          >
+            <p>成为代理</p>
+          </div>
+        </router-link>
+    
       </div>
     </div>
     <Dfooter :activeIndex="2"></Dfooter>
@@ -50,8 +70,31 @@ export default {
           "url(" + require("../../assets/img/bg_img_integral.png") + ")",
         backgroundRepeat: "no-repeat",
         backgroundSize: "100% 100%"
-      }
+      },
+      calist: []
     };
+  },
+  created() {
+    let that = this;
+    // var token= JSON.parse(sessionStorage.getItem("token"));
+    let token = "fafa88ea62cbf9a1194121a563efcc1e";
+    console.log(token);
+    this.$axios({
+      method: "get",
+      url: "https://api.ddjingxuan.cn/api/v2/user/qr",
+      headers: {
+        token: token
+      }
+    })
+      .then(res => {
+        console.log(res);
+        that.calist = res.data;
+      })
+      .catch(error => {
+        if (error) {
+          that.calist = "";
+        }
+      });
   }
 };
 </script>
@@ -88,12 +131,12 @@ export default {
       margin: 0.625rem;
     }
     .er {
-      .borderimg{
+      .borderimg {
         width: 100%;
         height: 100%;
-        img{
-                width: 100%;
-        height: 100%;
+        img {
+          width: 100%;
+          height: 100%;
         }
       }
       margin-left: 0.5rem;

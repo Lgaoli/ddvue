@@ -133,51 +133,20 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.meta.requireAuth) {  // 判断该路由是否需要登录权限
-    if (!window.localStorage.token) {  // 通过vuex state获取当前的token是否存在
-      next();
-
+  setInterval(() => {
+    let token = window.localStorage.getItem("token");
+    if (token) {
+      next()
     }
     else {
-      console.log(window.localStorage.token)
-      if (window.location.href == "https://api.ddjingxuan.cn/api/v2/code/user") {
-        next()
-      }
-      else {
-        window.location.href = "https://api.ddjingxuan.cn/api/v2/code/user"
-      }
-
+      window.location.href = "https://api.ddjingxuan.cn/api/v2/code/user" 
     }
-  }
-  else {
-    next();
-  }
-  // if (window.localStorage.token) {
-  //   next()
-  //   console.log(window.location.open = "https://api.ddjingxuan.cn/api/v2/code/user")
-  // } else {
-  //   if (window.location.open = "https://api.ddjingxuan.cn/api/v2/code/user") {
-  //     next()
-  //   } else {
-  //     next()
-  //   }
-  // }
+  }, 1000)
+
+
+
+
 })
 
-// router.beforeEach((to, from, next) => {
-//   if (to.meta.requireAuth) {  // 判断该路由是否需要登录权限
-//     if (window.localStorage.token) {  //获取当前的token是否存在
-//       next({
-//         // path: '/',
-//         // query: { redirect: to.fullPath }  // 将跳转的路由path作为参数，登录成功后跳转到该路由
-//       })
-//     }
-//     else {
-//       window.location.href = "https://api.ddjingxuan.cn/api/v2/code/user"
-//     }
-//   }else{
-//     next()
-//   }
 
-// })
 export default router

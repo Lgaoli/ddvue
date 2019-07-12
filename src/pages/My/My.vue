@@ -21,13 +21,15 @@
         <div>
           <div></div>
         </div>
-        <div style="
+        <router-link :to="{ path:'/Integral' }">
+        <div 
+         style="
     position: absolute;
     bottom: 0;
     right: 0;
 ">
           <img src="../../assets/img/ing_mine_integral.png">
-        </div>
+        </div></router-link>
       </div>
     </div>
     <div style="
@@ -69,18 +71,18 @@
       </router-link>
     </div>
     <div style class="My-main3">
-<router-link :to="{ path:'/AddressEdit' }">
-      <div class="My-main3-main">
-        <div style="display: flex;align-items: center;;">
-          <div style="width: 2.125rem;height: 2.5rem;margin-right: .625rem">
-            <img src="../../assets/img/ic_mine_location@2x.png" alt style="width:100%">
+      <router-link :to="{ path:'/shippingAddress' }">
+        <div class="My-main3-main">
+          <div style="display: flex;align-items: center;;">
+            <div style="width: 2.125rem;height: 2.5rem;margin-right: .625rem">
+              <img src="../../assets/img/ic_mine_location@2x.png" alt style="width:100%">
+            </div>
+            <span>收货地址</span>
           </div>
-          <span>收货地址</span>
+          <div>
+            <i class="iconfont">&#xe632;</i>
+          </div>
         </div>
-        <div>
-          <i class="iconfont">&#xe632;</i>
-        </div>
-      </div>
       </router-link>
       <div class="My-main3-main">
         <div style="display: flex;align-items: center;;">
@@ -179,6 +181,7 @@ export default {
     this.pes();
   },
   methods: {
+   
     pes() {
       let that = this;
       //发送get请求
@@ -290,7 +293,6 @@ export default {
     font-size: 1.8rem;
     justify-content: space-between;
     align-items: center;
-  
   }
 }
 </style>

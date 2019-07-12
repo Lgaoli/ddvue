@@ -209,6 +209,7 @@ export default {
   created() {
     this.list();
     this.comment();
+    let self = this;
     this.$axios({
       method: "post",
       url: "https://api.ddjingxuan.cn/api/v2/user/jdk",
@@ -274,7 +275,7 @@ export default {
           },
           cancal: function(res) {
             //取消之后
-            console.log(res);
+            alert("分享失败");
           }
         });
       });
@@ -292,6 +293,10 @@ export default {
           success: function(res) {
             console.log(res);
             // 设置成功
+          },
+          cancel: function(res) {
+            alert("分享失败");
+            // 用户取消分享后执行的回调函数
           }
         });
       });

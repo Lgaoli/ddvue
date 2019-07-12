@@ -2,7 +2,9 @@
   <div>
     <div class="Order-header">
       <div class="back" @click="back">
-        <i class="iconfont">&#xe79b;</i>
+        <i class="iconfont" style="
+    font-size: 2.9rem;
+">&#xe79b;</i>
       </div>
       <div class>我的订单</div>
       <div class="shop"></div>
@@ -49,10 +51,16 @@
                       </div>
                     </div>
                   </div>
-                  <div style="padding-top:0.8rem;padding-bottom:0.8rem">
+                  <div style="font-size:1.6rem;padding-top:0.8rem;padding-bottom:0.8rem;display:flex;justify-content: space-between;">
                     <div>
                       合计:
                       <span style="color:#F15E0E;">{{item.goods_price}}</span>
+                    </div>
+                    <div v-if="item.order_status==0" style="font-size:1.6rem;">
+                      <p>待付款</p>
+                    </div>
+                    <div v-else-if="item.order_status==1">
+                      <p>待发货</p>
                     </div>
                   </div>
                 </div>
@@ -83,16 +91,43 @@
               </div>
               <div style="background: #f7f7f7;padding:0.3rem"></div>
             </div>
-            <div class="Order-main-main-shop-list" v-else-if="act1==1">
+            <div class="Order-main-main-shop-list" v-else-if="act1==1" @click="nopaymentli">
               <div v-if="nopayment.length">
-                <div>
-                  <div>
-                    <p></p>
-                  </div>
-                  <div>
-                    <p>等待平台发货</p>
+                <div style="background: #fff;padding:0.3rem">
+                  <div style="display: flex;">
+                    <div
+                      style="text-align: center;display: flex;flex-direction: column;justify-content: center;    padding: 0.6rem 1.25rem;"
+                    >
+                      <i class="iconfont" style="color:#FC7E49;font-size: 2.45rem;">&#xe651;</i>
+                      <span style="color:#999999">待发货</span>
+                    </div>
+                    <div
+                      style="border-left: 1px solid #DEDEDE;padding-top: 0.8rem;padding-right:1.25rem;padding-bottom:0.8rem;padding-left: 1.25rem;    display: flex;    align-items: center;"
+                    >
+                      <p>等待卖家付款中</p>
+                    </div>
                   </div>
                 </div>
+                <div style="background: #f7f7f7;padding:0.3rem"></div>
+                <!-- 收货地址 -->
+                <div style="background: #fff;padding:0.3rem">
+                  <div style="display: flex;">
+                    <div
+                      style="text-align: center;display: flex;flex-direction: column;justify-content: center;    padding: 0.6rem 1.25rem;"
+                    >
+                      <i class="iconfont" style="font-size: 2.45rem;">&#xe611;</i>
+                    </div>
+                    <div
+                      v-for="(steitem,steindex) in ste"
+                      :key="steindex"
+                      style="border-left: 1px solid #DEDEDE;padding-top: 0.8rem;padding-right:1.25rem;padding-bottom:0.8rem;padding-left: 1.25rem;    align-items: center;"
+                    >
+                      <div>收货人:{{steitem.consigner}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{steitem.phone}}</div>
+                      <div>收货地址：{{steitem.province}}{{steitem.city}}{{steitem.district}}{{steitem.address}}</div>
+                    </div>
+                  </div>
+                </div>
+                <div style="background: #f7f7f7;padding:0.3rem"></div>
                 <div v-for="(item,index) in nopayment" :key="index">
                   <div class="Order-main-main-shop-main">
                     <div class="Order-main-main-shop-main-img">
@@ -148,12 +183,30 @@
                       style="text-align: center;display: flex;flex-direction: column;justify-content: center;    padding: 0.6rem 1.25rem;"
                     >
                       <i class="iconfont" style="color:#FC7E49;font-size: 2.45rem;">&#xe6d5;</i>
-                      <span style="color:#999999">代发货</span>
+                      <span style="color:#999999">待发货</span>
                     </div>
                     <div
                       style="border-left: 1px solid #DEDEDE;padding-top: 0.8rem;padding-right:1.25rem;padding-bottom:0.8rem;padding-left: 1.25rem;    display: flex;    align-items: center;"
                     >
                       <p>等待平台发货</p>
+                    </div>
+                  </div>
+                </div>
+                <!-- 收货地址 -->
+                <div style="background: #fff;padding:0.3rem">
+                  <div style="display: flex;">
+                    <div
+                      style="text-align: center;display: flex;flex-direction: column;justify-content: center;    padding: 0.6rem 1.25rem;"
+                    >
+                      <i class="iconfont" style="font-size: 2.45rem;">&#xe611;</i>
+                    </div>
+                    <div
+                      v-for="(steitem,steindex) in ste"
+                      :key="steindex"
+                      style="border-left: 1px solid #DEDEDE;padding-top: 0.8rem;padding-right:1.25rem;padding-bottom:0.8rem;padding-left: 1.25rem;    align-items: center;"
+                    >
+                      <div>收货人:{{steitem.consigner}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{steitem.phone}}</div>
+                      <div>收货地址：{{steitem.province}}{{steitem.city}}{{steitem.district}}{{steitem.address}}</div>
                     </div>
                   </div>
                 </div>
@@ -223,6 +276,24 @@
                     </div>
                   </div>
                 </div>
+                <!-- 收货地址 -->
+                <div style="background: #fff;padding:0.3rem">
+                  <div style="display: flex;">
+                    <div
+                      style="text-align: center;display: flex;flex-direction: column;justify-content: center;    padding: 0.6rem 1.25rem;"
+                    >
+                      <i class="iconfont" style="font-size: 2.45rem;">&#xe611;</i>
+                    </div>
+                    <div
+                      v-for="(steitem,steindex) in ste"
+                      :key="steindex"
+                      style="border-left: 1px solid #DEDEDE;padding-top: 0.8rem;padding-right:1.25rem;padding-bottom:0.8rem;padding-left: 1.25rem;    align-items: center;"
+                    >
+                      <div>收货人:{{steitem.consigner}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{steitem.phone}}</div>
+                      <div>收货地址：{{steitem.province}}{{steitem.city}}{{steitem.district}}{{steitem.address}}</div>
+                    </div>
+                  </div>
+                </div>
                 <div style="background: #f7f7f7;padding:0.3rem"></div>
                 <div v-for="(item,index) in nopaymentli1" :key="index" style="background:#fff">
                   <div class="Order-main-main-shop-main">
@@ -279,12 +350,30 @@
                       style="text-align: center;display: flex;flex-direction: column;justify-content: center;    padding: 0.6rem 1.25rem;"
                     >
                       <i class="iconfont" style="color:#FC7E49;font-size: 2.45rem;">&#xe6d5;</i>
-                      <span style="color:#999999">代发货</span>
+                      <span style="color:#999999">待发货</span>
                     </div>
                     <div
                       style="border-left: 1px solid #DEDEDE;padding-top: 0.8rem;padding-right:1.25rem;padding-bottom:0.8rem;padding-left: 1.25rem;    display: flex;    align-items: center;"
                     >
                       <p>等待平台发货</p>
+                    </div>
+                  </div>
+                </div>
+                <!-- 收货地址 -->
+                <div style="background: #fff;padding:0.3rem">
+                  <div style="display: flex;">
+                    <div
+                      style="text-align: center;display: flex;flex-direction: column;justify-content: center;    padding: 0.6rem 1.25rem;"
+                    >
+                      <i class="iconfont" style="font-size: 2.45rem;">&#xe611;</i>
+                    </div>
+                    <div
+                      v-for="(steitem,steindex) in ste"
+                      :key="steindex"
+                      style="border-left: 1px solid #DEDEDE;padding-top: 0.8rem;padding-right:1.25rem;padding-bottom:0.8rem;padding-left: 1.25rem;    align-items: center;"
+                    >
+                      <div>收货人:{{steitem.consigner}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{steitem.phone}}</div>
+                      <div>收货地址：{{steitem.province}}{{steitem.city}}{{steitem.district}}{{steitem.address}}</div>
                     </div>
                   </div>
                 </div>
@@ -344,12 +433,30 @@
                       style="text-align: center;display: flex;flex-direction: column;justify-content: center;    padding: 0.6rem 1.25rem;"
                     >
                       <i class="iconfont" style="color:#FC7E49;font-size: 2.45rem;">&#xe6d5;</i>
-                      <span style="color:#999999">代发货</span>
+                      <span style="color:#999999">待发货</span>
                     </div>
                     <div
                       style="border-left: 1px solid #DEDEDE;padding-top: 0.8rem;padding-right:1.25rem;padding-bottom:0.8rem;padding-left: 1.25rem;    display: flex;    align-items: center;"
                     >
                       <p>等待平台发货</p>
+                    </div>
+                  </div>
+                </div>
+                <!-- 收货地址 -->
+                <div style="background: #fff;padding:0.3rem">
+                  <div style="display: flex;">
+                    <div
+                      style="text-align: center;display: flex;flex-direction: column;justify-content: center;    padding: 0.6rem 1.25rem;"
+                    >
+                      <i class="iconfont" style="font-size: 2.45rem;">&#xe611;</i>
+                    </div>
+                    <div
+                      v-for="(steitem,steindex) in ste"
+                      :key="steindex"
+                      style="border-left: 1px solid #DEDEDE;padding-top: 0.8rem;padding-right:1.25rem;padding-bottom:0.8rem;padding-left: 1.25rem;    align-items: center;"
+                    >
+                      <div>收货人:{{steitem.consigner}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{steitem.phone}}</div>
+                      <div>收货地址：{{steitem.province}}{{steitem.city}}{{steitem.district}}{{steitem.address}}</div>
                     </div>
                   </div>
                 </div>
@@ -415,6 +522,24 @@
                       style="border-left: 1px solid #DEDEDE;padding-top: 0.8rem;padding-right:1.25rem;padding-bottom:0.8rem;padding-left: 1.25rem;    display: flex;    align-items: center;"
                     >
                       <p>等待平台发货</p>
+                    </div>
+                  </div>
+                </div>
+                <!-- 收货地址 -->
+                <div style="background: #fff;padding:0.3rem">
+                  <div style="display: flex;">
+                    <div
+                      style="text-align: center;display: flex;flex-direction: column;justify-content: center;    padding: 0.6rem 1.25rem;"
+                    >
+                      <i class="iconfont" style="font-size: 2.45rem;">&#xe611;</i>
+                    </div>
+                    <div
+                      v-for="(steitem,steindex) in ste"
+                      :key="steindex"
+                      style="border-left: 1px solid #DEDEDE;padding-top: 0.8rem;padding-right:1.25rem;padding-bottom:0.8rem;padding-left: 1.25rem;    align-items: center;"
+                    >
+                      <div>收货人:{{steitem.consigner}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{steitem.phone}}</div>
+                      <div>收货地址：{{steitem.province}}{{steitem.city}}{{steitem.district}}{{steitem.address}}</div>
                     </div>
                   </div>
                 </div>
@@ -497,25 +622,40 @@ export default {
       nopevaluate: [], //待评价
       achieve: [], //已完成
       retreat: [], //退货
-      all: [] //全部订单
+      all: [], //全部订单
+      ste: []
     };
   },
   created() {
     this.nopaymentli();
+    //所有订单
     let that = this;
     this.$axios({
       method: "get",
       url: "https://api.ddjingxuan.cn/api/v2/order/all",
-
       headers: {
-        token: "639b6ab402a8e9d00db9b11b72858f99"
+        token: that.getToken
       }
     }).then(res => {
+      console.log(res);
       if (res.data.error_code == 0) {
         that.all = "";
       } else {
         that.all = res.data;
       }
+    });
+
+    //收货地址
+
+    // console.log(that);
+    this.$axios({
+      method: "get",
+      url: "https://api.ddjingxuan.cn/api/v2/address",
+      headers: {
+        token: that.getToken
+      }
+    }).then(res => {
+      that.ste.push(res.data);
     });
   },
   methods: {
@@ -531,7 +671,7 @@ export default {
             id: item.id
           },
           headers: {
-            token: "639b6ab402a8e9d00db9b11b72858f99"
+            token: this.getToken
           }
         }).then(res => {
           if (res.data.error_code == 0) {
@@ -566,16 +706,20 @@ export default {
         method: "get",
         url: "https://api.ddjingxuan.cn/api/v2/order/pay",
         headers: {
-          token: this.getToken
+          token: that.getToken
         }
       }).then(res => {
-        console.log(res);
         if (res.data.error_code == 0) {
           that.nopayment = "";
         } else {
           that.nopayment = res.data;
         }
       });
+    }
+  },
+  computed: {
+    getToken() {
+      return this.$store.getters.getToken;
     }
   }
 };

@@ -1,8 +1,6 @@
 <template>
   <div id="app" style="font-size:1.3rem;background:#fff">
-
-      <router-view/>
-
+    <router-view/>
   </div>
 </template>
 
@@ -18,13 +16,13 @@ export default {
   name: "App",
   data() {
     return {};
-  } ,
+  },
   beforeCreate() {
     let that = this;
     let url = window.location.href;
     let str = url.split("?")[1];
-    let str1 = str.split("=")[1].split("#")[0];
-    // let str1 = "92d0d88903107f6fa5a0730b9002cf3b";
+    // let str1 = str.split("=")[1].split("#")[0];
+    let str1 = "cd46b59e00f7916d83d96c456dd6d50a";
     var curTime = new Date().getTime();
     var notime = 7200000; // 过期时间
 
@@ -35,8 +33,8 @@ export default {
     );
     var data = localStorage.getItem("token");
     var dataObj = JSON.parse(data);
-
-    setInterval(() => {
+    let _this = this;
+    this.timer = setInterval(() => {
       if (
         parseInt(dataObj.time) + parseInt(dataObj.notime) <
         new Date().getTime()
@@ -57,6 +55,11 @@ export default {
       }
     }, 1000);
   },
+  beforeDestroy() {
+    if (this.timer) {
+      clearInterval(this.timer); // 在Vue实例销毁前，清除我们的定时器
+    }
+  }
 };
 </script>
 

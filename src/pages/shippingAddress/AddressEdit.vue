@@ -38,7 +38,21 @@ export default {
       AddressInfo: []
     };
   },
-  created() {},
+  created() {
+  var that = this;
+    // console.log(that);
+    this.$axios({
+      method: "get",
+      url: "https://api.ddjingxuan.cn/api/v2/address",
+      headers: {
+        token: that.getToken
+      }
+    }).then(res => {
+      console.log(res.data);
+    })
+
+
+  },
   computed: {
     checkedgoods() {
       return this.$store.getters.checkedgoods;

@@ -17,6 +17,9 @@ const Indent1 = r => require.ensure([], () => r(require('../pages/Indent/indent1
 const Call = r => require.ensure([], () => r(require('../pages/call/call.vue')), 'Call')
 const Agency = r => require.ensure([], () => r(require('../pages/Agency/Agency.vue')), 'Agency')
 const Order = r => require.ensure([], () => r(require('../pages/Order/Order.vue')), 'Order')
+const Integral = r => require.ensure([], () => r(require('../pages/Integral/Integral.vue')), 'Integral')
+const IntegralExplain = r => require.ensure([], () => r(require('../pages/Integral/IntegralExplain.vue')), 'IntegralExplain')
+const IntegralDetail = r => require.ensure([], () => r(require('../pages/Integral/IntegralDetail.vue')), 'IntegralDetail')
 Vue.use(Router)
 
 const router = new Router({
@@ -126,6 +129,27 @@ const router = new Router({
         requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
       },
       component: Order
+    }, {
+      path: '/Integral',
+      name: 'Integral',
+      meta: {
+        requireAuth: true,
+      },
+      component: Integral
+    }, {
+      path: '/IntegralExplain',
+      name: 'IntegralExplain',
+      meta: {
+        requireAuth: true,
+      },
+      component: IntegralExplain
+    }, {
+      path: '/IntegralDetail',
+      name: 'IntegralDetail',
+      meta: {
+        requireAuth: true,
+      },
+      component: IntegralDetail
     }
   ],
 
@@ -133,15 +157,14 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  setInterval(() => {
-    let token = window.localStorage.getItem("token");
-    if (token) {
-      next()
-    }
-    else {
-      window.location.href = "https://api.ddjingxuan.cn/api/v2/code/user" 
-    }
-  }, 1000)
+
+  let token = window.localStorage.getItem("token");
+  if (token) {
+    next()
+  }
+  else {
+    window.location.href = "https://api.ddjingxuan.cn/api/v2/code/user"
+  }
 
 
 

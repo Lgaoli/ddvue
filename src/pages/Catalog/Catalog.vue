@@ -5,7 +5,7 @@
       <div class>我的二维码</div>
       <div class="shop"></div>
     </div>
-    <div class="Catalog-main" :style="bg" v-if="calist.length">
+    <div class="Catalog-main" :style="bg" v-if="is_qrcode===1">
       <div
         style="
     padding-top: 0.5rem;
@@ -16,20 +16,21 @@
       >
         <p style="padding:0.3rem;color:#fff">长按图片，保存二维码图片到手机上，使用二维码进行推广！</p>
       </div>
-      <div class="Catalog-main1" style v-for="(item,index) in calist" :key="index">
+      <div class="Catalog-main1" style >
         <div class="logo">
-          <img :src="item.headimgurl" alt>
+          <img src="../../assets/img/img_logo.png" alt>
         </div>
-        <div class="Catalog-name">{{item.nickname}}</div>
-        <div class="Catalog-id">ID:{{item.user_id}}</div>
+        <div class="Catalog-name">{{nickname}}</div>
+        <div class="Catalog-id">ID:{{user_id}}</div>
         <div class="er">
           <div class="border border1"></div>
           <div class="border border2"></div>
           <div class="border border3"></div>
           <div class="border border4"></div>
           <div class="borderimg">
+           
             <img
-              :src="item.qrcode"
+              :src= qrcode
               alt
             >
           </div>
@@ -70,7 +71,11 @@ export default {
         backgroundRepeat: "no-repeat",
         backgroundSize: "100% 100%"
       },
-      calist: []
+      headimgurl:'',
+      is_qrcode:'',
+      nickname:'',
+      qrcode:'',
+      user_id:''
     };
   },
   created() {
@@ -83,18 +88,20 @@ export default {
       url: "https://api.ddjingxuan.cn/api/v2/user/qr",
       headers: {
         token: that.getToken
-        // token: "58c5ce9eeb2dba98ae45dea322451f99"
+        // token: "221f8fd0ca0be03bdefccf62b1f5ff6b"
       }
     })
       .then(res => {
-        console.log(res);
-        that.calist = res.data;
+
+        that.headimgurl=res.data.headimgurl ;
+        that.is_qrcode=res.data.is_qrcode
+        that.nickname=res.data.nickname
+        that.qrcode=res.data.qrcode
+        that.user_id=res.data.user_id
+        console.log(that)
+        
       })
-      .catch(error => {
-        if (error) {
-          that.calist = "";
-        }
-      });
+     ;
   },
   computed: {
     getToken() {

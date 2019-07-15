@@ -8,21 +8,34 @@
       <div class="shop"></div>
     </div>
     <div class="Service-main">
+      <div class="Service-main-header">
+        <div>
+          <p>客服点点</p>
+          <div>每周一至周日9：00-18：00电话畅通为您服务</div>
+        </div>
+        <div @click="callPhone">
+          <i class="iconfont">&#xe605;</i>
+        </div>
+        <div @click="back">关闭</div>
+      </div>
+      <div>
 
+      </div>
     </div>
-
-
   </div>
 </template>
 
 <script>
 export default {
-     methods: {
+  methods: {
     back() {
       this.$router.go(-1); //返回上一层
+    },
+    callPhone() {
+      window.location.href = "tel://" + 18319409837;
     }
   }
-}
+};
 </script>
 
 
@@ -61,8 +74,17 @@ export default {
     line-height: 4.5rem;
   }
 }
-.Service-main{
-    margin-top: 4.5rem
+.Service-main {
+  margin-top: 4.5rem;
+  .Service-main-header {
+      padding: .3rem;
+    background: #f15e0e;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    justify-content: space-around;
+  }
 }
 </style>
 

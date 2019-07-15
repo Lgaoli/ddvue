@@ -9,7 +9,7 @@
       <div class>我的积分</div>
       <div class="shop"></div>
     </div>
-    <div class="Integral-main">
+    <div class="Integral-main" v-for="(item,index) in money" :key="index">
       <div class="Integral-main-header" :style="bg">
         <div style="text-align: right;">
           <router-link :to="{ path:'/IntegralDetail' }">
@@ -22,7 +22,7 @@
           <p>我的余额（积分）</p>
 
           <div style="padding:1.25rem;font-size:4rem;    font-weight: 700;">
-            <p>1762</p>
+            <p>{{item.money}}</p>
           </div>
           <div style="padding:1.25rem">
             <span style="padding:0.3rem 3rem;border:1px solid #fff;    border-radius: 50px;">可提现</span>
@@ -68,13 +68,32 @@ export default {
           "url(" + require("../../assets/img/bg_ing_mime.png") + ")",
         backgroundRepeat: "no-repeat",
         backgroundSize: "100% 100%"
-      }
+      },
+      money: []
     };
+  },
+  computed: {
+    getToken() {
+      return this.$store.getters.getToken;
+    }
   },
   methods: {
     back() {
       this.$router.go(-1); //返回上一层
     }
+  },
+  created() {
+    let that = this;
+    this.$axios({
+      method: "get",
+      url: "https://api.ddjingxuan.cn/api/v2/address",
+      headers: {
+        token: that.getToken
+        // token: "237cf94848711e2399fa1e8c1a74a395"
+      }
+    }).then(res => {
+      that.money=res.data
+    });
   }
 };
 </script>

@@ -11,7 +11,42 @@
           <img :src="pe.headimgurl" alt>
         </div>
         <div style="padding:1.1rem;color:#F5F5F5;">
-          <div style="font-weight:600;font-size:1.8rem">昵称：{{pe.nickname}}</div>
+          <div style="font-weight:600;font-size:1.8rem;margin-bottom: 0.3rem;">昵称：{{pe.nickname}}</div>
+          <div v-if="pe.grade=='7'">
+            <div
+              style="padding:0.3rem;background:rgba(0,0,0,0.4);margin-bottom: 0.3rem;border-radius: 8px;"
+            >普通会员</div>
+          </div>
+          <div v-else-if="pe.grade=='6'">
+            <div
+              style="padding:0.3rem;background:rgba(0,0,0,0.4);margin-bottom: 0.3rem;border-radius: 8px;"
+            >黄金会员</div>
+          </div>
+          <div v-else-if="pe.grade=='5'">
+            <div
+              style="padding:0.3rem;background:rgba(0,0,0,0.4);margin-bottom: 0.3rem;border-radius: 8px;"
+            >钻石会员</div>
+          </div>
+          <div v-else-if="pe.grade=='4'">
+            <div
+              style="padding:0.3rem;background:rgba(0,0,0,0.4);margin-bottom: 0.3rem;border-radius: 8px;"
+            >至尊合伙人</div>
+          </div>
+          <div v-else-if="pe.grade=='3'">
+            <div
+              style="padding:0.3rem;background:rgba(0,0,0,0.4);margin-bottom: 0.3rem;border-radius: 8px;"
+            >区代</div>
+          </div>
+          <div v-else-if="pe.grade=='2'">
+            <div
+              style="padding:0.3rem;background:rgba(0,0,0,0.4);margin-bottom: 0.3rem;border-radius: 8px;"
+            >市代</div>
+          </div>
+          <div v-else-if="pe.grade=='1'">
+            <div
+              style="padding:0.3rem;background:rgba(0,0,0,0.4);margin-bottom: 0.3rem;border-radius: 8px;"
+            >省代</div>
+          </div>
           <div>邀请人：{{pe.inviter}}</div>
         </div>
       </div>
@@ -22,14 +57,14 @@
           <div></div>
         </div>
         <router-link :to="{ path:'/Integral' }">
-        <div 
-         style="
+          <div style="
     position: absolute;
     bottom: 0;
     right: 0;
 ">
-          <img src="../../assets/img/ing_mine_integral.png">
-        </div></router-link>
+            <img src="../../assets/img/ing_mine_integral.png">
+          </div>
+        </router-link>
       </div>
     </div>
     <div style="
@@ -84,17 +119,19 @@
           </div>
         </div>
       </router-link>
-      <div class="My-main3-main">
-        <div style="display: flex;align-items: center;;">
-          <div style="width: 2.125rem;height: 2.5rem;margin-right: .625rem">
-            <img src="../../assets/img/ic_mine_team@2x.png" alt style="width:100%">
+      <router-link :to="{ path:'/Team'}">
+        <div class="My-main3-main">
+          <div style="display: flex;align-items: center;;">
+            <div style="width: 2.125rem;height: 2.5rem;margin-right: .625rem">
+              <img src="../../assets/img/ic_mine_team@2x.png" alt style="width:100%">
+            </div>
+            <span>我的团队</span>
           </div>
-          <span>我的团队</span>
+          <div>
+            <i class="iconfont">&#xe632;</i>
+          </div>
         </div>
-        <div>
-          <i class="iconfont">&#xe632;</i>
-        </div>
-      </div>
+      </router-link>
       <div class="My-main3-main">
         <div style="display: flex;align-items: center;;">
           <div style="width: 2.125rem;height: 2.5rem;margin-right: .625rem">
@@ -106,7 +143,7 @@
           <i class="iconfont">&#xe632;</i>
         </div>
       </div>
-      <router-link to="../Agency">
+      <router-link :to="{ path:'/Agency'}">
         <div class="My-main3-main">
           <div style="display: flex;align-items: center;;">
             <div style="width: 2.125rem;height: 2.5rem;margin-right: .625rem">
@@ -134,17 +171,19 @@
           <i class="iconfont">&#xe632;</i>
         </div>
       </div>
-      <div class="My-main3-main">
-        <div style="display: flex;align-items: center;;">
-          <div style="width: 2.125rem;height: 2.5rem;margin-right: .625rem">
-            <img src="../../assets/img/ic_mine_share@2x.png" alt style="width:100%">
+      <router-link :to="{ path:'/Catalog' }">
+        <div class="My-main3-main">
+          <div style="display: flex;align-items: center;;">
+            <div style="width: 2.125rem;height: 2.5rem;margin-right: .625rem">
+              <img src="../../assets/img/ic_mine_share@2x.png" alt style="width:100%">
+            </div>
+            <span>分享推广</span>
           </div>
-          <span>分享推广</span>
+          <div>
+            <i class="iconfont">&#xe632;</i>
+          </div>
         </div>
-        <div>
-          <i class="iconfont">&#xe632;</i>
-        </div>
-      </div>
+      </router-link>
     </div>
     <Dfooter :activeIndex="3"></Dfooter>
   </div>
@@ -181,7 +220,6 @@ export default {
     this.pes();
   },
   methods: {
-   
     pes() {
       let that = this;
       //发送get请求
@@ -195,11 +233,12 @@ export default {
         // },
         headers: {
           token: that.getToken
+          // token: "221f8fd0ca0be03bdefccf62b1f5ff6b"
         }
       }).then(
         function(res) {
           //接口返回数据
-          // console.log(res.data);
+          console.log(res.data);
           that.pe = res.data;
         },
         function(error) {}

@@ -22,6 +22,7 @@ const IntegralExplain = r => require.ensure([], () => r(require('../pages/Integr
 const IntegralDetail = r => require.ensure([], () => r(require('../pages/Integral/IntegralDetail.vue')), 'IntegralDetail')
 const Setup = r => require.ensure([], () => r(require('../pages/Setup/Setup.vue')), 'Setup')
 const Service = r => require.ensure([], () => r(require('../pages/Service/Service.vue')), 'Service')
+const Team = r => require.ensure([], () => r(require('../pages/Team/Team.vue')), 'Team')
 Vue.use(Router)
 
 const router = new Router({
@@ -166,26 +167,33 @@ const router = new Router({
         requireAuth: true,
       },
       component: Service
+    },{
+      path: '/Team',
+      name: 'Team',
+      meta: {
+        requireAuth: false,
+      },
+      component: Team
     }
   ],
 
 
 })
 
-router.beforeEach((to, from, next) => {
+// router.beforeEach((to, from, next) => {
 
-  let token = window.localStorage.getItem("token");
-  if (token) {
-    next()
-  }
-  else {
-    window.location.href = "https://api.ddjingxuan.cn/api/v2/code/user"
-  }
-
-
+//   let token = window.localStorage.getItem("token");
+//   if (token) {
+//     next()
+//   }
+//   else {
+//     window.location.href = "https://api.ddjingxuan.cn/api/v2/code/user"
+//   }
 
 
-})
+
+
+// })
 
 
 export default router

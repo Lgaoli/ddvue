@@ -21,8 +21,8 @@ export default {
     let that = this;
     let url = window.location.href;
     let str = url.split("?")[1];
-    // let str1 = str.split("=")[1].split("#")[0];
-    let str1 = "cd46b59e00f7916d83d96c456dd6d50a";
+    let str1 = str.split("=")[1].split("#")[0];
+    // let str1 = "cd46b59e00f7916d83d96c456dd6d50a";
     var curTime = new Date().getTime();
     var notime = 7200000; // 过期时间
 

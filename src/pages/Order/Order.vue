@@ -149,7 +149,10 @@
                         合计金额:
                         <span style="color:#F15E0E;">{{item.goods_price}}</span>
                       </div>
-                      <div style="padding: 0.3rem;border: 1px solid #666666;border-radius: 4px;" @click="gobuy">
+                      <div
+                        style="padding: 0.3rem;border: 1px solid #666666;border-radius: 4px;"
+                        @click="gobuy"
+                      >
                         <p>立即购买</p>
                       </div>
                     </div>
@@ -635,30 +638,28 @@ export default {
     };
   },
   created() {
- let self = this;  
-      this.$axios({
-        method: "post",
-        url: "https://api.ddjingxuan.cn/api/v2/user/jdk",
-        data: {
-          url: location.href.split('#')[0]
-        },
-        headers: {
-          token: this.getToken
-        }
-      }).then(rest => {
-        self.getJsSdkData = rest.data;
-        wx.config({
-          debug: false,
-          appId: rest.data.appId,
-          timestamp: rest.data.timestamp,
-          nonceStr: rest.data.nonceStr,
-          signature: rest.data.signature,
-          jsApiList: ['chooseWXPay']
-        });
+    let self = this;
+    this.$axios({
+      method: "post",
+      url: "https://api.ddjingxuan.cn/api/v2/user/jdk",
+      data: {
+        url: location.href.split("#")[0]
+      },
+      headers: {
+        token: this.getToken
+      }
+    }).then(rest => {
+      self.getJsSdkData = rest.data;
+      wx.config({
+        debug: false,
+        appId: rest.data.appId,
+        timestamp: rest.data.timestamp,
+        nonceStr: rest.data.nonceStr,
+        signature: rest.data.signature,
+        jsApiList: ["chooseWXPay"]
       });
+    });
 
-
-    
     this.nopaymentli();
     //所有订单
     let that = this;
@@ -693,52 +694,57 @@ export default {
     });
   },
   methods: {
-    gobuy(){   var that = this;
-        var datas = [];
-        for (let i = 0; i < this.checkedgoods.length; i++) {
-          datas.push({
-            goods_id: this.checkedgoods[i].goods_id,
-            goods_num: this.checkedgoods[i].goods_num
-          });
+    gobuy() {
+      var that = this;
+      var datas = [];
+      for (let i = 0; i < this.checkedgoods.length; i++) {
+        datas.push({
+          goods_id: this.checkedgoods[i].goods_id,
+          goods_num: this.checkedgoods[i].goods_num
+        });
+      }
+      //下订单
+      this.$axios({
+        method: "POST",
+        url: "https://api.ddjingxuan.cn/api/v2/order",
+        data: { goods: JSON.stringify(datas) },
+        headers: {
+          token: this.getToken
+          // token: "237cf94848711e2399fa1e8c1a74a395"
         }
-        //下订单
+      }).then(ress => {
+        console.log(ress.data.order_no);
+        window.localStorage.setItem(
+          "order_no",
+          JSON.stringify(ress.data.order_no)
+        );
+        //支付
         this.$axios({
           method: "POST",
-          url: "https://api.ddjingxuan.cn/api/v2/order",
-          data: {goods: JSON.stringify(datas)},
+          url: "https://api.ddjingxuan.cn/api/v2/pay/pre_order",
           headers: {
             token: this.getToken
             // token: "237cf94848711e2399fa1e8c1a74a395"
-          }
-        }).then(ress => {
-          console.log(ress.data.order_no)
-          window.localStorage.setItem('order_no', JSON.stringify(ress.data.order_no))
-          //支付
-          this.$axios({
-            method: "POST",
-            url: "https://api.ddjingxuan.cn/api/v2/pay/pre_order",
-            headers: {
-              token: this.getToken
-              // token: "237cf94848711e2399fa1e8c1a74a395"
-            },
-            data: {id: ress.data.order_id}
-          }).then(pre_order => {
-            let jsapi = pre_order.data;
-            wx.ready(function() {
-              wx.chooseWXPay({
-                timestamp: jsapi.timeStamp,
-                nonceStr: jsapi.nonceStr,
-                package: jsapi.package,
-                signType: jsapi.signType,
-                paySign: jsapi.paySign,
-                success: function(jsres) {
-                  alert("支付成功")
-                  // console.log(jsres)
-                }
-              });
+          },
+          data: { id: ress.data.order_id }
+        }).then(pre_order => {
+          let jsapi = pre_order.data;
+          wx.ready(function() {
+            wx.chooseWXPay({
+              timestamp: jsapi.timeStamp,
+              nonceStr: jsapi.nonceStr,
+              package: jsapi.package,
+              signType: jsapi.signType,
+              paySign: jsapi.paySign,
+              success: function(jsres) {
+                alert("支付成功");
+                // console.log(jsres)
+              }
             });
           });
-        });},
+        });
+      });
+    },
     selectall() {},
     selected(index, item) {
       this.act1 = index;
@@ -879,7 +885,7 @@ export default {
             }
           }
           .Order-main-main-shop-main-text {
-            padding: .8rem;
+            padding: 0.8rem;
             width: 21.5rem;
             font-size: 1.625rem;
             .Order-main-main-shop-main-name {

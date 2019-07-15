@@ -113,12 +113,14 @@
     <div class="detail-footer">
       <div class="detail-footer1">
         <div class="service">
-          <div class="service1">
-            <a>
-              <i class="iconfont">&#xe61c;</i>
-              <span>客服</span>
-            </a>
-          </div>
+          <router-link to="/Service">
+            <div class="service1">
+              <a>
+                <i class="iconfont">&#xe61c;</i>
+                <span>客服</span>
+              </a>
+            </div>
+          </router-link>
           <div class="collect">
             <a>
               <i class="iconfont">&#xe613;</i>

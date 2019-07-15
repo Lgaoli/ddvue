@@ -16,12 +16,12 @@
       >
         <p style="padding:0.3rem;color:#fff">长按图片，保存二维码图片到手机上，使用二维码进行推广！</p>
       </div>
-      <div class="Catalog-main1" style>
+      <div class="Catalog-main1" style v-for="(item,index) in calist" :key="index">
         <div class="logo">
-          <img src="../../assets/img/img_logo.png" alt>
+          <img :src="item.headimgurl" alt>
         </div>
-        <div class="Catalog-name">测试测试测试测试</div>
-        <div class="Catalog-id">ID:123456</div>
+        <div class="Catalog-name">{{item.nickname}}</div>
+        <div class="Catalog-id">ID:{{item.user_id}}</div>
         <div class="er">
           <div class="border border1"></div>
           <div class="border border2"></div>
@@ -29,7 +29,7 @@
           <div class="border border4"></div>
           <div class="borderimg">
             <img
-              src="http://www.wwei.cn/qrcode-viewfile?type=qrcode_text&k=xU6Nz&hash=fc351c112b29546c0e06453d17e830b3&timeout=1561516258&size=100"
+              :src="item.qrcode"
               alt
             >
           </div>
@@ -50,7 +50,6 @@
             <p>成为代理</p>
           </div>
         </router-link>
-    
       </div>
     </div>
     <Dfooter :activeIndex="2"></Dfooter>
@@ -77,13 +76,14 @@ export default {
   created() {
     let that = this;
     // var token= JSON.parse(sessionStorage.getItem("token"));
-    let token = "fafa88ea62cbf9a1194121a563efcc1e";
-    console.log(token);
+    // let token = "fafa88ea62cbf9a1194121a563efcc1e";
+
     this.$axios({
       method: "get",
       url: "https://api.ddjingxuan.cn/api/v2/user/qr",
       headers: {
-        token: token
+        token: that.getToken
+        // token: "58c5ce9eeb2dba98ae45dea322451f99"
       }
     })
       .then(res => {
@@ -95,6 +95,11 @@ export default {
           that.calist = "";
         }
       });
+  },
+  computed: {
+    getToken() {
+      return this.$store.getters.getToken;
+    }
   }
 };
 </script>

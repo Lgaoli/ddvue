@@ -88,7 +88,7 @@
     justify-content: space-between;
 ">
                   <div class="shoping-cart-img">
-                    <img :src="item.shopimg" alt>
+                    <img :src="item.shopimg" alt style="width:100%;">
                   </div>
                   <div class="shopname">
                     <div class style="height:2.8rem">

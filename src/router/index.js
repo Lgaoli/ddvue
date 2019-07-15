@@ -20,6 +20,8 @@ const Order = r => require.ensure([], () => r(require('../pages/Order/Order.vue'
 const Integral = r => require.ensure([], () => r(require('../pages/Integral/Integral.vue')), 'Integral')
 const IntegralExplain = r => require.ensure([], () => r(require('../pages/Integral/IntegralExplain.vue')), 'IntegralExplain')
 const IntegralDetail = r => require.ensure([], () => r(require('../pages/Integral/IntegralDetail.vue')), 'IntegralDetail')
+const Setup = r => require.ensure([], () => r(require('../pages/Setup/Setup.vue')), 'Setup')
+const Service = r => require.ensure([], () => r(require('../pages/Service/Service.vue')), 'Service')
 Vue.use(Router)
 
 const router = new Router({
@@ -150,6 +152,20 @@ const router = new Router({
         requireAuth: true,
       },
       component: IntegralDetail
+    }, {
+      path: '/Setup',
+      name: 'Setup',
+      meta: {
+        requireAuth: true,
+      },
+      component: Setup
+    },{
+      path: '/Service',
+      name: 'Service',
+      meta: {
+        requireAuth: true,
+      },
+      component: Service
     }
   ],
 

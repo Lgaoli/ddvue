@@ -4,10 +4,12 @@
       <img src="../assets/img/点.png" alt>
       <p>新人专区</p>
     </div>
-    <div class="Sud-list">
-      <img src="../assets/img/点.png" alt>
-      <p>我要开店</p>
-    </div>
+    <router-link to="/Setup">
+      <div class="Sud-list">
+        <img src="../assets/img/点.png" alt>
+        <p>我要开店</p>
+      </div>
+    </router-link>
     <div class="Sud-list">
       <img src="../assets/img/精.png" alt>
       <p>联系客服</p>
@@ -23,8 +25,8 @@
   width: 100%;
   height: 6.75rem;
   display: flex;
-justify-content: space-around;
-margin-top: 1.25rem;
+  justify-content: space-around;
+  margin-top: 1.25rem;
   .Sud-list {
     height: 7rem;
     text-align: center;

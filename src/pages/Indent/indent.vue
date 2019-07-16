@@ -45,7 +45,7 @@
       </div>
       <div v-else>
         <router-link to="/shippingAddress">
-          <div class="shopping-cart-header">
+          <div class="indent-cart-header">
             <div>
               <i class="iconfont">&#xe611;</i>
               <span>添加收货地址</span>

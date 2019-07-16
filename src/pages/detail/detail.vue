@@ -20,23 +20,7 @@
         <div class="swiper-pagination" slot="pagination" style="text-align: right;"></div>
       </swiper>
       <div class="detail-main-main">
-        <div class="vip" style="background:#fafafa">
-          <div class="vipmain">
-            <div class="dredge-vip" style="background:#fb7c37">
-              <p>开通会员</p>
-            </div>
-            <div class="vipmain1">
-              <div class="vipmain1-T">
-                <div class="vipmain1-text" style="    padding-right:7.625rem;">
-                  <p>立马享受最高5.8折优惠</p>
-                </div>
-                <div class="vipmain1-text1">
-                  <i class="iconfont">&#xe632;</i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      
         <div class="shopdetall">
           <div v-for="(items,indexs) in shopdetall" :key="indexs">
             <div class="shopmoney">

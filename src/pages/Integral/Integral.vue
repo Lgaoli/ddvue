@@ -9,52 +9,81 @@
       <div class>我的积分</div>
       <div class="shop"></div>
     </div>
-    <div class="Integral-main" v-for="(item,index) in money" :key="index">
-      <div class="Integral-main-header" :style="bg">
-        <div style="text-align: right;">
-          <router-link :to="{ path:'/IntegralDetail' }">
-            <span
-              style="padding:0.1rem 0.8rem;border:1px solid #fff;    border-radius: 50px;color:#fff"
-            >积分明细</span>
-          </router-link>
-        </div>
-        <div style="text-align: center;">
-          <p>我的余额（积分）</p>
+    <div class="Integral-main">
+      <div v-if="money.length">
+        <div v-for="(item,index) in money" :key="index">
+          <div class="Integral-main-header" :style="bg">
+            <div style="text-align: right;">
+              <router-link :to="{ path:'/IntegralDetail' }">
+                <span
+                  style="padding:0.1rem 0.8rem;border:1px solid #fff;    border-radius: 50px;color:#fff"
+                >积分明细</span>
+              </router-link>
+            </div>
+            <div style="text-align: center;">
+              <p>我的余额（积分）</p>
 
-          <div style="padding:1.25rem;font-size:4rem;    font-weight: 700;">
-            <p>{{item.money}}</p>
+              <div style="padding:1.25rem;font-size:4rem;    font-weight: 700;">
+                <p>{{item.money}}</p>
+              </div>
+              <div style="padding:1.25rem">
+                <span style="padding:0.3rem 3rem;border:1px solid #fff;    border-radius: 50px;">可提现</span>
+              </div>
+            </div>
           </div>
-          <div style="padding:1.25rem">
-            <span style="padding:0.3rem 3rem;border:1px solid #fff;    border-radius: 50px;">可提现</span>
+          <div class="Integral-main-main">
+            <div>
+              <p>500</p>
+              <p style="font-size:1.3rem;color:#666666">累计收入</p>
+            </div>
+            <div style="width:1px;background:#999999"></div>
+            <div>
+              <p>152</p>
+              <p style="font-size:1.3rem;color:#666666">今日收入</p>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="Integral-main-main">
-        <div>
-          <p>500</p>
-          <p style="font-size:1.3rem;color:#666666">累计收入</p>
-        </div>
-        <div style="width:1px;background:#999999"></div>
-        <div>
-          <p>152</p>
-          <p style="font-size:1.3rem;color:#666666">今日收入</p>
-        </div>
-      </div>
-      <div class="Integral-main-footer">
-        <p style="
+          <div class="Integral-main-footer">
+            <p style="
     line-height: 1.8rem;
 ">
-          备注说明：复销规则，新购买一件商品，可以总计获取
-          1500的收益，收益达到1500后没继续购买不再产生收
-          益！重新偶买订单后有收益产生，代理商不受此规则限
-          制。
-        </p>
-        <router-link :to="{ path:'/IntegralExplain' }">
-          <div style="margin-top: 180px;
+              备注说明：复销规则，新购买一件商品，可以总计获取
+              1500的收益，收益达到1500后没继续购买不再产生收
+              益！重新偶买订单后有收益产生，代理商不受此规则限
+              制。
+            </p>
+            <router-link :to="{ path:'/IntegralExplain' }">
+              <div style="margin-top: 180px;
     text-align: center;color:#495587">
-            <p>提现说明</p>
+                <p>提现说明</p>
+              </div>
+            </router-link>
           </div>
-        </router-link>
+        </div>
+      </div>
+
+      <div v-else style="padding:10rem;    text-align: center;">
+        <div>
+          <div class="shopimg" style="padding:1.3rem">
+            <img src="../../assets/img/img_empty_shopping_cart.png">
+          </div>
+          <p style="color:#9FA4A5;font-size:1.5rem">暂时无数据，快去逛逛吧~</p>
+          <router-link to="/My">
+            <div
+              class="shopbut"
+              style="color:#9FA4A5;font-size:1.5rm;padding:1.16rem;border:#dedede 1px solid;margin-top:1rem;border-radius: 10px;"
+            >
+              <p>个人中心</p>
+            </div>
+          </router-link>
+          <router-link to="/">
+            <div
+              class="shopbut"
+              style="color:#9FA4A5;font-size:1.5rm;padding:1.16rem;border:#dedede 1px solid;margin-top:1rem;border-radius: 10px;"
+            >
+              <p>立即逛逛</p>
+            </div>
+          </router-link>
+        </div>
       </div>
     </div>
   </div>
@@ -92,7 +121,7 @@ export default {
         // token: "237cf94848711e2399fa1e8c1a74a395"
       }
     }).then(res => {
-      that.money=res.data
+      that.money = res.data;
     });
   }
 };

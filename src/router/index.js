@@ -23,6 +23,8 @@ const IntegralDetail = r => require.ensure([], () => r(require('../pages/Integra
 const Setup = r => require.ensure([], () => r(require('../pages/Setup/Setup.vue')), 'Setup')
 const Service = r => require.ensure([], () => r(require('../pages/Service/Service.vue')), 'Service')
 const Team = r => require.ensure([], () => r(require('../pages/Team/Team.vue')), 'Team')
+const Study = r => require.ensure([], () => r(require('../pages/Study/Study.vue')), 'Study')
+const StudyDetails = r => require.ensure([], () => r(require('../pages/Study/StudyDetails.vue')), 'StudyDetails')
 Vue.use(Router)
 
 const router = new Router({
@@ -32,6 +34,7 @@ const router = new Router({
       name: 'Home',
       meta: {
         requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+        title: '首页'
       },
 
       component: Home
@@ -47,13 +50,16 @@ const router = new Router({
       name: 'Catalog',
       meta: {
         requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+        title: '推广'
       },
       component: Catalog
     }, {
       path: '/My',
       name: 'My',
       meta: {
-        requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+        requireAuth: true,
+        // 添加该字段，表示进入这个路由是需要登录的
+        title: '我的页面'
       },
       component: My
     },
@@ -61,7 +67,9 @@ const router = new Router({
       path: '/shop',
       name: 'shop',
       meta: {
-        requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+        requireAuth: true,
+        // 添加该字段，表示进入这个路由是需要登录的
+        title: '购物车'
       },
       component: shop
     },
@@ -70,13 +78,16 @@ const router = new Router({
       name: 'Search',
       meta: {
         requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+        title: '搜索页'
       },
       component: Search,
     }, {
       path: '/Detail',
       name: 'Detail',
       meta: {
-        requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+        requireAuth: true,
+        // 添加该字段，表示进入这个路由是需要登录的
+        title: '商品详情页'
       },
       component: Detail
     },
@@ -92,6 +103,7 @@ const router = new Router({
       name: 'AddressEdit',
       meta: {
         requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+        title: ''
       },
       component: AddressEdit
     },
@@ -160,14 +172,14 @@ const router = new Router({
         requireAuth: true,
       },
       component: Setup
-    },{
+    }, {
       path: '/Service',
       name: 'Service',
       meta: {
         requireAuth: true,
       },
       component: Service
-    },{
+    }, {
       path: '/Team',
       name: 'Team',
       meta: {
@@ -175,25 +187,46 @@ const router = new Router({
       },
       component: Team
     }
+    , {
+      path: '/Study',
+      name: 'Study',
+      meta: {
+        requireAuth: false,
+        title: '学习中心'
+      },
+      component: Study
+    }, {
+      path: '/StudyDetails',
+      name: 'StudyDetails',
+      meta: {
+        requireAuth: false,
+        title: '资讯详情'
+      },
+      component: StudyDetails
+    }
   ],
 
 
 })
 
-// router.beforeEach((to, from, next) => {
-
-//   let token = window.localStorage.getItem("token");
-//   if (token) {
-//     next()
-//   }
-//   else {
-//     window.location.href = "https://api.ddjingxuan.cn/api/v2/code/user"
-//   }
+router.beforeEach((to, from, next) => {
 
 
+  let token = window.localStorage.getItem("token");
+  if (token) {
+    if (to.meta.title) {
+      document.title = to.meta.title
+    }
+    next()
+  }
+  else {
+    window.location.href = "https://api.ddjingxuan.cn/api/v2/code/user"
+  }
 
 
-// })
+
+
+})
 
 
 export default router

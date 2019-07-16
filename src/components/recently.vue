@@ -5,7 +5,6 @@
         <img src="../assets/img/今日推荐.png" alt>
         <p class="rec-title">今日推荐</p>
       </div>
-      <div class="rec-more">更多</div>
     </div>
     <div class="rec-list">
       <ul>
@@ -13,14 +12,21 @@
           <router-link :to="{path:'/Detail',query:{id:item.goods_id}}" class="rec-list-a">
             <div class="rec-list-a1">
               <div class="rec-list-img">
-                <img :src="item.img_url" alt>
+                <img
+                  :src="item.img_url"
+                  :key="item.img_url"
+                  v-if="item.img_url"
+                  alt
+                 
+                >
+
+                <img src="../assets/loading.gif" alt v-else>
               </div>
               <div class="shopss">
                 <div
                   class="rec-list-text"
                   style="overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp:2;-webkit-box-orient: vertical;"
-                >{{item.goods_name}}
-                </div>
+                >{{item.goods_name}}</div>
                 <div class="rec-list-buy">
                   <div class="price">
                     <span class="supply_price">￥{{item.market_price}}</span>
@@ -95,12 +101,12 @@ export default {
               .price {
                 .supply_price {
                   color: #ff7441;
-                  font-size: 1.396rem;
+                  font-size: 1.186rem;
                   font-weight: 600;
                 }
                 .shop_price {
                   color: #ccc;
-                  font-size: 0.65rem;
+                  font-size: 0.96rem;
                   text-decoration: line-through;
                 }
               }

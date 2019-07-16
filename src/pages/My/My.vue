@@ -132,6 +132,7 @@
           </div>
         </div>
       </router-link>
+      <router-link :to="{ path:'/Study'}">
       <div class="My-main3-main">
         <div style="display: flex;align-items: center;;">
           <div style="width: 2.125rem;height: 2.5rem;margin-right: .625rem">
@@ -143,6 +144,7 @@
           <i class="iconfont">&#xe632;</i>
         </div>
       </div>
+      </router-link>
       <router-link :to="{ path:'/Agency'}">
         <div class="My-main3-main">
           <div style="display: flex;align-items: center;;">

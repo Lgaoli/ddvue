@@ -25,12 +25,56 @@
         <van-tabs v-model="active">
           <van-tab v-for="(item,index) in tabs" :key="index">
             <div class="tab-title" slot="title" @click="onClick(item)">{{ item.title }}</div>
+            <div class="tab-content" v-if="active==0">
+              <div class="teamnum">团队列表(总数{{contentall.length}})</div>
+              <div class="content" v-for="(conitem,conindex) in contentall" :key="conindex">
+                <div class="img">
+                  <img :src="conitem.headerimg">
+                </div>
+                <div style="padding:.3rem">
+                  <div
+                    style="font-size: 1.5rem;font-weight: 600;color:#333;    margin-bottom: 0.3rem;"
+                  >{{conitem.name}}</div>
+                  <div class="text" style="font-size:1rem;color:#999999">
+                    <p v-if="conitem.grade=='0'">等级：普通会员</p>
+                    <p v-else>等级：没有会员</p>
+                    <p>{{conitem.phone}}</p>
+                    <p>{{conitem.time}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-content" v-else-if="active==1">
+              <div v-for="(conitem,conindex) in contentall" :key="conindex">内容1</div>
+            </div>
+            <div class="tab-content" v-else-if="active==2">
+              <div v-for="(conitem,conindex) in contentall" :key="conindex">内容2</div>
+            </div>
+            <div class="tab-content" v-else-if="active==3">
+              <div v-for="(conitem,conindex) in contentall" :key="conindex">内容3</div>
+            </div>
+            <div class="tab-content" v-else-if="active==4">
+              <div v-for="(conitem,conindex) in contentall" :key="conindex">内容4</div>
+            </div>
+          </van-tab>
+        </van-tabs>
+      </div>
+      <div class="Order-main-main-shop-list" v-else-if="act1==1">
+        <van-tabs v-model="active">
+          <van-tab v-for="(item,index) in directtabs" :key="index">
+            <div class="tab-title" slot="title" @click="onClick(item)">{{ item.title }}</div>
             <div class="tab-content">{{ item.content }}</div>
           </van-tab>
         </van-tabs>
       </div>
-      <div class="Order-main-main-shop-list" v-else-if="act1==1">内容2</div>
-      <div class="Order-main-main-shop-list" v-else-if="act1==2">内容3</div>
+      <div class="Order-main-main-shop-list" v-else-if="act1==2">
+        <van-tabs v-model="active">
+          <van-tab v-for="(item,index) in indirecttabs" :key="index">
+            <div class="tab-title" slot="title" @click="onClick(item)">{{ item.title }}</div>
+            <div class="tab-content"></div>
+          </van-tab>
+        </van-tabs>
+      </div>
     </div>
   </div>
 </template>
@@ -48,15 +92,56 @@ export default {
       ],
       tabs: [
         { id: "0", title: "全部", content: "全部内容" },
-        { id: "1", title: "普通会员", content: "普通会员内容" },
-        { id: "2", title: "代言人", content: "代言人内容" },
-        { id: "3", title: "店长", content: "店长内容" },
-        { id: "4", title: "资深店长", content: "资深店长内容" }
+        { id: "1", title: "普通会员", content: "全部普通会员内容" },
+        { id: "2", title: "代言人", content: "全部代言人内容" },
+        { id: "3", title: "店长", content: "全部店长内容" },
+        { id: "4", title: "资深店长", content: "全部资深店长内容" }
+      ],
+      directtabs: [
+        { id: "0", title: "全部", content: "直推全部内容" },
+        { id: "1", title: "普通会员", content: "直推普通会员内容" },
+        { id: "2", title: "代言人", content: "直推代言人内容" },
+        { id: "3", title: "店长", content: "直推店长内容" },
+        { id: "4", title: "资深店长", content: "直推资深店长内容" }
+      ],
+      indirecttabs: [
+        { id: "0", title: "全部", content: "间推全部内容" },
+        { id: "1", title: "普通会员", content: "间推普通会员内容" },
+        { id: "2", title: "代言人", content: "间推代言人内容" },
+        { id: "3", title: "店长", content: "间推店长内容" },
+        { id: "4", title: "资深店长", content: "间推资深店长内容" }
       ],
       act1: "0",
-      active: "0"
+      active: "0",
+      contentall: [
+        {
+          headerimg:
+            "https://api.ddjingxuan.cn/uploads/20190514/f0b80422a275b3f74b3bb1ec30345f7f.jpg",
+          name: "安其拉",
+          grade: "0",
+          phone: "123467989",
+          time: "2018-09-01"
+        },
+        {
+          headerimg:
+            "https://api.ddjingxuan.cn/uploads/20190514/f0b80422a275b3f74b3bb1ec30345f7f.jpg",
+          name: "安其拉1",
+          grade: "0",
+          phone: "123467989",
+          time: "2018-09-01"
+        },
+        {
+          headerimg:
+            "https://api.ddjingxuan.cn/uploads/20190514/f0b80422a275b3f74b3bb1ec30345f7f.jpg",
+          name: "安其拉2",
+          grade: "1",
+          phone: "123467989",
+          time: "2018-09-01"
+        }
+      ]
     };
   },
+  created() {},
   methods: {
     back() {
       this.$router.go(-1); //返回上一层
@@ -65,7 +150,7 @@ export default {
       this.act1 = index;
     },
     onClick(item) {
-      console.log(item)
+      console.log(item);
       // this.active = index;
     }
   }
@@ -126,6 +211,27 @@ export default {
         border-bottom: #f15e0e 2px solid;
         color: #f15e0e;
       }
+    }
+  }
+  .tab-content {
+    background: #fff;
+    padding: 1rem;
+    .content {
+      display: flex;
+      align-items: center;
+      padding-bottom: 1.1rem;
+      border-bottom: #dedede 1px solid;
+      .img {
+        width: 7.3rem;
+        img {
+          width: 100%;
+        }
+      }
+    }
+    .teamnum {
+      color: #ccc;
+      border-bottom: #ccc 1px solid;
+      padding-bottom: 1.1rem;
     }
   }
 }

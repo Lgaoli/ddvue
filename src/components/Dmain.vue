@@ -14,7 +14,15 @@
         <div class="wrapper">
           <swiper :options="swiperOption">
             <swiper-slide v-for="(item,index) in swiperList" :key="index">
-              <img :src="item.img" class="swiper-img">
+              <img
+                v-if="item.img"
+                :src="item.img"
+                :key="item.img"
+                class="swiper-img"
+               
+              >
+
+              <img src="../assets/loading.gif" alt v-else>
             </swiper-slide>
             <div
               class="swiper-pagination"
@@ -39,7 +47,15 @@
               <router-link :to="{path:'/Detail',query:{id:item.goods_id}}" class="rec-list-a">
                 <div class="rec-list-a1">
                   <div class="rec-list-img">
-                    <img :src="item.img_url" alt>
+                    <img
+                      v-if="item.img_url"
+                      :src="item.img_url"
+                      :key="item.img_url"
+                      
+                      alt
+                    >
+
+                    <img src="../assets/loading.gif" alt v-else>
                   </div>
                   <div class="shopss">
                     <div
@@ -244,12 +260,12 @@ export default {
             padding: 0.6rem;
             .supply_price {
               color: #ff7441;
-              font-size: 1.396rem;
+              font-size: 1.296rem;
               font-weight: 600;
             }
             .shop_price {
               color: #ccc;
-              font-size: 1.25rem;
+              font-size: 0.95rem;
               text-decoration: line-through;
             }
           }

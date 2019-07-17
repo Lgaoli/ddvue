@@ -98,7 +98,7 @@
         <div
           style="background: #ef7634;font-size: 1.25rem;    padding: 1.25rem;text-align: center; "
         >
-          <router-link :to="{path:'/Indent',query:{id:newsID}}">
+          <router-link :to="{path:'/SetupIndent',query:{id:newsID}}">
             <p style="color:#fff;font-size: 1.25rem;etter-spacing: 8px;">立即购买</p>
           </router-link>
         </div>
@@ -264,7 +264,7 @@ export default {
       this.maskShow = !this.maskShow;
     },
     addSetupCart(data) {
-      console.log(data);
+    
       this.$store.commit("addSetupCart", data);
     },
     comment() {

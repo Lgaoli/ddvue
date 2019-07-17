@@ -58,6 +58,7 @@
                       合计:
                       <span style="color:#F15E0E;">{{item.goods_price}}</span>
                     </div>
+               
                     <div v-if="item.order_status==0" style="font-size:1.6rem;">
                       <p>待付款</p>
                     </div>
@@ -65,6 +66,7 @@
                       <p>待发货</p>
                     </div>
                   </div>
+                        <div style="background: #f7f7f7;padding:0.3rem"></div>
                 </div>
               </div>
               <div v-else style="padding:10rem;    text-align: center;">
@@ -571,10 +573,12 @@
                     <div>
                       合计:
                       <span style="color:#F15E0E;">{{item.goods_price}}</span>
-                    </div>
+                    </div>  <div style="background: #f7f7f7;padding:0.3rem"></div>
                   </div>
+                
+               
                 </div>
-                <div style="background: #f7f7f7;padding:0.3rem"></div>
+               
               </div>
               <div v-else style="padding:10rem;    text-align: center;">
                 <div>
@@ -609,7 +613,7 @@
 </template>
 <script>
 import Vue from "vue";
-
+import wx from "weixin-js-sdk";
 export default {
   data() {
     return {
@@ -697,6 +701,7 @@ export default {
     gobuy() {
       var that = this;
       var datas = [];
+      console.log(this.checkedgoods)
       for (let i = 0; i < this.checkedgoods.length; i++) {
         datas.push({
           goods_id: this.checkedgoods[i].goods_id,
@@ -808,6 +813,9 @@ export default {
   computed: {
     getToken() {
       return this.$store.getters.getToken;
+    },
+     checkedgoods() {
+      return this.$store.getters.checkedgoods;
     }
   }
 };

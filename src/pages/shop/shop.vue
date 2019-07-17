@@ -432,7 +432,7 @@ export default {
             .goods_num {
               align-items: center;
               display: flex;
-
+              justify-content: space-between;
               .del {
                 margin-left: 6.25rem;
               }

@@ -22,6 +22,7 @@ const IntegralExplain = r => require.ensure([], () => r(require('../pages/Integr
 const IntegralDetail = r => require.ensure([], () => r(require('../pages/Integral/IntegralDetail.vue')), 'IntegralDetail')
 const Setup = r => require.ensure([], () => r(require('../pages/Setup/Setup.vue')), 'Setup')
 const SetupDetail = r => require.ensure([], () => r(require('../pages/Setup/SetupDetail.vue')), 'SetupDetail')
+const SetupIndent = r => require.ensure([], () => r(require('../pages/Setup/SetupIndent.vue')), 'SetupIndent')
 const Service = r => require.ensure([], () => r(require('../pages/Service/Service.vue')), 'Service')
 const Team = r => require.ensure([], () => r(require('../pages/Team/Team.vue')), 'Team')
 const Study = r => require.ensure([], () => r(require('../pages/Study/Study.vue')), 'Study')
@@ -212,6 +213,14 @@ const router = new Router({
         title: '资讯详情'
       },
       component: SetupDetail
+    }, {
+      path: '/SetupIndent',
+      name: 'SetupIndent',
+      meta: {
+        requireAuth: false,
+        title: '资讯详情'
+      },
+      component: SetupIndent
     }
   ],
 

@@ -21,13 +21,13 @@ export default {
     let that = this;
     let url = window.location.href;
     // let url =
-    //   "http://localhost:8080/#/Detail?id=1754";
+    //   "http://pub.hqyulin.com/?token=cdb3497638ef23948061f95883af73f9#/";
     let str = url.split("?")[1].split("#")[0];
     let arr = str.split("=");
 
     let strs = str.split("=")[1];
 
-    // let strs = "cd46b59e00f7916d83d96c456dd6d50a";
+    // let strs = "cdb3497638ef23948061f95883af73f9";
     var curTime = new Date().getTime();
     var notime = 7200000; // 过期时间
 
@@ -37,35 +37,33 @@ export default {
         "token",
         JSON.stringify({ data: strs, time: curTime, notime: notime })
       );
-      
-    var data = localStorage.getItem("token");
-    var dataObj = JSON.parse(data);
 
-    let _this = this;
-    this.timer = setInterval(() => {
-      if (
-        parseInt(dataObj.time) + parseInt(dataObj.notime) <
-        new Date().getTime()
-      ) {
-        localStorage.setItem("token", "");
-        var newdata = localStorage.getItem("token");
-        // var newdataObj = JSON.parse(newdata);
+      var data = localStorage.getItem("token");
+      var dataObj = JSON.parse(data);
 
-        this.$store.commit("setToken", newdata.data);
+      let _this = this;
+      this.timer = setInterval(() => {
+        if (
+          parseInt(dataObj.time) + parseInt(dataObj.notime) <
+          new Date().getTime()
+        ) {
+          localStorage.setItem("token", "");
+          var newdata = localStorage.getItem("token");
+          // var newdataObj = JSON.parse(newdata);
 
-        //   if (this.$store.state.token) {
-        //     this.$router.push("/");
-        //   } else {
-        //  window.location.href = "https://api.ddjingxuan.cn/api/v2/code/user"
-        //   }
-      } else {
-        this.$store.commit("setToken", dataObj.data);
-      }
-    }, 1000);
+          this.$store.commit("setToken", newdata.data);
+
+          //   if (this.$store.state.token) {
+          //     this.$router.push("/");
+          //   } else {
+          //  window.location.href = "https://api.ddjingxuan.cn/api/v2/code/user"
+          //   }
+        } else {
+          this.$store.commit("setToken", dataObj.data);
+        }
+      }, 1000);
     } else {
-
     }
-
   },
 
   beforeDestroy() {

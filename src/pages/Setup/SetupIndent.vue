@@ -61,8 +61,8 @@
           background:#f7f7f7"></div>
       <div class="indent-main">
         <div>
-          <div v-if="checkedgoods.length>0">
-            <div v-for="(item,index) in checkedgoods" :key="index">
+          <div v-if="SetupCart.length>0">
+            <div v-for="(item,index) in SetupCart" :key="index">
               <van-card
                 :num="item.goods_num"
                 :price="item.market_price"
@@ -79,7 +79,7 @@
           background:#f7f7f7"></div>
     </div>
     <div>
-
+      <router-link to="/shippingAddress">
         <div class="indent-cart-header">
           <div>
             <span>支付方式</span>
@@ -89,17 +89,18 @@
             <i class="iconfont">&#xe632;</i>
           </div>
         </div>
-
-
-      <div class="indent-cart-header">
-        <div>
-          <span>运费</span>
+      </router-link>
+     
+        <div class="indent-cart-header">
+          <div>
+            <span>运费</span>
+          </div>
+          <div>
+            <span>0元</span>
+            <i class="iconfont">&#xe632;</i>
+          </div>
         </div>
-        <div>
-          <span>0元</span>
-          <i class="iconfont">&#xe632;</i>
-        </div>
-      </div>
+     
     </div>
     <div style="width:100%;
           height: 0.6rem;
@@ -141,27 +142,30 @@ export default {
   data() {
     return {
       list: [],
-      getJsSdkData: []
+      getJsSdkData: [],
+      SetupCart:[]
     };
   },
 
   created() {
     this.testlist();
     var newsID = this.$route.query.id;
-    console.log(newsID);
-    var url =
-      "http://pub.hqyulin.com/?token=07e11a43943202d322a310886318b9bd#/Detail?id=1754";
-    var arr = url.split("?")[1].split("=");
-    // if(arr[0]==='token'){
-    //   console.log('是')
-    // }
-    // else{
-    //   console.log('不是')
-    // }
-
+    console.log(this)
+    var url = 'http://pub.hqyulin.com/?token=07e11a43943202d322a310886318b9bd#/Detail?id=1754';
+    var arr=url.split("?")[1].split('=')
+  // if(arr[0]==='token'){
+  //   console.log('是')
+  // }
+  // else{
+  //   console.log('不是')
+  // }
+  
     // for(var i=0;i<arr.length;i++){
     //  console.log(arr[i].split('='))
     // }
+;
+
+
 
     var newsID = this.$route.query.shopdetall;
 
@@ -188,8 +192,8 @@ export default {
     });
   },
   computed: {
-    checkedgoods() {
-      return this.$store.getters.checkedgoods;
+    addSetupCart() {
+      return this.$store.getters.addSetupCart;
     },
     checkedmoney() {
       return this.$store.getters.checkedmoney;
@@ -246,10 +250,10 @@ export default {
     SubmitOrderHan() {
       var that = this;
       var datas = [];
-      for (let i = 0; i < this.checkedgoods.length; i++) {
+      for (let i = 0; i < this.SetupCart.length; i++) {
         datas.push({
-          goods_id: this.checkedgoods[i].goods_id,
-          goods_num: this.checkedgoods[i].goods_num
+          goods_id: this.SetupCart[i].goods_id,
+          goods_num: this.SetupCart[i].goods_num
         });
       }
       //下订单
@@ -277,7 +281,6 @@ export default {
           },
           data: { id: ress.data.order_id }
         }).then(pre_order => {
-          this.$store.commit("addCart", "");///////////////////////////////////////////////////////////////////////////////
           let jsapi = pre_order.data;
           wx.ready(function() {
             wx.chooseWXPay({

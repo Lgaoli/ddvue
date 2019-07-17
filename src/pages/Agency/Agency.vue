@@ -48,8 +48,8 @@
         </div>
       </div>
     </div>
-    <div class="Agency-footer">
-      <div class="Agency-footer-text">下一步</div>
+    <div class="Agency-footer" @click="nex">
+      <div class="Agency-footer-text">立即申请</div>
     </div>
   </div>
 </template> 
@@ -92,6 +92,11 @@ export default {
       DISTRICTS
     };
   },
+  computed: {
+    getToken() {
+      return this.$store.getters.getToken;
+    }
+  },
   created() {
     this.selected = this.statusArr[0].statusVal;
     // 在组件创建之后，把默认选中项的value值赋给绑定的属性
@@ -102,12 +107,44 @@ export default {
     this.getDefault();
   },
   methods: {
+    nex() {
+      let grade_id = "";
+      console.log(this.province);
+      console.log(this.city);
+      console.log(this.area);
+      if (this.selected == "省级") {
+        console.log("是省级")
+        grade_id = 1;
+      } else if (this.selected == "市级") {
+        console.log("是市级");
+        grade_id = 2;
+      } else {
+        
+        grade_id = 3;
+        console.log(typeof grade_id);
+      }
+      this.$axios({
+        method: "post",
+        url: "https://api.ddjingxuan.cn/api/v2/agency/add",
+
+        headers: {
+          token: this.getToken
+          // token: "9b85bc5fa49dce8a5ef0e29f4f0076b5"
+        },
+        data: {
+          grade_id: grade_id,
+          province: this.phones,
+          city: this.city,
+          area: this.area
+        }
+      }).then(res => {
+        console.log(res);
+      });
+    },
     prev() {
       this.$router.go(-1);
     },
-    ge() {
-      console.log(this.selected);
-    },
+    ge() {},
     getDefault() {
       if (this.defaultProvince !== "") {
         let provinceCode = this.getAreaCode(this.defaultProvince);
@@ -135,12 +172,12 @@ export default {
         };
       }
     },
-    getSelectVal() {
-      this.selected = this.province.value + this.city.value + this.area.value;
-      console.log(
-        this.province.code + "-" + this.city.code + "-" + this.area.code
-      );
-    },
+    // getSelectVal() {
+    //   this.selected = this.province.value + this.city.value + this.area.value;
+    //   console.log(
+    //     this.province.code + "-" + this.city.code + "-" + this.area.code
+    //   );
+    // },
 
     //名称转代码
     nameToCode(name) {
@@ -185,16 +222,13 @@ export default {
       this.cleanList("areas");
       this.province = this.setData(e.target.value, 1);
       this.areaList = [];
-      console.log(this.province.value);
     },
     getAreas(e) {
       this.areaList = this.getDistricts(e.target.value);
       this.city = this.setData(e.target.value, 2);
-      console.log(this.city.value);
     },
     getDistValue(e) {
       this.area = this.setData(e.target.value, 3);
-      console.log(this.area.value);
     },
     setData(code, level = 1) {
       code = parseInt(code);

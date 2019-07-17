@@ -114,231 +114,250 @@
   </div>
 </template>
 <script>
-  import Vue from "vue";
-  import wx from 'weixin-js-sdk';
-  import {
-    RadioGroup,
-    Radio,
-    AddressList,
-    Checkbox,
-    CheckboxGroup,
-    Stepper,
-    SubmitBar,
-    Card,
-    SwipeCell,
-    Dialog
-  } from "vant";
+import Vue from "vue";
+import wx from "weixin-js-sdk";
+import {
+  RadioGroup,
+  Radio,
+  AddressList,
+  Checkbox,
+  CheckboxGroup,
+  Stepper,
+  SubmitBar,
+  Card,
+  SwipeCell,
+  Dialog
+} from "vant";
 
-  Vue.use(Checkbox)
-    .use(CheckboxGroup)
-    .use(Stepper)
-    .use(SubmitBar)
-    .use(Card)
-    .use(SwipeCell)
-    .use(RadioGroup)
-    .use(Radio)
-    .use(AddressList);
-  export default {
-    data() {
-      return {
-        list: [],
-        getJsSdkData: []
-      };
+Vue.use(Checkbox)
+  .use(CheckboxGroup)
+  .use(Stepper)
+  .use(SubmitBar)
+  .use(Card)
+  .use(SwipeCell)
+  .use(RadioGroup)
+  .use(Radio)
+  .use(AddressList);
+export default {
+  data() {
+    return {
+      list: [],
+      getJsSdkData: []
+    };
+  },
+
+  created() {
+    this.testlist();
+    var newsID = this.$route.query.id;
+    console.log(newsID)
+    var url = 'http://pub.hqyulin.com/?token=07e11a43943202d322a310886318b9bd#/Detail?id=1754';
+    var arr=url.split("?")[1].split('=')
+  // if(arr[0]==='token'){
+  //   console.log('是')
+  // }
+  // else{
+  //   console.log('不是')
+  // }
+  
+    // for(var i=0;i<arr.length;i++){
+    //  console.log(arr[i].split('='))
+    // }
+
+;
+    var newsID = this.$route.query.shopdetall;
+
+    let self = this;
+    this.$axios({
+      method: "post",
+      url: "https://api.ddjingxuan.cn/api/v2/user/jdk",
+      data: {
+        url: location.href.split("#")[0]
+      },
+      headers: {
+        token: this.getToken
+      }
+    }).then(rest => {
+      self.getJsSdkData = rest.data;
+      wx.config({
+        debug: false,
+        appId: rest.data.appId,
+        timestamp: rest.data.timestamp,
+        nonceStr: rest.data.nonceStr,
+        signature: rest.data.signature,
+        jsApiList: ["chooseWXPay"]
+      });
+    });
+  },
+  computed: {
+    checkedgoods() {
+      return this.$store.getters.checkedgoods;
     },
-
-    created() {
-      this.testlist();
-
-      let self = this;  
+    checkedmoney() {
+      return this.$store.getters.checkedmoney;
+    },
+    getToken() {
+      return this.$store.getters.getToken;
+    }
+    // freight() {
+    //   let freight = 8;
+    //   if (this.checkedmoney >= 88) {
+    //     freight = 0;
+    //   }
+    //   return freight;
+    // }
+  },
+  methods: {
+    conn() {},
+    testlist() {
+      var that = this;
+      // console.log(that);
       this.$axios({
-        method: "post",
-        url: "https://api.ddjingxuan.cn/api/v2/user/jdk",
-        data: {
-          url: location.href.split('#')[0]
-        },
+        method: "get",
+        url: "https://api.ddjingxuan.cn/api/v2/address",
+        headers: {
+          token: that.getToken
+          // token: "237cf94848711e2399fa1e8c1a74a395"
+        }
+      }).then(res => {
+        // console.log(res.data);
+        that.list.name = res.data.consigner;
+        that.list.id = res.data.user_id;
+        that.list.address =
+          res.data.province +
+          res.data.city +
+          res.data.district +
+          res.data.address;
+        that.list.tel = res.data.phone * 1;
+
+        that.list = [
+          {
+            name: res.data.consigner,
+            id: res.data.user_id,
+            address:
+              res.data.province +
+              res.data.city +
+              res.data.district +
+              res.data.address,
+            tel: res.data.phone * 1
+          }
+        ];
+        // console.log(that.list);
+      });
+    },
+    SubmitOrderHan() {
+      var that = this;
+      var datas = [];
+      for (let i = 0; i < this.checkedgoods.length; i++) {
+        datas.push({
+          goods_id: this.checkedgoods[i].goods_id,
+          goods_num: this.checkedgoods[i].goods_num
+        });
+      }
+      //下订单
+      this.$axios({
+        method: "POST",
+        url: "https://api.ddjingxuan.cn/api/v2/order",
+        data: { goods: JSON.stringify(datas) },
         headers: {
           token: this.getToken
+          // token: "237cf94848711e2399fa1e8c1a74a395"
         }
-      }).then(rest => {
-        self.getJsSdkData = rest.data;
-        wx.config({
-          debug: false,
-          appId: rest.data.appId,
-          timestamp: rest.data.timestamp,
-          nonceStr: rest.data.nonceStr,
-          signature: rest.data.signature,
-          jsApiList: ['chooseWXPay']
-        });
-      });
-
-
-    },
-    computed: {
-      checkedgoods() {
-        return this.$store.getters.checkedgoods;
-      },
-      checkedmoney() {
-        return this.$store.getters.checkedmoney;
-      },
-      getToken() {
-        return this.$store.getters.getToken;
-      }
-      // freight() {
-      //   let freight = 8;
-      //   if (this.checkedmoney >= 88) {
-      //     freight = 0;
-      //   }
-      //   return freight;
-      // }
-    },
-    methods: {
-      testlist() {
-        var that = this;
-        // console.log(that);
-        this.$axios({
-          method: "get",
-          url: "https://api.ddjingxuan.cn/api/v2/address",
-          headers: {
-            token: that.getToken
-            // token: "237cf94848711e2399fa1e8c1a74a395"
-          }
-        }).then(res => {
-          // console.log(res.data);
-          that.list.name = res.data.consigner;
-          that.list.id = res.data.user_id;
-          that.list.address =
-            res.data.province +
-            res.data.city +
-            res.data.district +
-            res.data.address;
-          that.list.tel = res.data.phone * 1;
-
-          that.list = [
-            {
-              name: res.data.consigner,
-              id: res.data.user_id,
-              address:
-                res.data.province +
-                res.data.city +
-                res.data.district +
-                res.data.address,
-              tel: res.data.phone * 1
-            }
-          ];
-          // console.log(that.list);
-        });
-      },
-      SubmitOrderHan() {
-        var that = this;
-        var datas = [];
-        for (let i = 0; i < this.checkedgoods.length; i++) {
-          datas.push({
-            goods_id: this.checkedgoods[i].goods_id,
-            goods_num: this.checkedgoods[i].goods_num
-          });
-        }
-        //下订单
+      }).then(ress => {
+        console.log(ress.data.order_no);
+        window.localStorage.setItem(
+          "order_no",
+          JSON.stringify(ress.data.order_no)
+        );
+        //支付
         this.$axios({
           method: "POST",
-          url: "https://api.ddjingxuan.cn/api/v2/order",
-          data: {goods: JSON.stringify(datas)},
+          url: "https://api.ddjingxuan.cn/api/v2/pay/pre_order",
           headers: {
             token: this.getToken
             // token: "237cf94848711e2399fa1e8c1a74a395"
-          }
-        }).then(ress => {
-          console.log(ress.data.order_no)
-          window.localStorage.setItem('order_no', JSON.stringify(ress.data.order_no))
-          //支付
-          this.$axios({
-            method: "POST",
-            url: "https://api.ddjingxuan.cn/api/v2/pay/pre_order",
-            headers: {
-              token: this.getToken
-              // token: "237cf94848711e2399fa1e8c1a74a395"
-            },
-            data: {id: ress.data.order_id}
-          }).then(pre_order => {
-            let jsapi = pre_order.data;
-            wx.ready(function() {
-              wx.chooseWXPay({
-                timestamp: jsapi.timeStamp,
-                nonceStr: jsapi.nonceStr,
-                package: jsapi.package,
-                signType: jsapi.signType,
-                paySign: jsapi.paySign,
-                success: function(jsres) {
-                  alert("支付成功")
-                  // console.log(jsres)
-                }
-              });
+          },
+          data: { id: ress.data.order_id }
+        }).then(pre_order => {
+          let jsapi = pre_order.data;
+          wx.ready(function() {
+            wx.chooseWXPay({
+              timestamp: jsapi.timeStamp,
+              nonceStr: jsapi.nonceStr,
+              package: jsapi.package,
+              signType: jsapi.signType,
+              paySign: jsapi.paySign,
+              success: function(jsres) {
+                alert("支付成功");
+                // console.log(jsres)
+              }
             });
           });
         });
-      }
+      });
     }
-  };
+  }
+};
 </script>
 
 <style lang="scss">
-  .indent {
-    margin-top: 4.5rem;
-    margin-bottom: 4.5rem;
-    .detail-header {
-      border-bottom: 1px solid #ccc;
-      background-color: #fff;
-      height: 4.5rem;
-      line-height: 4.5rem;
-      top: 0;
-      width: 100%;
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-      position: fixed;
-      justify-content: space-between;
-      z-index: 9999;
-      font-size: 1.9375rem;
+.indent {
+  margin-top: 4.5rem;
+  margin-bottom: 4.5rem;
+  .detail-header {
+    border-bottom: 1px solid #ccc;
+    background-color: #fff;
+    height: 4.5rem;
+    line-height: 4.5rem;
+    top: 0;
+    width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    position: fixed;
+    justify-content: space-between;
+    z-index: 9999;
+    font-size: 1.9375rem;
 
-      i {
-        color: #060606;
-        font-size: 2.125rem;
-      }
-      .back {
-        width: 3.125rem;
-        text-align: center;
-        height: 100%;
-        line-height: 4.5rem;
-      }
-      .shop {
-        width: 3.125rem;
-        text-align: center;
-        height: 100%;
-        line-height: 4.5rem;
-      }
+    i {
+      color: #060606;
+      font-size: 2.125rem;
     }
-    .postscript {
-      padding: 1.25rem;
-      textarea {
-        width: 100%;
-        height: 6.25rem;
-      }
+    .back {
+      width: 3.125rem;
+      text-align: center;
+      height: 100%;
+      line-height: 4.5rem;
     }
-    .indent-cart {
-      .indent-cart-header {
-        background: #fff;
-        padding: 1.25rem;
-        display: flex;
-        justify-content: space-between;
-      }
+    .shop {
+      width: 3.125rem;
+      text-align: center;
+      height: 100%;
+      line-height: 4.5rem;
     }
+  }
+  .postscript {
+    padding: 1.25rem;
+    textarea {
+      width: 100%;
+      height: 6.25rem;
+    }
+  }
+  .indent-cart {
     .indent-cart-header {
       background: #fff;
       padding: 1.25rem;
       display: flex;
       justify-content: space-between;
-      border-bottom: #c8c9cc 1px solid;
     }
   }
+  .indent-cart-header {
+    background: #fff;
+    padding: 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: #c8c9cc 1px solid;
+  }
+}
 </style>

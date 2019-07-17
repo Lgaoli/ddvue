@@ -21,6 +21,7 @@ const Integral = r => require.ensure([], () => r(require('../pages/Integral/Inte
 const IntegralExplain = r => require.ensure([], () => r(require('../pages/Integral/IntegralExplain.vue')), 'IntegralExplain')
 const IntegralDetail = r => require.ensure([], () => r(require('../pages/Integral/IntegralDetail.vue')), 'IntegralDetail')
 const Setup = r => require.ensure([], () => r(require('../pages/Setup/Setup.vue')), 'Setup')
+const SetupDetail = r => require.ensure([], () => r(require('../pages/Setup/SetupDetail.vue')), 'SetupDetail')
 const Service = r => require.ensure([], () => r(require('../pages/Service/Service.vue')), 'Service')
 const Team = r => require.ensure([], () => r(require('../pages/Team/Team.vue')), 'Team')
 const Study = r => require.ensure([], () => r(require('../pages/Study/Study.vue')), 'Study')
@@ -203,6 +204,14 @@ const router = new Router({
         title: '资讯详情'
       },
       component: StudyDetails
+    }, {
+      path: '/SetupDetail',
+      name: 'SetupDetail',
+      meta: {
+        requireAuth: false,
+        title: '资讯详情'
+      },
+      component: SetupDetail
     }
   ],
 
@@ -210,18 +219,18 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
+  next()
 
-
-  let token = window.localStorage.getItem("token");
-  if (token) {
-    if (to.meta.title) {
-      document.title = to.meta.title
-    }
-    next()
-  }
-  else {
-    window.location.href = "https://api.ddjingxuan.cn/api/v2/code/user"
-  }
+  // let token = window.localStorage.getItem("token");
+  // if (token) {
+  //   if (to.meta.title) {
+  //     document.title = to.meta.title
+  //   }
+  //   next()
+  // }
+  // else {
+  //   window.location.href = "https://api.ddjingxuan.cn/api/v2/code/user"
+  // }
 
 
 

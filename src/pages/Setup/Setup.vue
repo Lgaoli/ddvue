@@ -11,7 +11,7 @@
       <div v-if="Setuplist.length==0">商品不存在</div>
       <div v-else>
         <div v-for="(item,index) in Setuplist" :key="index">
-          <router-link :to="{path:'/Detail',query:{id:item.goods_id}}" class="rec-list-a">
+          <router-link :to="{path:'/SetupDetail',query:{id:item.goods_id}}" class="rec-list-a">
             <div style="border-bottom:1px solid #DEDEDE">
               <div class="Setup-main-img" style="padding:1.5rem 0px 0rem">
                 <img :src="item.img_url" alt style="width: 100%;border-radius: 5px;">

@@ -10,9 +10,12 @@ const store = new Vuex.Store({
     state: {
         addCart: [],
         shipping: [],
-        token: ''
+        token: '',
+        SetupCart:[]
     },
     getters: {
+
+
         add: state => state,
         //获取token方法
         //判断是否有token,如果没有重新赋值，返回给state的token
@@ -86,6 +89,14 @@ const store = new Vuex.Store({
 
     },
     mutations: {
+        addSetupCart(state,Setup){
+        
+            state.SetupCart=Setup
+   
+        },
+
+
+
         setToken(state, token) {
             state.token = token
  

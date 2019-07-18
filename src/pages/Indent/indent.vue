@@ -148,7 +148,7 @@ export default {
   created() {
     this.testlist();
     var newsID = this.$route.query.id;
-    console.log(newsID);
+    console.log(this);
     var url =
       "http://pub.hqyulin.com/?token=07e11a43943202d322a310886318b9bd#/Detail?id=1754";
     var arr = url.split("?")[1].split("=");

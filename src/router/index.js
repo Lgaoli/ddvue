@@ -230,16 +230,16 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   next()
 
-  // let token = window.localStorage.getItem("token");
-  // if (token) {
-  //   if (to.meta.title) {
-  //     document.title = to.meta.title
-  //   }
-  //   next()
-  // }
-  // else {
-  //   window.location.href = "https://api.ddjingxuan.cn/api/v2/code/user"
-  // }
+  let token = window.localStorage.getItem("token");
+  if (token) {
+    if (to.meta.title) {
+      document.title = to.meta.title
+    }
+    next()
+  }
+  else {
+    window.location.href = "https://api.ddjingxuan.cn/api/v2/code/user"
+  }
 
 
 

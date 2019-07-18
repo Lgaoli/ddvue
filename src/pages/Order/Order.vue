@@ -30,11 +30,14 @@
           <div>
             <div class="Order-main-main-shop-list" v-if="act1==0" style>
               <div v-if="all.length" style="padding: 1.3rem;">
+                <!--  -->
+               
                 <div
                   v-for="(item,index) in all"
                   :key="index"
                   style="background: #fff;border-radius: 5px;"
                 >
+                
                   <div
                     class="Order-main-main-shop-main"
                     v-for="(items,indexs) in item.og"
@@ -67,6 +70,7 @@
                     </div>
                   </div>
                         <div style="background: #f7f7f7;padding:0.3rem"></div>
+                        <!--  -->
                 </div>
               </div>
               <div v-else style="padding:10rem;    text-align: center;">
@@ -675,10 +679,15 @@ export default {
         // token: "9b85bc5fa49dce8a5ef0e29f4f0076b5"
       }
     }).then(res => {
-      console.log(res);
+      console.log(res.data);
       if (res.data.error_code == 0) {
         that.all = "";
       } else {
+        for(let i=0;i<res.data.length;i++){
+          if(res.data[i].order_id==240){
+            console.log('有')
+          }
+        }
         that.all = res.data;
       }
     });

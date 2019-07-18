@@ -49,9 +49,9 @@ const store = new Vuex.Store({
             return market_price
         },
         
-        totledel(state) {
-            state.addCart=[]
-        },
+        // totledel(state) {
+        //     state.addCart=[]
+        // },
 
         //全选
         allcheck(state) {

@@ -11,8 +11,8 @@
     </div>
     <div class="Integral-main">
       <div v-if="money.length">
-        <div v-for="(item,index) in money" :key="index">
-          <div class="Integral-main-header" :style="bg">
+        <div >
+          <div class="Integral-main-header" :style="bg" >
             <div style="text-align: right;">
               <router-link :to="{ path:'/IntegralDetail' }">
                 <span
@@ -24,7 +24,7 @@
               <p>我的余额（积分）</p>
 
               <div style="padding:1.25rem;font-size:4rem;    font-weight: 700;">
-                <p>{{item.money}}</p>
+                <p>{{money}}</p>
               </div>
               <div style="padding:1.25rem">
                 <span style="padding:0.3rem 3rem;border:1px solid #fff;    border-radius: 50px;">可提现</span>
@@ -115,13 +115,15 @@ export default {
     let that = this;
     this.$axios({
       method: "get",
-      url: "https://api.ddjingxuan.cn/api/v2/address",
+      url: "https://api.ddjingxuan.cn/api/v2/user/money",
       headers: {
         token: that.getToken
         // token: "237cf94848711e2399fa1e8c1a74a395"
       }
     }).then(res => {
-      that.money = res.data;
+     
+      that.money = res.data.money;
+       console.log(that.money)
     });
   }
 };

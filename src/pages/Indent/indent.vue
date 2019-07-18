@@ -149,9 +149,9 @@ export default {
     this.testlist();
     var newsID = this.$route.query.id;
     console.log(this);
-    var url =
-      "http://pub.hqyulin.com/?token=07e11a43943202d322a310886318b9bd#/Detail?id=1754";
-    var arr = url.split("?")[1].split("=");
+    // var url =
+    //   "http://pub.hqyulin.com/?token=07e11a43943202d322a310886318b9bd#/Detail?id=1754";
+    // var arr = url.split("?")[1].split("=");
     // if(arr[0]==='token'){
     //   console.log('是')
     // }

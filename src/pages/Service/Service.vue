@@ -1,38 +1,280 @@
 <template>
-  <div>
-    <div class="Service-header">
-      <div class="back" @click="back">
-        <i class="iconfont" style="font-size: 2.9rem;\">&#xe79b;</i>
-      </div>
-      <div class>联系客服</div>
-      <div class="shop"></div>
-    </div>
-    <div class="Service-main">
-      <div class="Service-main-header">
-        <div>
-          <p>客服点点</p>
-          <div>每周一至周日9：00-18：00电话畅通为您服务</div>
-        </div>
-        <div @click="callPhone">
-          <i class="iconfont">&#xe605;</i>
-        </div>
-        <div @click="back">关闭</div>
-      </div>
+  <div class="Service">
+    <div class="Service-main-header">
       <div>
+        <p>客服点点</p>
+        <div>每周一至周日9：00-18：00电话畅通为您服务</div>
+      </div>
+      <div @click="callPhone">
+        <i class="iconfont">&#xe605;</i>
+      </div>
+      <div @click="back">关闭</div>
+    </div>
 
+    <div class="xw-content" @touchstart="toShowMaskInfo=false" ref="xwBody">
+      <div class="xw-chat-wrap">
+        <ul>
+          <li v-for="(messageList,mssageindex) in records" :key="mssageindex">
+            <div v-if="messageList.type==1">
+              <div class="xw-chat-time">{{messageList.time}}</div>
+              <div class="xw-chat-servicer">
+                <div class="xw-servicer-avantar-wrap">
+                  <img src="../Service/images/Sev.jpg" class="xw-servicer-avantar">
+                </div>
+                <div class="xw-chat-msg">
+                  <span v-html="replaceFace(messageList.content)"></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 用户发送的消息模板-->
+            <div v-else>
+              <div class="xw-chat-time">{{messageList.time}}</div>
+              <div class="xw-chat-customer">
+                <div class="xw-chat-msg" style="display:inline-block">
+                  <span v-html="replaceFace(messageList.content)"></span>
+                </div>
+                <div class="xw-customer-avantar-wrap">
+                  <img src="../Service/images/female.jpg" class="xw-customer-avantar">
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
+
+    <div class="xw-footer-wrap" @touchstart="toShowMaskInfo=false">
+      <div class="xw-footer-content">
+        <div class="xw-vmodel-wrap">
+          <textarea
+            class="xw-content-textarea"
+            placeholder="请输入您的问题"
+            v-model="content"
+            @focus="onFocusText"
+          ></textarea>
+        </div>
+        <div class="xw-chat-tool">
+          <div class="xw-chat-tool-item">
+            <transition name="fade">
+              <a
+                href="javascript:void(0)"
+                class="xw-send-btn-text"
+                v-if="content.trim().length"
+                @click="sendMsg"
+              >发送</a>
+            </transition>
+          </div>
+          <!-- <div class="xw-chat-tool-item">
+            <a
+              href="javascript:;"
+              :class="[showEmoji ? 'xw-face' :'xw-face-close','xw-chat-tool-btn']"
+              @click="emojiFuc"
+            >
+              <i class="iconfont">&#xe61e;</i>
+            </a>
+          </div>
+          <div class="xw-chat-tool-item">
+            <a
+              href="javascript:;"
+              :class="[showEmoji ? 'xw-face' :'xw-face-close','xw-chat-tool-btn']"
+              @click="emojiFuc"
+            >
+              <i class="iconfont">&#xe61d;</i>
+            </a>
+          </div> -->
+        </div>
+      </div>
+
+      <!--  <emojiSlider :isShow="showEmoji" :EXPS="EXPS"></emojiSlider> -->
+      <!-- 表情开始 -->
+      <transition name="slide-fade" style="display:block">
+        <div class="xw-window-text xw-face-emoji-ul" v-if="showEmoji">
+          <!-- <div class="xw-chat-ul-box">
+            <mt-swipe :auto="0">
+              <mt-swipe-item v-for="(item, index) in Math.ceil(appData.length/15)" :key="index">
+                <li v-for="(items, indexs) in getEmotionData(item,15)" class="xw-faceEmoji" :key="indexs">
+                  <img :src="items.file" :data="items.code" v-on:click="content+=items.code">
+                </li>
+              </mt-swipe-item>
+            </mt-swipe>
+          </div>-->
+        </div>
+      </transition>
+    </div>
+
+    <!-- 提示音 -->
+
+    <!-- 右上角的通话小窗口 -->
+
+    <!-- 表情区域 -->
+    <div class="browBox" v-if="faceShow">
+      <ul>
+        <li v-for="(item,index) in faceList" :key="index" @click="getBrow(index)">{{item}}</li>
+      </ul>
+    </div>
+
+    <!-- <Toast :showToast="showToast">{{toastText}}</Toast> -->
   </div>
 </template>
 
 <script>
+const appData = require("../../uitls/emojis.json");
+import evaluate from "../../components/evaluate.vue";
+// import Toast from "../../components/toast";
+import { getEmojiData } from "../../uitls/api.js";
+
+// import emojiSlider from '.././components/emojiSlide.vue'
 export default {
+  components: {
+    evaluate
+    // Toast
+    // emojiSlider
+  },
+  data() {
+    return {
+      comment: {},
+      showEmoji: false, //是否显示表情
+      // showToast: false, //显示提示框
+      toastText: "",
+      faceList: [],
+      // showMoreOpratin: false, //是否显示更多操作
+      // toShowMaskInfo: false, //点击头部是否显示相信信息
+      testContents: [
+        "您好！欢迎来到点点客服，请问有什么能帮到您？如有疑问请在线咨询或者拨打400-926-2012咨询！感谢您的支持! "
+      ],
+      content: "",
+      //聊天记录
+      records: [
+        {
+          type: 1,
+          time: new Date().toLocaleTimeString(),
+          content:
+            "您好！欢迎来到点点客服，请问有什么能帮到您？如有疑问请在线咨询或者拨打400-926-2012咨询！感谢您的支持! "
+        }
+        // {
+        //   type: 2,
+        //   time: new Date().toLocaleTimeString(),
+        //   content: "谢谢您的帮助"
+        // }
+      ],
+      faceShow: false,
+
+      imgFile: {},
+      EXPS: []
+    };
+  },
+  created() {
+    this._loadEmojiData();
+  },
   methods: {
     back() {
       this.$router.go(-1); //返回上一层
     },
     callPhone() {
       window.location.href = "tel://" + 18319409837;
+    },
+    // // 表情
+    // faceContent() {
+    //   this.faceShow = !this.faceShow;
+    //   if (this.faceShow == true) {
+    //     for (let i in appData) {
+    //       this.faceList.push(appData[i].char);
+    //     }
+    //   } else {
+    //     this.faceList = [];
+    //   }
+    // },
+
+    // showInfo() {
+    //   this.toShowMaskInfo = true;
+    // },
+    //点击控制表情切换（显示和隐藏）
+    // emojiFuc() {
+    //   this.showEmoji = !this.showEmoji;
+    // },
+    // videoFuc() {
+    //   this.videoVal = true;
+    //   this.showNarrowPopVal = false;
+    // },
+
+    // showNarrowPopFuc() {
+    //   this.showNarrowPopVal = true;
+    //   this.videoVal = false;
+    // },
+    // showBigPopFuc() {
+    //   this.showNarrowPopVal = false;
+    //   this.videoVal = true;
+    // },
+    // showEvaluateFuc() {
+    //   this.showScore = !this.showScore;
+    // },
+    sendMsg() {
+      var content = this.content.trim();
+      this.records.push({
+        time: new Date().toLocaleTimeString(),
+        content: content,
+        type: 2
+      });
+      this.content = "";
+      setTimeout(() => {
+        this.records.push({
+          time: new Date().toLocaleTimeString(),
+          content: this.testContents[Math.floor(Math.random())],
+          type: 1
+        });
+        // this.scrollToBottom();
+      }, 800);
+    },
+
+    replaceFace(con) {
+      if (!con) {
+        return;
+      }
+      // if (con.toString().indexOf("/:") > -1) {
+      //   var exps = this.appData;
+      //   console.log(exps)
+      //   for (var i = 0; i < exps.length; i++) {
+      //     con = con.replace(
+      //       exps[i].reg,
+      //       '<img src="' + exps[i].file + '"  alt="" />'
+      //     );
+      //   }
+      // }
+      return con;
+    },
+
+    //滚动到底
+    // scrollToBottom() {
+
+    //   // setTimeout(() => {
+    //   //   //滚动条长度
+
+    //   //   var currentDistance =
+    //   //     this.$refs.xwBody.scrollHeight - this.$refs.xwBody.clientHeight;
+    //   //   //当前滚动条距离顶部的距离
+    //   //   var currentScroll_y = this.$refs.xwBody.scrollTop;
+    //   //   if (currentDistance > 0 && currentDistance > currentScroll_y) {
+    //   //     currentScroll_y =
+    //   //       Math.ceil((currentDistance - currentScroll_y) / 10) +
+    //   //       currentScroll_y;
+    //   //     currentScroll_y =
+    //   //       currentScroll_y > currentDistance
+    //   //         ? currentDistance
+    //   //         : currentScroll_y;
+    //   //     //微信和qq浏览器不支持 scrollTo？
+    //   //     //this.$refs.xwBody.scrollTo(0,currentScroll_y);
+    //   //     this.$refs.xwBody.scrollTop = currentScroll_y;
+    //   //     this.scrollToBottom();
+    //   //   }
+    //   // }, 13);
+    // },
+    onFocusText() {},
+    _loadEmojiData() {
+      // getEmojiData().then(res => {
+      //   var json = eval("(" + res + ")");
+      //   this.EXPS = json.EXPS.slice(0);
+      // });
     }
   }
 };
@@ -40,51 +282,210 @@ export default {
 
 
 <style lang="scss">
-.Service-header {
-  border-bottom: 1px solid #ccc;
-  background-color: #fff;
-  height: 4.5rem;
-  line-height: 4.5rem;
-  top: 0;
-  width: 100%;
-  display: -webkit-box;
-  display: -ms-flexbox;
+.xw-chat-servicer .xw-chat-msg::after,
+.xw-chat-servicer .xw-chat-msg::before {
+  content: "";
+  position: absolute;
+  height: 0;
+  width: 0;
+  border: 10px solid transparent;
+  border-bottom: 10px solid #ebedf0;
+  left: -8px;
+  border-left-width: 9px;
+  bottom: -1px;
+}
+
+.xw-chat-customer .xw-chat-msg::after,
+.xw-chat-customer .xw-chat-msg::before {
+  content: "";
+  position: absolute;
+  height: 0;
+  width: 0;
+
+  display: inline-block;
+  height: 0;
+  width: 0;
+  border: 10px solid transparent;
+  border-bottom: 10px solid #ebedf0;
+  right: -10px;
+  bottom: 0;
+}
+
+.Service-main-header {
+  padding: 0.3rem;
+  background: #f15e0e;
+  color: #fff;
   display: flex;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  position: fixed;
-  justify-content: space-between;
-  z-index: 9999;
-  font-size: 1.9375rem;
-
-  i {
-    color: #060606;
-    font-size: 2.125rem;
-  }
-  .back {
-    font-size: 1.682667rem;
-    text-align: center;
-    height: 100%;
-    line-height: 4.5rem;
-  }
-  .shop {
-    width: 3.125rem;
-    text-align: center;
-    height: 100%;
-    line-height: 4.5rem;
-  }
-}
-.Service-main {
-  margin-top: 4.5rem;
-  .Service-main-header {
-      padding: .3rem;
-    background: #f15e0e;
-    color: #fff;
+  align-items: center;
+  justify-items: center;
+  justify-content: space-around;
+  .Service {
     display: flex;
-    align-items: center;
-    justify-items: center;
-    justify-content: space-around;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+  }
+  .xw-content {
+    flex: 1;
+    position: relative;
+    overflow: auto;
   }
 }
-</style>
+.xw-content {
+  position: relative;
+  overflow: auto;
+  .xw-chat-wrap {
+    background: #fff;
+    border-color: #efefef;
+    float: left;
+    .xw-chat-time {
+      text-align: center;
+    }
+    .xw-chat-servicer {
+      display: flex;
+      padding: 1.25rem;
+      align-items: flex-end;
+      .xw-servicer-avantar-wrap {
+        height: 34px;
+        width: 34px;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .xw-chat-msg {
+        background: #fff;
+        border-color: #efefef;
+        float: left;
+        -webkit-font-smoothing: antialiased;
+        -webkit-hyphens: auto;
+        -ms-hyphens: auto;
+        hyphens: auto;
+        word-wrap: break-word;
+        word-break: normal;
+        position: relative;
+        clear: both;
+        padding: 8px 16px;
+        border: 1px solid #ebedf0;
+        max-width: 100%;
+        min-width: 50px;
+        min-height: 22px;
+        line-height: 1.6em;
+        max-width: 70%;
+        background: #ebedf0;
+        margin-left: 8px;
+      }
+    }
+    .xw-chat-customer {
+      justify-content: flex-end;
+      display: flex;
+      padding: 1.25rem;
+      align-items: flex-end;
+      .xw-customer-avantar-wrap {
+        height: 34px;
+        width: 34px;
+        min-width: 34px;
 
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .xw-chat-msg {
+        padding: 0.5rem;
+        word-wrap: break-word;
+        word-break: break-all;
+
+        position: relative;
+        float: right;
+        text-align: left;
+        background: #ebedf0;
+        border-color: #ebedf0;
+        color: #000;
+        margin-right: 20px;
+        min-width: 50px;
+        min-height: 22px;
+        line-height: 1.6em;
+        // max-width: 70%;
+      }
+    }
+  }
+}
+.xw-footer-wrap {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.05);
+  background: #fff;
+  z-index: 2;
+  .xw-footer-content {
+    justify-content: space-between;
+    position: relative;
+    height: 52px;
+    display: -ms-flexbox;
+    display: flex;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px -1px 4px;
+    align-items: center;
+    .xw-vmodel-wrap {
+      flex: 1;
+      padding: 0.5rem;
+    }
+    .xw-chat-tool {
+      flex: 1;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      .xw-chat-tool-item {
+        position: relative;
+        .xw-send-btn-text {
+          padding: 4px 8px;
+          color: #fff;
+          border-radius: 5px;
+          background: #f15e0e;
+        }
+        background: #fff;
+        .xw-chat-tool-btn {
+          padding: 12px 10px;
+
+          .xw-face-close {
+            background: no-repeat 50%;
+          }
+          .xw-hide-operation {
+            background: url(/Service/images/addOn.svg) no-repeat 50%;
+            width: 38px;
+            height: 38px;
+            margin-right: 10px;
+            transform: scale(0.7);
+          }
+          .xw-hide-operation-close {
+            background: url(/Service/images/addClose.svg) no-repeat 50%;
+            width: 38px;
+            height: 38px;
+            margin-right: 10px;
+            transform: scale(0.7);
+          }
+        }
+      }
+    }
+  }
+}
+  .browBox {
+    width: 100%;
+    height: 200px;
+    background: #e6e6e6;
+    position: absolute;
+    bottom: 0px;
+    overflow: scroll;
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 10px;
+      li {
+        width: 14%;
+        font-size: 26px;
+        list-style: none;
+        text-align: center;
+      }
+    }
+  }
+</style>

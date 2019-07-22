@@ -32,7 +32,7 @@
                 <div style="padding-top: 0.6rem">
                   <div>
                     <span
-                      style="font-size:1.4rem;font-weight:600;padding-right:0.3ren=m"
+                      style="font-size:1.4rem;font-weight:600;padding-right:0.3rem"
                     >{{item.name}}</span>
                     <span>{{item.tel}}</span>
                   </div>

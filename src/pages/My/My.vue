@@ -1,10 +1,10 @@
 <template>
   <div style="margin-bottom:5.625rem;">
-    <div class="detail-header">
+    <!-- <div class="detail-header">
       <div class="back"></div>
       <div class>个人中心</div>
       <div class="shop"></div>
-    </div>
+    </div> -->
     <div class="My-main" :style="mainimg">
       <div class="My-main-main">
         <div class="My-img">
@@ -287,7 +287,7 @@ export default {
   }
 }
 .My-main {
-  margin-top: 4.5rem;
+
   display: flex;
   justify-content: space-between;
   .My-main-main {

@@ -27,6 +27,7 @@ const Service = r => require.ensure([], () => r(require('../pages/Service/Servic
 const Team = r => require.ensure([], () => r(require('../pages/Team/Team.vue')), 'Team')
 const Study = r => require.ensure([], () => r(require('../pages/Study/Study.vue')), 'Study')
 const StudyDetails = r => require.ensure([], () => r(require('../pages/Study/StudyDetails.vue')), 'StudyDetails')
+const picking = r => require.ensure([], () => r(require('../pages/picking/picking.vue')), 'picking')
 Vue.use(Router)
 
 const router = new Router({
@@ -52,7 +53,7 @@ const router = new Router({
       name: 'Catalog',
       meta: {
         requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
-        title: '推广'
+        title: '我的二维码'
       },
       component: Catalog
     }, {
@@ -221,6 +222,14 @@ const router = new Router({
         title: '资讯详情'
       },
       component: SetupIndent
+    }, {
+      path: '/picking',
+      name: 'picking',
+      meta: {
+        requireAuth: false,
+        title: '提货'
+      },
+      component: picking
     }
   ],
 

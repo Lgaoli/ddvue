@@ -25,7 +25,7 @@
           <div v-for="(items,indexs) in shopdetall" :key="indexs">
             <div class="shopmoney">
               <span class="supply_price">优惠价：￥ {{items.market_price}}</span>
-              <div class="share" @click="show1=true">
+              <!-- <div class="share" @click="show1=true">
                 <span>
                   <i class="iconfont">&#xe63e;</i>
                   分享
@@ -56,7 +56,7 @@
           background:#f7f7f7"></div>
                   <div class="close" @click="show1=false">取消</div>
                 </div>
-              </van-popup>
+              </van-popup> -->
             </div>
 
             <div class="shopname">
@@ -105,12 +105,12 @@
               </a>
             </div>
           </router-link>
-          <div class="collect">
+          <!-- <div class="collect">
             <a>
               <i class="iconfont">&#xe613;</i>
               <span>收藏</span>
             </a>
-          </div>
+          </div> -->
         </div>
         <div class="detail-buy">
           <div @click="setMaskShow">

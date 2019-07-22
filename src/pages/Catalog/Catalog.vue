@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="Catalog-header">
+    <!-- <div class="Catalog-header">
       <div class="back"></div>
       <div class>我的二维码</div>
       <div class="shop"></div>
-    </div>
+    </div> -->
     <div class="Catalog-main" :style="bg" v-if="is_qrcode===1">
       <div
         style="
@@ -111,26 +111,10 @@ export default {
 };
 </script>
 <style lang="scss">
-.Catalog-header {
-  border-bottom: 1px solid #ccc;
-  background-color: #fff;
-  height: 4.5rem;
-  line-height: 4.5rem;
-  top: 0;
-  width: 100%;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  position: fixed;
-  justify-content: space-between;
-  z-index: 9999;
-  font-size: 1.9375rem;
-}
+
 .Catalog-main {
   padding: 5rem;
-  margin-top: 4.5rem;
+
   text-align: center;
   .Catalog-main1 {
     padding: 1.25rem;

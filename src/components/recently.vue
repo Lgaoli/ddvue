@@ -73,6 +73,7 @@ export default {
 .recently {
   margin-bottom: 4.625rem;
   .rec-list {
+    font-size: 1.6rem;
     .rec-list-li {
       margin-top: 0.625rem;
       border: #ccc 0.0625rem solid;
@@ -92,16 +93,18 @@ export default {
           }
           .shopss {
             width: 21.5rem;
+            font-size: 1.5rem;
             .rec-list-text {
             }
 
             .rec-list-buy {
               display: flex;
               justify-content: space-between;
+              font-size: 1.5rem;
               .price {
                 .supply_price {
                   color: #ff7441;
-                  font-size: 1.186rem;
+         
                   font-weight: 600;
                 }
                 .shop_price {
@@ -125,8 +128,7 @@ export default {
   .recently-header {
     padding: 1.25rem 1.25rem 0 1.25rem;
     .recently-header1 {
-      height: 2.375rem;
-      line-height: 2.375rem;
+font-size:1.5rem;
       display: inline-block;
       img {
         width: 2.4375rem;
@@ -134,7 +136,7 @@ export default {
       }
       p {
         display: inline;
-        font-size: 1.125rem;
+
       }
     }
   }

@@ -61,7 +61,7 @@
             <div class="shopname">
               <p style="font-weight:600">{{items.goods_name}}</p>
             </div>
-            <div class="goods_sales" style="padding:0.95rem">
+            <div class="goods_sales" style="padding:0.95rem;font-size:1.6rem">
               <div
                 class="goods_sale_text"
                 style="  text-decoration: line-through;"
@@ -309,16 +309,31 @@ export default {
         });
     },
 
+    fixUrlFormat(text) {
+      let reg = new RegExp("http://api.ddjingxuan.cn/", "g");
+      return text.replace(reg, "http://d.wbgapp.com/");
+    },
+
     list() {
       var newsID = this.$route.query.id;
       var that = this;
       this.$axios
-        .get("http://d.wbgapp.com/api/v2/goods/" + newsID)
+        .get("/api/api/v2/goods/" + newsID)
         .then(function(res) {
           that.detileswiper = res.data.banner;
+
+         let alter = that.fixUrlFormat(res.data.detail.goods_content);
+          
+          that.$set(res.data.detail, "goods_content", alter);
+          console.log(res.data.detail)
           that.shopdetall.push(res.data.detail);
-          that.shopdetall1 = res.data.detail;
-          that.$set(that.shopdetall1, "shopimg", that.detileswiper[0].img_url);
+
+          //            console.log(that.shopdetall)
+
+          // // console.log(te);
+
+          // that.shopdetall1 = res.data.detail;
+          // that.$set(that.shopdetall1, "shopimg", that.detileswiper[0].img_url);
           // console.log(that.shopdetall1);
         })
         .catch(function(error) {
@@ -474,7 +489,7 @@ export default {
       }
     }
     .shopname {
-      font-size: 1.1rem;
+      font-size: 1.6rem;
       padding: 0.7rem;
     }
     .detail-main-main-content {

@@ -10,10 +10,12 @@
         <p>我要开店</p>
       </div>
     </router-link>
+    <router-link to="/Service">
     <div class="Sud-list">
       <img src="../assets/img/精.png" alt>
       <p>联系客服</p>
     </div>
+    </router-link>
     <div class="Sud-list">
       <img src="../assets/img/选.png" alt>
       <p>品牌直供</p>

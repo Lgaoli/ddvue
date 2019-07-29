@@ -28,6 +28,7 @@ axios.defaults.transformRequest = [function (data) {
 
 Vue.prototype.$axios = axios
 Vue.prototype.$ajax = axios;//---------------------------注意这个地方--axios
+Vue.prototype.$http = axios
 Vue.config.productionTip = false
 // Axios.defaults.withCredentials = true;
 Vue.use(VueAwesomeSwiper)

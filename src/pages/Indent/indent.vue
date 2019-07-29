@@ -212,7 +212,7 @@ export default {
       // console.log(that);
       this.$axios({
         method: "get",
-        url: "/api/api/v2/address",
+        url: "http://d.wbgapp.com/api/v2/address",
         headers: {
           token: that.getToken
           // token: "237cf94848711e2399fa1e8c1a74a395"

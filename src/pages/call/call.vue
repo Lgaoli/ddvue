@@ -84,32 +84,70 @@ export default {
   },
   methods: {
     getAuthCode() {
-      this.sendAuthCode = false;
-      this.auth_time = 60;
-      // console.log(this.phone * 1);
-      let url = "http://d.wbgapp.com/api/v2/send/code";
-      let data = {
-        phone: this.phone * 1,
-        type: "2"
-      };
-      this.$axios
-        .post(url, data)
-        .then(res => {
-          // console.log(res); //返回的数据
-        })
-        .catch(err => {});
-      var auth_timetimer = setInterval(() => {
-        this.auth_time--;
-        if (this.auth_time <= 0) {
-          this.sendAuthCode = true;
-          clearInterval(auth_timetimer);
+      if (this.phone) {
+        var reg = /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/; //验证规则
+        if (reg.test(this.phone)) {
+             this.sendAuthCode = false;
+        this.auth_time = 60;
+        // console.log(this.phone * 1);
+        let url = "http://d.wbgapp.com/api/v2/send/code";
+        let data = {
+          phone: this.phone * 1,
+          type: "2"
+        };
+        this.$axios
+          .post(url, data)
+          .then(res => {
+            console.log(res); //返回的数据
+          })
+          .catch(err => {});
+          //倒计时
+          this.showToast('go')
+        var auth_timetimer = setInterval(() => {
+          this.auth_time--;
+          if (this.auth_time <= 0) {
+            this.sendAuthCode = true;
+            clearInterval(auth_timetimer);
+          }
+        }, 1000);
+        }else{
+          this.showToast("error");
         }
-      }, 1000);
+     
+      } else {
+        this.showToast("null");
+      }
     },
 
+    showToast(text) {
+      if (text === "null") {
+        this.$toast({
+          message: "手机号码不能为空"
+        });
+      }else if(text==='error'){
+           this.$toast({
+          message: "手机号码错误"
+        });
+      }
+      else if(text==='errorbind'){
+        this.$toast({
+          message: "验证码错误"
+        });
+      }else if(text==='go'){
+        this.$toast({
+          message: "验证码已发送"
+        });
+      }
+    },
     submit() {
       // console.log(this.phones);
-      var that = this;
+
+
+if(this.phone){
+   var that = this;
+   
+        var reg = /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/; //验证规则
+        if (reg.test(this.phone)) {
       this.$axios({
         method: "post",
         url: "http://d.wbgapp.com/api/v2/user/bind",
@@ -127,8 +165,19 @@ export default {
         })
         .catch(error => {
           // console.log(1); //错误信息
-          Toast.fail(error.msg);
+          // Toast.fail(error.msg);
+          this.showToast("errorbind");
         });
+}else{
+  this.showToast('error')
+}
+
+}else{
+  this.showToast("null")
+}
+   
+
+
     }
   }
 };

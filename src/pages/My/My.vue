@@ -158,6 +158,7 @@
           </div>
         </div>
       </router-link>
+      <router-link to="/picking">
       <div class="My-main3-main">
         <div style="display: flex;align-items: center;;">
           <div style="width: 2.125rem;height: 2.5rem;margin-right: .625rem">
@@ -172,7 +173,8 @@
         <div>
           <i class="iconfont">&#xe632;</i>
         </div>
-      </div>
+      </div></router-link>
+
       <router-link :to="{ path:'/Catalog' }">
         <div class="My-main3-main">
           <div style="display: flex;align-items: center;;">
@@ -229,7 +231,7 @@ export default {
       this.$axios({
         //调用接口
         method: "GET",
-        url: "/api/api/v2/user/info",
+        url: "http://d.wbgapp.com/api/v2/user/info",
         // params: {
         //   token: Token
         // },

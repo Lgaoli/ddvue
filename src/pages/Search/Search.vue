@@ -77,12 +77,12 @@ export default {
       if (event.currentTarget.value.length > 0) {
         this.$axios
           .get(
-            "/api/api/v2/goods/search?keyword=" +
+            "http://d.wbgapp.com/api/v2/goods/search?keyword=" +
               event.currentTarget.value
           )
           .then(function(res) {
             that.searchshop = res.data;
-            // console.log(that.searchshop);
+            console.log(that.searchshop);
           })
           .catch(function(error) {
             that.searchshop.length == "0";

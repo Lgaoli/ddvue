@@ -33,7 +33,7 @@ export default {
     swiper() {
       var that = this;
       this.$axios
-        .get("/api/api/v2/banner")
+        .get("http://d.wbgapp.com/api/v2/banner")
         .then(function(res) {
           that.swiperList = res.data;
           // console.log(that);

@@ -18,154 +18,31 @@
     </div>
     <div class="Study-main">
       <div v-if="actte==0">
-        <router-link :to="{ path:'/StudyDetails' }">
-          <div class="Study-mainlist">
-            <div class="Study-main-img">
-              <img src="../../assets/img/Study_test.png">
-            </div>
-            <div class="Study-main-text">
-              <div class="Study-main-name">
-                2018年中国近视患者已经超过4.5亿人
-                --来自生活数据 2018年中国近视患者已经超过4.5亿人
-                --来自生活数据
+        <div v-for="(item,index) in Studylist" :key="index">
+          <router-link :to="{ path:'/StudyDetails',query:{id:item.id} }">
+            <div class="Study-mainlist">
+              <div class="Study-main-img">
+                <img :src="item.image">
               </div>
-              <div class="Study-main-time">
-                <div>时间：2019/06/12</div>
-                <div>阅读：2456</div>
-              </div>
-            </div>
-          </div>
-        </router-link>
-        <router-link :to="{ path:'/StudyDetails' }">
-          <div class="Study-mainlist">
-            <div class="Study-main-img">
-              <img src="../../assets/img/Study_test.png">
-            </div>
-            <div class="Study-main-text">
-              <div class="Study-main-name">
-                2018年中国近视患者已经超过4.5亿人
-                --来自生活数据 2018年中国近视患者已经超过4.5亿人
-                --来自生活数据
-              </div>
-              <div class="Study-main-time">
-                <div>时间：2019/06/12</div>
-                <div>阅读：2456</div>
+              <div class="Study-main-text">
+                <div class="Study-main-name">{{item.title}}</div>
+                <div class="Study-main-time">
+                  <div>时间：{{item.create_time}}</div>
+                  <div>
+                    阅读：{{item.watch
+                    }}
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </router-link>
+          </router-link>
+        </div>
       </div>
       <div v-if="actte==1">
-        <router-link :to="{ path:'/StudyDetails' }">
-          <div class="Study-mainlist">
-            <div class="Study-main-img">
-              <img src="../../assets/img/Study_test.png">
-            </div>
-            <div class="Study-main-text">
-              <div class="Study-main-name">
-                2018年中国近视患者已经超过4.5亿人
-                --来自生活数据 2018年中国近视患者已经超过4.5亿人
-                --来自生活数据
-              </div>
-              <div class="Study-main-time">
-                <div>时间：2019/06/12</div>
-                <div>阅读：2456</div>
-              </div>
-            </div>
-          </div>
-        </router-link>
-        <router-link :to="{ path:'/StudyDetails' }">
-          <div class="Study-mainlist">
-            <div class="Study-main-img">
-              <img src="../../assets/img/Study_test.png">
-            </div>
-            <div class="Study-main-text">
-              <div class="Study-main-name">
-                2018年中国近视患者已经超过4.5亿人
-                --来自生活数据 2018年中国近视患者已经超过4.5亿人
-                --来自生活数据
-              </div>
-              <div class="Study-main-time">
-                <div>时间：2019/06/12</div>
-                <div>阅读：2456</div>
-              </div>
-            </div>
-          </div>
-        </router-link>
-        <router-link :to="{ path:'/StudyDetails' }">
-          <div class="Study-mainlist">
-            <div class="Study-main-img">
-              <img src="../../assets/img/Study_test.png">
-            </div>
-            <div class="Study-main-text">
-              <div class="Study-main-name">
-                2018年中国近视患者已经超过4.5亿人
-                --来自生活数据 2018年中国近视患者已经超过4.5亿人
-                --来自生活数据
-              </div>
-              <div class="Study-main-time">
-                <div>时间：2019/06/12</div>
-                <div>阅读：2456</div>
-              </div>
-            </div>
-          </div>
-        </router-link>
-        <router-link :to="{ path:'/StudyDetails' }">
-          <div class="Study-mainlist">
-            <div class="Study-main-img">
-              <img src="../../assets/img/Study_test.png">
-            </div>
-            <div class="Study-main-text">
-              <div class="Study-main-name">
-                2018年中国近视患者已经超过4.5亿人
-                --来自生活数据 2018年中国近视患者已经超过4.5亿人
-                --来自生活数据
-              </div>
-              <div class="Study-main-time">
-                <div>时间：2019/06/12</div>
-                <div>阅读：2456</div>
-              </div>
-            </div>
-          </div>
-        </router-link>
-        <router-link :to="{ path:'/StudyDetails' }">
-          <div class="Study-mainlist">
-            <div class="Study-main-img">
-              <img src="../../assets/img/Study_test.png">
-            </div>
-            <div class="Study-main-text">
-              <div class="Study-main-name">
-                2018年中国近视患者已经超过4.5亿人
-                --来自生活数据 2018年中国近视患者已经超过4.5亿人
-                --来自生活数据
-              </div>
-              <div class="Study-main-time">
-                <div>时间：2019/06/12</div>
-                <div>阅读：2456</div>
-              </div>
-            </div>
-          </div>
-        </router-link>
+        <div>暂无数据</div>
       </div>
       <div v-if="actte==2">
-        <router-link :to="{ path:'/StudyDetails' }">
-          <div class="Study-mainlist">
-            <div class="Study-main-img">
-              <img src="../../assets/img/Study_test.png">
-            </div>
-            <div class="Study-main-text">
-              <div class="Study-main-name">
-                2018年中国近视患者已经超过4.5亿人
-                --来自生活数据 2018年中国近视患者已经超过4.5亿人
-                --来自生活数据
-              </div>
-              <div class="Study-main-time">
-                <div>时间：2019/06/12</div>
-                <div>阅读：2456</div>
-              </div>
-            </div>
-          </div>
-        </router-link>
+        <div>暂无数据</div>
       </div>
     </div>
   </div>
@@ -174,13 +51,30 @@
 export default {
   data() {
     return {
-      wpList: [
-        { id: 0, name: "新人推荐" },
-        { id: 1, name: "初级修炼" },
-        { id: 2, name: "点点新闻" }
-      ],
-      actte: "0"
+      wpList: [],
+      actte: "0",
+      Studylist: []
     };
+  },
+  created() {
+    var that = this;
+    this.$axios
+      .get("http://d.wbgapp.com/api/v2/study/cate")
+      .then(function(res) {
+        that.wpList = res.data;
+      })
+      .catch(function(error) {
+        // console.log(error);
+      });
+    this.$axios
+      .get("http://d.wbgapp.com/api/v2/study/paginate")
+      .then(function(res) {
+        console.log(res);
+        that.Studylist = res.data;
+      })
+      .catch(function(error) {
+        // console.log(error);
+      });
   },
   methods: {
     selected(index) {
@@ -217,12 +111,13 @@ export default {
     padding: 1.3rem 0;
     border-bottom: 1px #dedede solid;
     .Study-main-img {
-      width: 29.125rem;
+      flex: 0.5;
       img {
         width: 100%;
       }
     }
     .Study-main-text {
+      flex: 1;
       padding: 0 1rem;
       .Study-main-name {
         width: 100%;

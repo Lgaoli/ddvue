@@ -99,6 +99,7 @@ import Dswiper from "../components/Dswiper";
 import Dgotop from "../components/Dgotop";
 import Drecently from "../components/recently";
 import Dhot from "../components/Dhot";
+import restUrl from '../uitls/config.js'
 export default {
   components: {
     Dswiper,
@@ -134,7 +135,7 @@ export default {
   created() {
     let that = this;
     this.$axios
-      .get("/api/api/v2/cate")
+      .get( "http://d.wbgapp.com/api/v2/cate")
       .then(function(res) {
         that.items = that.items.concat(res.data);
       })
@@ -155,7 +156,7 @@ export default {
     swiper() {
       var that = this;
       this.$axios
-        .get("/api/api/v2/banner")
+        .get("http://d.wbgapp.com/api/v2/banner")
         .then(function(res) {
           that.swiperList = res.data;
 
@@ -176,7 +177,7 @@ export default {
       if (this.items[index].cat_id > 0) {
         let that = this;
         this.$axios
-          .get("/api/api/v2/goods/by_category", {
+          .get("http://d.wbgapp.com/api/v2/goods/by_category", {
             params: {
               id: this.items[index].cat_id
             }

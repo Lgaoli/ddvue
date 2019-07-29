@@ -119,15 +119,12 @@
 </template>
 
 <script>
-const appData = require("../../uitls/emojis.json");
-import evaluate from "../../components/evaluate.vue";
-// import Toast from "../../components/toast";
-import { getEmojiData } from "../../uitls/api.js";
+
 
 // import emojiSlider from '.././components/emojiSlide.vue'
 export default {
   components: {
-    evaluate
+ 
     // Toast
     // emojiSlider
   },

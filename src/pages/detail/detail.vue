@@ -318,7 +318,7 @@ export default {
       var newsID = this.$route.query.id;
       var that = this;
       this.$axios
-        .get("/api/api/v2/goods/" + newsID)
+        .get("http://d.wbgapp.com/api/v2/goods/" + newsID)
         .then(function(res) {
           that.detileswiper = res.data.banner;
 

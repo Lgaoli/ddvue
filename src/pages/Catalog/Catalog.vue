@@ -85,7 +85,7 @@ export default {
 
     this.$axios({
       method: "get",
-      url: "https://api.ddjingxuan.cn/api/v2/user/qr",
+      url: "http://d.wbgapp.com/api/v2/user/qr",
       headers: {
         token: that.getToken
         // token: "221f8fd0ca0be03bdefccf62b1f5ff6b"

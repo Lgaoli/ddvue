@@ -168,7 +168,7 @@ export default {
     let self = this;
     this.$axios({
       method: "post",
-      url: "https://api.ddjingxuan.cn/api/v2/user/jdk",
+      url: "/api/api/v2/user/jdk",
       data: {
         url: location.href.split("#")[0]
       },
@@ -212,7 +212,7 @@ export default {
       // console.log(that);
       this.$axios({
         method: "get",
-        url: "https://api.ddjingxuan.cn/api/v2/address",
+        url: "/api/api/v2/address",
         headers: {
           token: that.getToken
           // token: "237cf94848711e2399fa1e8c1a74a395"
@@ -255,7 +255,7 @@ export default {
       //下订单
       this.$axios({
         method: "POST",
-        url: "https://api.ddjingxuan.cn/api/v2/order",
+        url: "/api/api/v2/order",
         data: { goods: JSON.stringify(datas) },
         headers: {
           token: this.getToken
@@ -270,7 +270,7 @@ export default {
         //支付
         this.$axios({
           method: "POST",
-          url: "https://api.ddjingxuan.cn/api/v2/pay/pre_order",
+          url: "/api/api/v2/pay/pre_order",
           headers: {
             token: this.getToken
             // token: "237cf94848711e2399fa1e8c1a74a395"

@@ -115,7 +115,7 @@ export default {
     let that = this;
     this.$axios({
       method: "get",
-      url: "https://api.ddjingxuan.cn/api/v2/user/money",
+      url: "/api/api/v2/user/money",
       headers: {
         token: that.getToken
         // token: "237cf94848711e2399fa1e8c1a74a395"

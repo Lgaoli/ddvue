@@ -19,7 +19,7 @@
             <div class="logo">
               <img src="../../assets/img/img_logo.png" alt>
             </div>
-            <a href="https://api.ddjingxuan.cn/api/v2/code/user">点击重新登录</a>
+            <a href="http://d.wbgapp.com/api/v2/code/user">点击重新登录</a>
           </div>
         </div>
       </div>

@@ -94,7 +94,7 @@ export default {
 
       this.$axios({
         method: "get",
-        url: "https://api.ddjingxuan.cn/api/v2/address",
+        url: "/api/api/v2/address",
         headers: {
           token: "48f2d3c84a0d1007122f41f32900e206"
         }

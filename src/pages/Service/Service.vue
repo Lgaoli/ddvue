@@ -55,16 +55,16 @@
           ></textarea>
         </div>
         <div class="xw-chat-tool">
-          <div class="xw-chat-tool-item">
+          <div style="height:100%;width:100%;">
+          <div class="xw-chat-tool-item" @click="sendMsg">
             <transition name="fade">
-              <a
-                href="javascript:void(0)"
-                class="xw-send-btn-text"
-                v-if="content.trim().length"
-                @click="sendMsg"
-              >发送</a>
+              <p
+                
+                
+              >发送</p>
             </transition>
           </div>
+</div>
           <!-- <div class="xw-chat-tool-item">
             <a
               href="javascript:;"
@@ -82,7 +82,7 @@
             >
               <i class="iconfont">&#xe61d;</i>
             </a>
-          </div> -->
+          </div>-->
         </div>
       </div>
 
@@ -416,10 +416,9 @@ export default {
   bottom: 0;
   width: 100%;
   box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.05);
-  background: #fff;
+  // background: #fff;
   z-index: 2;
   .xw-footer-content {
-    justify-content: space-between;
     position: relative;
     height: 52px;
     display: -ms-flexbox;
@@ -427,23 +426,36 @@ export default {
     box-shadow: rgba(0, 0, 0, 0.05) 0px -1px 4px;
     align-items: center;
     .xw-vmodel-wrap {
-      flex: 1;
+      flex: 4;
       padding: 0.5rem;
+      .xw-content-textarea {
+        width: 100%;
+      }
     }
     .xw-chat-tool {
+      height: 100%;
       flex: 1;
-      display: flex;
-      justify-content: space-around;
       align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    display: flex;
+
+  color: #f7f7f7;
       .xw-chat-tool-item {
-        position: relative;
+              height: 100%;
+        width: 100%;
+              background: #f15e0e;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         .xw-send-btn-text {
-          padding: 4px 8px;
-          color: #fff;
+          // color: #fff;
           border-radius: 5px;
-          background: #f15e0e;
+            height: 100%;
+        width: 100%;
+  
         }
-        background: #fff;
+ 
         .xw-chat-tool-btn {
           padding: 12px 10px;
 
@@ -469,23 +481,23 @@ export default {
     }
   }
 }
-  .browBox {
-    width: 100%;
-    height: 200px;
-    background: #e6e6e6;
-    position: absolute;
-    bottom: 0px;
-    overflow: scroll;
-    ul {
-      display: flex;
-      flex-wrap: wrap;
-      padding: 10px;
-      li {
-        width: 14%;
-        font-size: 26px;
-        list-style: none;
-        text-align: center;
-      }
+.browBox {
+  width: 100%;
+  height: 200px;
+  background: #e6e6e6;
+  position: absolute;
+  bottom: 0px;
+  overflow: scroll;
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+    li {
+      width: 14%;
+      font-size: 26px;
+      list-style: none;
+      text-align: center;
     }
   }
+}
 </style>

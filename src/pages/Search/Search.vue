@@ -77,7 +77,7 @@ export default {
       if (event.currentTarget.value.length > 0) {
         this.$axios
           .get(
-            "https://api.ddjingxuan.cn/api/v2/goods/search?keyword=" +
+            "/api/api/v2/goods/search?keyword=" +
               event.currentTarget.value
           )
           .then(function(res) {

@@ -229,7 +229,7 @@ export default {
       this.$axios({
         //调用接口
         method: "GET",
-        url: "https://api.ddjingxuan.cn/api/v2/user/info",
+        url: "/api/api/v2/user/info",
         // params: {
         //   token: Token
         // },

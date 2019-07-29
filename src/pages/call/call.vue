@@ -87,7 +87,7 @@ export default {
       this.sendAuthCode = false;
       this.auth_time = 60;
       // console.log(this.phone * 1);
-      let url = "https://api.ddjingxuan.cn/api/v2/send/code";
+      let url = "http://d.wbgapp.com/api/v2/send/code";
       let data = {
         phone: this.phone * 1,
         type: "2"
@@ -112,7 +112,7 @@ export default {
       var that = this;
       this.$axios({
         method: "post",
-        url: "https://api.ddjingxuan.cn/api/v2/user/bind",
+        url: "http://d.wbgapp.com/api/v2/user/bind",
         data: {
           code_phone: this.phone,
           code_yzm: this.phones

@@ -134,7 +134,7 @@ export default {
   created() {
     let that = this;
     this.$axios
-      .get("https://api.ddjingxuan.cn/api/v2/cate")
+      .get("/api/api/v2/cate")
       .then(function(res) {
         that.items = that.items.concat(res.data);
       })
@@ -155,7 +155,7 @@ export default {
     swiper() {
       var that = this;
       this.$axios
-        .get("https://api.ddjingxuan.cn/api/v2/banner")
+        .get("/api/api/v2/banner")
         .then(function(res) {
           that.swiperList = res.data;
 
@@ -176,7 +176,7 @@ export default {
       if (this.items[index].cat_id > 0) {
         let that = this;
         this.$axios
-          .get("https://api.ddjingxuan.cn/api/v2/goods/by_category", {
+          .get("/api/api/v2/goods/by_category", {
             params: {
               id: this.items[index].cat_id
             }

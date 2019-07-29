@@ -58,7 +58,7 @@ export default {
   created() {
     var that = this;
     this.$axios
-      .get("https://api.ddjingxuan.cn/api/v2/goods/recent")
+      .get("/api/api/v2/goods/recent")
       .then(function(res) {
         that.recentlylist = res.data;
       })

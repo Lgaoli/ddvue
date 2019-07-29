@@ -125,7 +125,7 @@ export default {
       }
       this.$axios({
         method: "post",
-        url: "https://api.ddjingxuan.cn/api/v2/agency/add",
+        url: "http://d.wbgapp.com/api/v2/agency/add",
 
         headers: {
           token: this.getToken

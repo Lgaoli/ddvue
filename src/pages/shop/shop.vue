@@ -83,10 +83,7 @@
                     </i>
                   </div>
                 </div>
-                <div style="
-    display: flex;
-    justify-content: space-between;
-">
+                <div style="display: flex;width:100%;">
                   <div class="shoping-cart-img">
                     <img :src="item.shopimg" alt style="width:100%;">
                   </div>
@@ -126,9 +123,7 @@
                   </div>
                 </div>
               </div>
-              <div style="width:100%;
-          height: 0.6rem;
-          background:#f7f7f7"></div>
+              <div style="width:100%;height: 0.6rem;background:#f7f7f7"></div>
             </div>
           </div>
           <div v-else style="padding:10rem;    text-align: center;">
@@ -158,7 +153,7 @@
         </div>
       </div>
 
-      <div class="detail-footer" style="border-">
+      <div class="shoping-footer" style="border-">
         <!--:price="parseFloat(shoplists[index].shop_price*100)" -->
         <van-submit-bar button-text="结算" :price="checkedmoney*100" @submit="indent">
           <!--         :disabled="{flase:checkedcount<0}" -->
@@ -284,7 +279,7 @@ export default {
       // console.log(that);
       this.$axios({
         method: "get",
-        url: "https://api.ddjingxuan.cn/api/v2/address",
+        url: "/api/api/v2/address",
         headers: {
           token: that.getToken
         }
@@ -418,7 +413,8 @@ export default {
           }
         }
         .shopname {
-          padding-top: 0.625rem;
+          flex: 1;
+
           p {
             display: -webkit-box;
             -webkit-box-orient: vertical;
@@ -434,7 +430,7 @@ export default {
               display: flex;
               justify-content: space-between;
               .del {
-                margin-left: 6.25rem;
+            padding: 0.7rem;
               }
             }
           }
@@ -442,7 +438,38 @@ export default {
       }
     }
   }
-  .detail-footer {
-  }
+ 
 }
+ .shoping-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+  .van-submit-bar>>>.van-submit-bar__bar{
+        height: 50px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    font-size: 14px;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    .van-checkbox{
+      flex: 1;
+      .van-checkbox__icon{
+        padding-left:0.8rem;
+      }
+      .van-checkbox__label{
+        margin-left: 0
+      }
+    }
+    .van-button--danger{
+      background-color: #f15e0e;
+    }
+    .van-submit-bar__text{
+      .van-submit-bar__price{
+        color: #f15e0e
+      }
+    }
+  }
 </style>

@@ -56,7 +56,7 @@ export default {
           //   if (this.$store.state.token) {
           //     this.$router.push("/");
           //   } else {
-          //  window.location.href = "https://api.ddjingxuan.cn/api/v2/code/user"
+          //  window.location.href = "https://d.wbgapp.com/api/v2/code/user"
           //   }
         } else {
           this.$store.commit("setToken", dataObj.data);

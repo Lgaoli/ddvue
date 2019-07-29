@@ -116,7 +116,7 @@ export default {
       contentall: [
         {
           headerimg:
-            "https://api.ddjingxuan.cn/uploads/20190514/f0b80422a275b3f74b3bb1ec30345f7f.jpg",
+            "/api/uploads/20190514/f0b80422a275b3f74b3bb1ec30345f7f.jpg",
           name: "安其拉",
           grade: "0",
           phone: "123467989",
@@ -124,7 +124,7 @@ export default {
         },
         {
           headerimg:
-            "https://api.ddjingxuan.cn/uploads/20190514/f0b80422a275b3f74b3bb1ec30345f7f.jpg",
+            "/api/uploads/20190514/f0b80422a275b3f74b3bb1ec30345f7f.jpg",
           name: "安其拉1",
           grade: "0",
           phone: "123467989",
@@ -132,7 +132,7 @@ export default {
         },
         {
           headerimg:
-            "https://api.ddjingxuan.cn/uploads/20190514/f0b80422a275b3f74b3bb1ec30345f7f.jpg",
+            "/api/uploads/20190514/f0b80422a275b3f74b3bb1ec30345f7f.jpg",
           name: "安其拉2",
           grade: "1",
           phone: "123467989",

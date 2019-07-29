@@ -102,7 +102,7 @@ export default {
     // console.log(that);
     this.$axios({
       method: "get",
-      url: "https://api.ddjingxuan.cn/api/v2/address",
+      url: "/api/api/v2/address",
       headers: {
         token: that.getToken
       }

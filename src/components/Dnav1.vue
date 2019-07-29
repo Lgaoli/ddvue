@@ -22,7 +22,7 @@ export default {
     nav() {
       let that = this;
       this.$axios
-        .get("https://api.ddjingxuan.cn/api/v2/cate")
+        .get("/api/api/v2/cate")
         .then(function(res) {
           that.items = res.data;
         })

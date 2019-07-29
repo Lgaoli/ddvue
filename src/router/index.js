@@ -247,7 +247,7 @@ router.beforeEach((to, from, next) => {
     next()
   }
   else {
-    window.location.href = "https://api.ddjingxuan.cn/api/v2/code/user"
+    window.location.href = "http://d.wbgapp.com/api/v2/code/user"
   }
 
 

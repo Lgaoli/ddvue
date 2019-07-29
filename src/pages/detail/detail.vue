@@ -20,7 +20,6 @@
         <div class="swiper-pagination" slot="pagination" style="text-align: right;"></div>
       </swiper>
       <div class="detail-main-main">
-      
         <div class="shopdetall">
           <div v-for="(items,indexs) in shopdetall" :key="indexs">
             <div class="shopmoney">
@@ -56,7 +55,7 @@
           background:#f7f7f7"></div>
                   <div class="close" @click="show1=false">取消</div>
                 </div>
-              </van-popup> -->
+              </van-popup>-->
             </div>
 
             <div class="shopname">
@@ -96,22 +95,25 @@
     </div>
     <div class="detail-footer">
       <div class="detail-footer1">
-        <div class="service">
-          <router-link to="/Service">
-            <div class="service1">
-              <a>
-                <i class="iconfont">&#xe61c;</i>
-                <span>客服</span>
-              </a>
-            </div>
-          </router-link>
-          <!-- <div class="collect">
+        <router-link to="/Service">
+          <div class="service">
+            <router-link to="/Service" class="servicebox">
+              <div class="service1">
+                <a>
+                  <i class="iconfont">&#xe61c;</i>
+                  <span>客服</span>
+                </a>
+              </div>
+            </router-link>
+
+            <!-- <div class="collect">
             <a>
               <i class="iconfont">&#xe613;</i>
               <span>收藏</span>
             </a>
-          </div> -->
-        </div>
+            </div>-->
+          </div>
+        </router-link>
         <div class="detail-buy">
           <div @click="setMaskShow">
             <div
@@ -180,7 +182,7 @@ export default {
     // var that = this;
     // this.$axios({
     //   method: "get",
-    //   url: "https://api.ddjingxuan.cn/api/v2/user/jdk",
+    //   url: "http://d.wbgapp.com/api/v2/user/jdk",
     //   headers: {
     //     token: this.getToken
     //     // token: "4774c94460f64a01800f2672f7230f2d"
@@ -198,7 +200,7 @@ export default {
     let self = this;
     this.$axios({
       method: "post",
-      url: "https://api.ddjingxuan.cn/api/v2/user/jdk",
+      url: "http://d.wbgapp.com/api/v2/user/jdk",
       data: {
         url: location.href.split("#")[0]
       },
@@ -229,7 +231,7 @@ export default {
     sharefriend(data) {
       this.$axios({
         method: "get",
-        url: "https://api.ddjingxuan.cn/api/v2/user/jdk",
+        url: "http://d.wbgapp.com/api/v2/user/jdk",
         headers: {
           token: this.getToken
           // token: "4774c94460f64a01800f2672f7230f2d"
@@ -297,7 +299,7 @@ export default {
       var newsID = this.$route.query.id;
       var that = this;
       this.$axios
-        .get("https://api.ddjingxuan.cn/api/v2/comment/" + newsID)
+        .get("http://d.wbgapp.com/api/v2/comment/" + newsID)
         .then(function(res) {
           that.detilcomment = res.data;
           // console.log(that.detilcomment)
@@ -311,7 +313,7 @@ export default {
       var newsID = this.$route.query.id;
       var that = this;
       this.$axios
-        .get("https://api.ddjingxuan.cn/api/v2/goods/" + newsID)
+        .get("http://d.wbgapp.com/api/v2/goods/" + newsID)
         .then(function(res) {
           that.detileswiper = res.data.banner;
           that.shopdetall.push(res.data.detail);
@@ -496,17 +498,20 @@ export default {
   width: 100%;
   position: fixed;
   bottom: 0;
-  border-top: 1px solid #ccc;
+
   z-index: 999;
   background: #fff;
   .detail-footer1 {
     display: flex;
     justify-content: flex-start;
     height: 4.4375rem;
-    padding: 0.625rem;
+
     .service {
       display: flex;
       flex: 1;
+      justify-content: center;
+      background: #fc7a33;
+      border-radius: 6.25rem;
       div {
         flex: 0.4;
       }
@@ -514,9 +519,10 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 1.25rem;
+        font-size: 1.5rem;
+        color: #fff;
         i {
-          font-size: 1.25rem;
+          font-size: 1.5rem;
         }
       }
     }
@@ -524,7 +530,7 @@ export default {
     .detail-buy {
       line-height: 4.4375rem;
       flex: 1;
-      border: #ef7634 1px solid;
+      border: #ef7634 2px solid;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -546,7 +552,9 @@ export default {
       height: 100%;
       display: flex;
       flex-direction: column;
-      font-size: 12px;
+      font-size: 1.5rem;
+      flex: 1;
+      text-align: center;
     }
   }
 }

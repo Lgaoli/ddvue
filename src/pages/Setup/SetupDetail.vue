@@ -153,7 +153,7 @@ export default {
     // var that = this;
     // this.$axios({
     //   method: "get",
-    //   url: "https://api.ddjingxuan.cn/api/v2/user/jdk",
+    //   url: "http://d.wbgapp.com/api/v2/user/jdk",
     //   headers: {
     //     token: this.getToken
     //     // token: "4774c94460f64a01800f2672f7230f2d"
@@ -171,7 +171,7 @@ export default {
     let self = this;
     this.$axios({
       method: "post",
-      url: "https://api.ddjingxuan.cn/api/v2/user/jdk",
+      url: "http://d.wbgapp.com/api/v2/user/jdk",
       data: {
         url: location.href.split("#")[0]
       },
@@ -202,7 +202,7 @@ export default {
     sharefriend(data) {
       this.$axios({
         method: "get",
-        url: "https://api.ddjingxuan.cn/api/v2/user/jdk",
+        url: "http://d.wbgapp.com/api/v2/user/jdk",
         headers: {
           token: this.getToken
           // token: "4774c94460f64a01800f2672f7230f2d"
@@ -271,7 +271,7 @@ export default {
       this.newsID = this.$route.query.id;
       var that = this;
       this.$axios
-        .get("https://api.ddjingxuan.cn/api/v2/comment/" + this.newsID)
+        .get("http://d.wbgapp.com/api/v2/comment/" + this.newsID)
         .then(function(res) {
           that.detilcomment = res.data;
           // console.log(that.detilcomment)
@@ -285,7 +285,7 @@ export default {
       var newsID = this.$route.query.id;
       var that = this;
       this.$axios
-        .get("https://api.ddjingxuan.cn/api/v2/goods/" + newsID)
+        .get("http://d.wbgapp.com/api/v2/goods/" + newsID)
         .then(function(res) {
           that.detileswiper = res.data.banner;
           that.shopdetall.push(res.data.detail);

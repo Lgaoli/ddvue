@@ -36,7 +36,7 @@ export default {
   created() {
     var that = this;
     this.$axios
-      .get("https://api.ddjingxuan.cn/api/v2/goods/hot")
+      .get("/api/api/v2/goods/hot")
       .then(function(res) {
    
         that.hotlist = res.data;

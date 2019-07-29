@@ -45,7 +45,7 @@ export default {
     let that = this;
     this.$axios({
       method: "get",
-      url: "https://api.ddjingxuan.cn/api/v2/goods/grade"
+      url: "http://d.wbgapp.com/api/v2/goods/grade"
     })
       .then(res => {
         that.Setuplist = res.data;

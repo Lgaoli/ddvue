@@ -19,15 +19,15 @@ export default {
   },
   beforeCreate() {
     let that = this;
-    // let url = window.location.href;
-    let url =
-      "http://pub.hqyulin.com/?token=899a7451d56be0b3e66cf98fc8ea9f12#/";
+    let url = window.location.href;
+    //let url =
+    //  "http://pub.hqyulin.com/?token=899a7451d56be0b3e66cf98fc8ea9f12#/";
     let str = url.split("?")[1].split("#")[0];
     let arr = str.split("=");
 
-    // let strs = str.split("=")[1];
+    let strs = str.split("=")[1];
 
-    let strs = "899a7451d56be0b3e66cf98fc8ea9f12";
+   // let strs = "899a7451d56be0b3e66cf98fc8ea9f12";
     var curTime = new Date().getTime();
     var notime = 7200000; // 过期时间
 

@@ -14,7 +14,7 @@
               v-model="radio"
               style="display: flex;justify-content:space-between;align-items: center;"
             >
-              <van-radio :name="item">
+              
                 <div class="address" @click="back()">
                   <div style="padding-top: 0.6rem">
                     <div class style="display: flex;    align-items: center;">
@@ -31,7 +31,7 @@
                     </div>
                   </div>
                 </div>
-              </van-radio>
+         
               <router-link to="/AddressEdit">
                 <div style>
                   <i class="iconfont">&#xe632;</i>
@@ -105,7 +105,7 @@
 <script>
 import Vue from "vue";
 import { Stepper } from "vant";
-
+import {Config} from '../../uitls/config'
 Vue.use(Stepper);
 export default {
   data() {
@@ -123,7 +123,7 @@ export default {
     // console.log(that);
     this.$axios({
       method: "get",
-      url: "http://d.wbgapp.com/api/v2/address",
+      url: Config.restUrl + "api/v2/address",
       headers: {
         token: that.getToken
         // token: "9b85bc5fa49dce8a5ef0e29f4f0076b5"

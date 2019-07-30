@@ -17,12 +17,8 @@
       <div class="Agency-main1">
         <div class="grade">
           <div class="Agency-main1-name">等级：</div>
-          <select name="status" class="status" v-model="selected" @change="ge">
-            <option
-              :value="item.statusVal"
-              v-for="(item,index) in statusArr"
-              :key="index"
-            >{{item.statusVal}}</option>
+          <select name="status" class="status" v-model="selected.name" @change="ge">
+            <option :value="item.name" v-for="(item,index) in statusArr" :key="index">{{item.name}}</option>
           </select>
         </div>
         <div class="grade">
@@ -54,7 +50,12 @@
   </div>
 </template> 
 <script>
+import Vue from "vue";
+import { Toast } from 'vant';
+Vue.use(Toast);
 import DISTRICTS from "./distpicker.js";
+import { Config } from "../../uitls/config";
+
 const DEFAULT_CODE = 100000;
 export default {
   data() {
@@ -73,20 +74,8 @@ export default {
       areaList: [],
       statusArr: [
         {
-          statusId: "0",
-          statusVal: "请选择"
-        },
-        {
-          statusId: "1",
-          statusVal: "省级"
-        },
-        {
-          statusId: "2",
-          statusVal: "市级"
-        },
-        {
-          statusId: "3 ",
-          statusVal: "区级"
+          grade_id: "0",
+          name: "请选择"
         }
       ],
       DISTRICTS
@@ -98,34 +87,52 @@ export default {
     }
   },
   created() {
-    this.selected = this.statusArr[0].statusVal;
+    this.selected = this.statusArr[0];
     // 在组件创建之后，把默认选中项的value值赋给绑定的属性
     //如果没有这句代码，select中初始化会是空白的，默认选中就无法实现
     // this.defaultProvince== this.DISTRICTS[0].id
-
     this.provinceList = this.getDistricts();
     this.getDefault();
+    let that = this;
+    this.$axios({
+      method: "get",
+      url: Config.restUrl + "api/v2/grade/get",
+      data: {
+        url: location.href.split("#")[0]
+      },
+      headers: {
+        token: this.getToken
+      }
+    }).then(rest => {
+      var result = {};
+      for (var i = 0; i < rest.data.length; i++) {
+        that.statusArr.push(rest.data[i]);
+      }
+      console;
+    });
   },
   methods: {
     nex() {
-      let grade_id = "";
-      console.log(this.province);
-      console.log(this.city);
-      console.log(this.area);
-      if (this.selected == "省级") {
-        console.log("是省级")
-        grade_id = 1;
-      } else if (this.selected == "市级") {
-        console.log("是市级");
-        grade_id = 2;
-      } else {
-        
-        grade_id = 3;
-        console.log(typeof grade_id);
-      }
+     
+      // console.log(this.selected);
+      // console.log(this.city);
+      // console.log(this.area);
+      let grade_id=0;
+ if(this.selected.name=='省级代理'){
+   grade_id=1
+
+ }else if(this.selected.name=='市级代理'){
+
+   grade_id=2
+ }else if(this.selected.name=='区代理'){
+   grade_id=3
+    
+ }
+ console.log(grade_id)
+       console.log(grade_id);
       this.$axios({
         method: "post",
-        url: "http://d.wbgapp.com/api/v2/agency/add",
+        url: Config.restUrl + "api/v2/agency/add",
 
         headers: {
           token: this.getToken
@@ -133,18 +140,27 @@ export default {
         },
         data: {
           grade_id: grade_id,
-          province: this.phones,
-          city: this.city,
-          area: this.area
+          province: this.province.value,
+          city: this.city.value,
+          area: this.area.value
         }
       }).then(res => {
-        console.log(res);
+        console.log(res.msg);
+        Toast(res.msg);
+      }).catch(err=>{
+         if (err) {
+            Toast("申请失败，请稍后重试");
+          }
       });
     },
     prev() {
       this.$router.go(-1);
     },
-    ge() {},
+    ge(e) {
+      console.log(e)
+      //  this.selected= this.getDistricts(e.target.value);
+     
+    },
     getDefault() {
       if (this.defaultProvince !== "") {
         let provinceCode = this.getAreaCode(this.defaultProvince);
@@ -172,12 +188,7 @@ export default {
         };
       }
     },
-    // getSelectVal() {
-    //   this.selected = this.province.value + this.city.value + this.area.value;
-    //   console.log(
-    //     this.province.code + "-" + this.city.code + "-" + this.area.code
-    //   );
-    // },
+
 
     //名称转代码
     nameToCode(name) {

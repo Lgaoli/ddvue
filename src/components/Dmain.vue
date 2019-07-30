@@ -99,7 +99,6 @@ import Dswiper from "../components/Dswiper";
 import Dgotop from "../components/Dgotop";
 import Drecently from "../components/recently";
 import Dhot from "../components/Dhot";
-import restUrl from '../uitls/config.js'
 export default {
   components: {
     Dswiper,
@@ -135,7 +134,7 @@ export default {
   created() {
     let that = this;
     this.$axios
-      .get( "http://d.wbgapp.com/api/v2/cate")
+      .get("http://d.wbgapp.com/api/v2/cate")
       .then(function(res) {
         that.items = that.items.concat(res.data);
       })

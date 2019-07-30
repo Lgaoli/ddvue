@@ -49,6 +49,7 @@
 </template>
 
 <script>
+import {Config} from "../uitls/config";
 export default {
   data() {
     return {
@@ -58,7 +59,7 @@ export default {
   created() {
     var that = this;
     this.$axios
-      .get("http://d.wbgapp.com/api/v2/goods/recent")
+      .get(Config.restUrl + "api/v2/goods/recent")
       .then(function(res) {
         that.recentlylist = res.data;
       })

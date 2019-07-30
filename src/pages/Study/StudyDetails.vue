@@ -23,6 +23,7 @@
 
 
 <script>
+import { Config } from "../../uitls/config";
 export default {
   data() {
     return {
@@ -36,7 +37,7 @@ export default {
 
     var that = this;
     this.$axios
-      .get("http://d.wbgapp.com/api/v2/study/article/" + id)
+      .get(Config.restUrl + "api/v2/study/article/" + id)
       .then(function(res) {
         that.Studycomment.push(res.data) ;
         console.log(that.Studycomment)

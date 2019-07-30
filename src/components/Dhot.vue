@@ -27,7 +27,8 @@
   </div>
 </template>
 <script>
-import restUrl from '../uitls/config.js'
+import {Config} from "../uitls/config";
+
 export default {
   data() {
     return {
@@ -36,10 +37,10 @@ export default {
   },
   created() {
     var that = this;
-    console.log(this)
     this.$axios
-      .get("http://d.wbgapp.com/api/v2/goods/hot")
+      .get( Config.restUrl + "api/v2/goods/hot")
       .then(function(res) {
+   
         that.hotlist = res.data;
       })
       .catch(function(error) {

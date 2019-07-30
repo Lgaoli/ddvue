@@ -1,10 +1,8 @@
 <template>
   <div>
     <div class="call-header">
-      <div class="back">
-        <router-link to="/shippingAddress">
-          <i class="iconfont">&#xe771;</i>
-        </router-link>
+      <div class="back" @click="back">
+        <i class="iconfont" style="font-size: 2.9rem;\">&#xe79b;</i>
       </div>
       <div class>绑定手机</div>
       <div class></div>
@@ -64,6 +62,7 @@
 </template>
 <script>
 import Vue from "vue";
+import { Config } from "../../uitls/config";
 import { Row, Col, Toast } from "vant";
 Vue.use(Row)
   .use(Col)
@@ -83,37 +82,39 @@ export default {
     }
   },
   methods: {
+    back() {
+      this.$router.go(-1); //返回上一层
+    },
     getAuthCode() {
       if (this.phone) {
         var reg = /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/; //验证规则
         if (reg.test(this.phone)) {
-             this.sendAuthCode = false;
-        this.auth_time = 60;
-        // console.log(this.phone * 1);
-        let url = "http://d.wbgapp.com/api/v2/send/code";
-        let data = {
-          phone: this.phone * 1,
-          type: "2"
-        };
-        this.$axios
-          .post(url, data)
-          .then(res => {
-            console.log(res); //返回的数据
-          })
-          .catch(err => {});
+          this.sendAuthCode = false;
+          this.auth_time = 60;
+          // console.log(this.phone * 1);
+          let url = Config.restUrl + "api/v2/send/code";
+          let data = {
+            phone: this.phone * 1,
+            type: "2"
+          };
+          this.$axios
+            .post(url, data)
+            .then(res => {
+              console.log(res); //返回的数据
+            })
+            .catch(err => {});
           //倒计时
-          this.showToast('go')
-        var auth_timetimer = setInterval(() => {
-          this.auth_time--;
-          if (this.auth_time <= 0) {
-            this.sendAuthCode = true;
-            clearInterval(auth_timetimer);
-          }
-        }, 1000);
-        }else{
+          this.showToast("go");
+          var auth_timetimer = setInterval(() => {
+            this.auth_time--;
+            if (this.auth_time <= 0) {
+              this.sendAuthCode = true;
+              clearInterval(auth_timetimer);
+            }
+          }, 1000);
+        } else {
           this.showToast("error");
         }
-     
       } else {
         this.showToast("null");
       }
@@ -124,16 +125,15 @@ export default {
         this.$toast({
           message: "手机号码不能为空"
         });
-      }else if(text==='error'){
-           this.$toast({
+      } else if (text === "error") {
+        this.$toast({
           message: "手机号码错误"
         });
-      }
-      else if(text==='errorbind'){
+      } else if (text === "errorbind") {
         this.$toast({
           message: "验证码错误"
         });
-      }else if(text==='go'){
+      } else if (text === "go") {
         this.$toast({
           message: "验证码已发送"
         });
@@ -142,42 +142,43 @@ export default {
     submit() {
       // console.log(this.phones);
 
+      if (this.phone) {
+        var that = this;
 
-if(this.phone){
-   var that = this;
-   
         var reg = /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/; //验证规则
         if (reg.test(this.phone)) {
-      this.$axios({
-        method: "post",
-        url: "http://d.wbgapp.com/api/v2/user/bind",
-        data: {
-          code_phone: this.phone,
-          code_yzm: this.phones
-        },
-        headers: {
-          token: that.getToken
+          this.$axios({
+            method: "post",
+            url: Config.restUrl + "api/v2/user/bind",
+            data: {
+              code_phone: this.phone,
+              code_yzm: this.phones
+            },
+            headers: {
+              token: that.getToken
+            }
+          })
+            .then(response => {
+              console.log(response.data);
+              if (response.data.code == 201) {
+                that.$toast({
+                  message: "绑定成功"
+                });
+                that.$router.push({ path: "/My" });
+              }
+            })
+            .catch(error => {
+              this.showToast("errorbind");
+              that.$toast({
+                  message: "验证码错误"
+                });
+            });
+        } else {
+          this.showToast("error");
         }
-      })
-        .then(response => {
-          // console.log(response);
-          Toast.fail(error.msg);
-        })
-        .catch(error => {
-          // console.log(1); //错误信息
-          // Toast.fail(error.msg);
-          this.showToast("errorbind");
-        });
-}else{
-  this.showToast('error')
-}
-
-}else{
-  this.showToast("null")
-}
-   
-
-
+      } else {
+        this.showToast("null");
+      }
     }
   }
 };

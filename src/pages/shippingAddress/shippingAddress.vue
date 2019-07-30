@@ -68,6 +68,7 @@
 import Vue from "vue";
 import { RadioGroup, Radio, AddressList } from "vant";
 import test from "../../assets/test.js";
+import {Config} from "../../uitls/config";
 Vue.use(RadioGroup)
   .use(Radio)
   .use(AddressList);
@@ -102,7 +103,7 @@ export default {
     // console.log(that);
     this.$axios({
       method: "get",
-      url: "http://d.wbgapp.com/api/v2/address",
+      url:Config.restUrl + "api/v2/address",
       headers: {
         token: that.getToken
       }

@@ -4,7 +4,7 @@
       <div class="back"></div>
       <div class>个人中心</div>
       <div class="shop"></div>
-    </div> -->
+    </div>-->
     <div class="My-main" :style="mainimg">
       <div class="My-main-main">
         <div class="My-img">
@@ -133,17 +133,17 @@
         </div>
       </router-link>
       <router-link :to="{ path:'/Study'}">
-      <div class="My-main3-main">
-        <div style="display: flex;align-items: center;;">
-          <div style="width: 2.125rem;height: 2.5rem;margin-right: .625rem">
-            <img src="../../assets/img/ic_mine_study@2x.png" alt style="width:100%">
+        <div class="My-main3-main">
+          <div style="display: flex;align-items: center;;">
+            <div style="width: 2.125rem;height: 2.5rem;margin-right: .625rem">
+              <img src="../../assets/img/ic_mine_study@2x.png" alt style="width:100%">
+            </div>
+            <span>学习中心</span>
           </div>
-          <span>学习中心</span>
+          <div>
+            <i class="iconfont">&#xe632;</i>
+          </div>
         </div>
-        <div>
-          <i class="iconfont">&#xe632;</i>
-        </div>
-      </div>
       </router-link>
       <router-link :to="{ path:'/Agency'}">
         <div class="My-main3-main">
@@ -159,21 +159,22 @@
         </div>
       </router-link>
       <router-link to="/picking">
-      <div class="My-main3-main">
-        <div style="display: flex;align-items: center;;">
-          <div style="width: 2.125rem;height: 2.5rem;margin-right: .625rem">
-            <img
-              src="../../assets/img/ic_mine_Take delivery of goods@2x.png"
-              alt
-              style="width:100%"
-            >
+        <div class="My-main3-main">
+          <div style="display: flex;align-items: center;;">
+            <div style="width: 2.125rem;height: 2.5rem;margin-right: .625rem">
+              <img
+                src="../../assets/img/ic_mine_Take delivery of goods@2x.png"
+                alt
+                style="width:100%"
+              >
+            </div>
+            <span>提货</span>
           </div>
-          <span>提货</span>
+          <div>
+            <i class="iconfont">&#xe632;</i>
+          </div>
         </div>
-        <div>
-          <i class="iconfont">&#xe632;</i>
-        </div>
-      </div></router-link>
+      </router-link>
 
       <router-link :to="{ path:'/Catalog' }">
         <div class="My-main3-main">
@@ -193,7 +194,11 @@
   </div>
 </template>
 <script>
+import Vue from "vue";
 import Dfooter from "../../components/Dfooter";
+import { Config } from "../../uitls/config";
+import { Toast } from "vant";
+Vue.use(Toast);
 export default {
   components: {
     Dfooter
@@ -212,13 +217,47 @@ export default {
         backgroundRepeat: "no-repeat",
         backgroundSize: "100% 100%"
       },
-      pe: []
+      pe: [],
+        timer: null  // 定时器名称     
     };
   },
   computed: {
     getToken() {
       return this.$store.getters.getToken;
     }
+  },
+  beforeCreate() {
+    let that = this;
+    let url = window.location.href;
+    //let url =
+    //  "http://pub.hqyulin.com/?token=899a7451d56be0b3e66cf98fc8ea9f12#/";
+    let str = url.split("?")[1].split("#")[0];
+    let arr = str.split("=");
+
+    let strs = str.split("=")[1];
+
+    this.$axios({
+      //调用接口
+      method: "post",
+      url: Config.restUrl + "api/v2/user/isb",
+      // params: {
+      //   token: Token
+      // },
+      headers: {
+        token: strs
+        // token: "221f8fd0ca0be03bdefccf62b1f5ff6b"
+      }
+    }).then(
+      function(res) {
+        //接口返回数据
+        console.log(res);
+        that.$router.push({ path: "/My" })
+      },
+      function(error) {
+        that.$router.push({ path: "/Call" })
+        
+      }
+    );
   },
   created() {
     this.pes();
@@ -231,7 +270,7 @@ export default {
       this.$axios({
         //调用接口
         method: "GET",
-        url: "http://d.wbgapp.com/api/v2/user/info",
+        url: Config.restUrl + "api/v2/user/info",
         // params: {
         //   token: Token
         // },
@@ -289,7 +328,6 @@ export default {
   }
 }
 .My-main {
-
   display: flex;
   justify-content: space-between;
   .My-main-main {

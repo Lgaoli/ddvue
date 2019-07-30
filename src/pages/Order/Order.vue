@@ -616,6 +616,7 @@
   </div>
 </template>
 <script>
+import {Config} from "../../uitls/config";
 import Vue from "vue";
 import wx from "weixin-js-sdk";
 export default {
@@ -649,7 +650,7 @@ export default {
     let self = this;
     this.$axios({
       method: "post",
-      url: "http://d.wbgapp.com/api/v2/user/jdk",
+      url: Config.restUrl+"api/v2/user/jdk",
       data: {
         url: location.href.split("#")[0]
       },
@@ -673,7 +674,7 @@ export default {
     let that = this;
     this.$axios({
       method: "get",
-      url: "http://d.wbgapp.com/api/v2/order/all",
+      url: Config.restUrl+"api/v2/order/all",
       headers: {
         token: that.getToken
         // token: "9b85bc5fa49dce8a5ef0e29f4f0076b5"
@@ -697,7 +698,7 @@ export default {
     // console.log(that);
     this.$axios({
       method: "get",
-      url: "http://d.wbgapp.com/api/v2/address",
+      url: Config.restUrl+"api/v2/address",
       headers: {
         token: that.getToken
         // token: "9b85bc5fa49dce8a5ef0e29f4f0076b5"
@@ -720,7 +721,7 @@ export default {
       //下订单
       this.$axios({
         method: "POST",
-        url: "http://d.wbgapp.com/api/v2/order",
+        url: Config.restUrl+"api/v2/order",
         data: { goods: JSON.stringify(datas) },
         headers: {
           token: this.getToken
@@ -735,7 +736,7 @@ export default {
         //支付
         this.$axios({
           method: "POST",
-          url: "http://d.wbgapp.com/api/v2/pay/pre_order",
+          url: Config.restUrl+"api/v2/pay/pre_order",
           headers: {
             token: this.getToken
             // token: "237cf94848711e2399fa1e8c1a74a395"
@@ -766,7 +767,7 @@ export default {
       if (item.id >= 0) {
         this.$axios({
           method: "get",
-          url: "http://d.wbgapp.com/api/v2/order/status",
+          url: Config.restUrl+"api/v2/order/status",
           params: {
             id: item.id
           },
@@ -805,7 +806,7 @@ export default {
       var that = this;
       this.$axios({
         method: "get",
-        url: "http://d.wbgapp.com/api/v2/order/pay",
+        url: Config.restUrl+"api/v2/order/pay",
         headers: {
           token: that.getToken
           // token: "9b85bc5fa49dce8a5ef0e29f4f0076b5"

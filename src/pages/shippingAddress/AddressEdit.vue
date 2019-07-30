@@ -28,8 +28,10 @@
 <script>
 import areaList from "../../assets/area.js";
 import Vue from "vue";
-import { AddressEdit } from "vant";
-Vue.use(AddressEdit);
+import { Config } from "../../uitls/config";
+import { AddressEdit, Toast } from "vant";
+
+Vue.use(AddressEdit).use(Toast);
 export default {
   data() {
     return {
@@ -39,19 +41,17 @@ export default {
     };
   },
   created() {
-  var that = this;
+    var that = this;
     // console.log(that);
     this.$axios({
       method: "get",
-      url: "http://d.wbgapp.com/api/v2/address",
+      url: Config.restUrl + "api/v2/address",
       headers: {
         token: that.getToken
       }
     }).then(res => {
       console.log(res.data);
-    })
-
-
+    });
   },
   computed: {
     checkedgoods() {
@@ -93,7 +93,7 @@ export default {
     onSave(val) {
       //获取表单所有信息
       // console.log(val);
-      //       addressDetail: "元岗街道慧通产业园B9栋"//详细地址
+      //       addressDetail: "测试测试"//详细地址
       // areaCode: "440106"
       // city: "广州市"//城市
       // country: ""
@@ -112,7 +112,7 @@ export default {
       var that = this;
       this.$axios({
         method: "post",
-        url: "/api/api/v2/address",
+        url: Config.restUrl + "api/v2/address",
         headers: {
           token: that.getToken
         },
@@ -138,9 +138,19 @@ export default {
             }
             return ret;
           }
-        ],
+        ]
       }).then(res => {
         // console.log(res);
+        if (res.data.code) {
+          that.$toast({
+            message: "绑定成功"
+          });
+           that.$router.go(-1);
+        }else{
+          that.$toast({
+            message: "绑定失败"
+          });
+        }
       });
     }
   }

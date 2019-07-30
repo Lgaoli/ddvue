@@ -89,6 +89,7 @@
   </div>
 </template>
 <script>
+import {Config} from '../../uitls/config'
 export default {
   data() {
     return {
@@ -115,7 +116,7 @@ export default {
     let that = this;
     this.$axios({
       method: "get",
-      url: "http://d.wbgapp.com/api/v2/user/money",
+      url: Config.restUrl + "api/v2/user/money",
       headers: {
         token: that.getToken
         // token: "237cf94848711e2399fa1e8c1a74a395"

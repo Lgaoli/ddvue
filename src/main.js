@@ -8,6 +8,7 @@ import './uitls/rem'
 import axios from 'axios'
 import Vuex from 'vuex'
 import store from './vuex/store'
+import te from './vuex/test'
 import fastclick from 'fastclick'
 fastclick.attach(document.body)
 // import ajax from './lib/ajax/Ajax.js'//----------------注意这个地方--axios
@@ -28,7 +29,6 @@ axios.defaults.transformRequest = [function (data) {
 
 Vue.prototype.$axios = axios
 Vue.prototype.$ajax = axios;//---------------------------注意这个地方--axios
-Vue.prototype.$http = axios
 Vue.config.productionTip = false
 // Axios.defaults.withCredentials = true;
 Vue.use(VueAwesomeSwiper)
@@ -43,7 +43,7 @@ import 'swiper/dist/css/swiper.css'
 new Vue({
   el: '#app',
   router,
-  store,
+  store,te,
   components: { App },
   template: '<App/>'
 })

@@ -202,7 +202,7 @@
 <script>
 import Vue from "vue";
 import { mapState, mapGetters } from "vuex";
-
+import {Config} from "../../uitls/config";
 import {
   RadioGroup,
   Radio,
@@ -242,6 +242,7 @@ export default {
   },
   created() {
     this.testlist();
+    console.log(this)
 
   },
   computed: {
@@ -279,7 +280,7 @@ export default {
       // console.log(that);
       this.$axios({
         method: "get",
-        url: "http://d.wbgapp.com/api/v2/address",
+        url: Config.restUrl +"api/v2/address",
         headers: {
           token: that.getToken
         }

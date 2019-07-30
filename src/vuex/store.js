@@ -10,22 +10,13 @@ const store = new Vuex.Store({
     state: {
         addCart: [],
         shipping: [],
-        token: '',
-        SetupCart: []
+        token: ''
     },
     getters: {
-
-
         add: state => state,
         //获取token方法
         //判断是否有token,如果没有重新赋值，返回给state的token
-        addSetupCart(state) {
-            // state.SetupCart=Setup
-            return state.SetupCart
-        },
-
         getToken(state) {
-
             if (!state.token) {
                 state.token = localStorage.getItem('token')
             }
@@ -42,17 +33,12 @@ const store = new Vuex.Store({
         //商品总价
         totlemoney(state) {
             let market_price = 0;
-
+  
             state.addCart.forEach((good) => {
                 market_price += good.market_price * good.goods_num
             })
-            return market_price
+            return market_price 
         },
-        
-        // totledel(state) {
-        //     state.addCart=[]
-        // },
-
         //全选
         allcheck(state) {
             let allchecks = true;
@@ -99,41 +85,36 @@ const store = new Vuex.Store({
 
     },
     mutations: {
-        addSetupCart(state, Setup) {
-
-            state.SetupCart = Setup
-
-        },
-
-
-
         setToken(state, token) {
             state.token = token
 
+        }, del_token(state) {
+            state.token = ''
+            sessionStorage.removeItem('token')
         },
-        //  del_token(state) {
-        //     state.token = ''
-        //     localStorage.removeItem('token')
-        // },
 
         //添加到购物车并判断有没有，有则++
         addCart(state, data) {
             let Boff = true
-
+       
+         
             state.addCart.forEach((good) => {
+       
                 if (good.goods_id === data.goods_id) {
                     good.goods_num++;
                     Boff = false
                 }
+                console.log(good)
             })
+
             if (Boff) {
                 let goodsData = data
-
                 Vue.set(goodsData, 'goods_num', 1)
                 Vue.set(goodsData, 'checked', true)
                 state.addCart.push(goodsData)
+            
             }
-
+            
 
         },
         //删除商品
@@ -148,7 +129,6 @@ const store = new Vuex.Store({
         //增加商品数量
         plusCart(state, id) {
             state.addCart.forEach((good, index) => {
-
                 if (good.goods_id === id) {
                     if (good.goods_num >= 10) return
                     good.goods_num++
@@ -159,7 +139,7 @@ const store = new Vuex.Store({
         //减少商品数量
         minCart(state, id) {
             state.addCart.forEach((good, index) => {
-
+  
                 if (good.goods_id === id) {
                     if (good.goods_num <= 1) return
                     good.goods_num--
@@ -169,7 +149,7 @@ const store = new Vuex.Store({
         },
         checkGoods(state, id) {
             state.addCart.forEach((good, index) => {
-
+         
                 if (good.goods_id === id) {
                     good.checked = !good.checked
                     return
@@ -177,6 +157,7 @@ const store = new Vuex.Store({
             })
         }, checkedAll(state, checkedAll) {
             state.addCart.forEach((good, index) => {
+            
                 good.checked = !checkedAll
             })
         }

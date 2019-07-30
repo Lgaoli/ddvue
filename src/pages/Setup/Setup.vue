@@ -35,6 +35,7 @@
   </div>
 </template>
 <script>
+import { Config } from "../../uitls/config";
 export default {
   data() {
     return {
@@ -45,7 +46,7 @@ export default {
     let that = this;
     this.$axios({
       method: "get",
-      url: "http://d.wbgapp.com/api/v2/goods/grade"
+      url: Config.restUrl + "api/v2/goods/grade"
     })
       .then(res => {
         that.Setuplist = res.data;

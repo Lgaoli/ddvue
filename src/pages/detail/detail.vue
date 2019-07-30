@@ -20,48 +20,19 @@
         <div class="swiper-pagination" slot="pagination" style="text-align: right;"></div>
       </swiper>
       <div class="detail-main-main">
+     
         <div class="shopdetall">
           <div v-for="(items,indexs) in shopdetall" :key="indexs">
             <div class="shopmoney">
               <span class="supply_price">优惠价：￥ {{items.market_price}}</span>
-              <!-- <div class="share" @click="show1=true">
-                <span>
-                  <i class="iconfont">&#xe63e;</i>
-                  分享
-                </span>
-              </div>
-              <van-popup v-model="show1" position="bottom" :overlay="true">
-                <div>
-                  <div class="popup" style="text-aligh:center;padding:0.8rem">
-                    <div style @click="sharefriend(shopdetall1)">
-                      <img
-                        src="../../assets/img/share_ic_weixin.png"
-                        alt
-                        style="  width: 4.6875rem;height:4.6875rem"
-                      >
-                      <p style="padding:1.2rem">微信好友</p>
-                    </div>
-                    <div style="background:rgb(247, 247, 247);height:8.6rem;width:0.19rem"></div>
-                    <div @click="sharefriendqs(shopdetall1)">
-                      <img
-                        src="../../assets/img/share_ic_moments.png"
-                        style="  width: 4.6875rem;height4.6875rem"
-                      >
-                      <p style="padding:1.2rem">微信朋友圈</p>
-                    </div>
-                  </div>
-                  <div style="width:100%;
-          height: 0.6rem;
-          background:#f7f7f7"></div>
-                  <div class="close" @click="show1=false">取消</div>
-                </div>
-              </van-popup>-->
+            
+           
             </div>
 
             <div class="shopname">
               <p style="font-weight:600">{{items.goods_name}}</p>
             </div>
-            <div class="goods_sales" style="padding:0.95rem;font-size:1.6rem">
+            <div class="goods_sales" style="padding:0.95rem">
               <div
                 class="goods_sale_text"
                 style="  text-decoration: line-through;"
@@ -95,25 +66,20 @@
     </div>
     <div class="detail-footer">
       <div class="detail-footer1">
-        <router-link to="/Service">
-          <div class="service">
-            <router-link to="/Service" class="servicebox">
-              <div class="service1">
-                <a>
-                  <i class="iconfont">&#xe61c;</i>
-                  <span>客服</span>
-                </a>
-              </div>
-            </router-link>
-
-            <!-- <div class="collect">
+        <div class="service">
+          <div class="service1">
+            <a>
+              <i class="iconfont">&#xe61c;</i>
+              <span>客服</span>
+            </a>
+          </div>
+          <div class="collect">
             <a>
               <i class="iconfont">&#xe613;</i>
               <span>收藏</span>
             </a>
-            </div>-->
           </div>
-        </router-link>
+        </div>
         <div class="detail-buy">
           <div @click="setMaskShow">
             <div
@@ -148,12 +114,11 @@
 import Vue from "vue";
 import { Tab, Tabs, Rate, Popup } from "vant";
 import { mapState, mapActions } from "vuex";
-import wx from "weixin-js-sdk";
+import {Config} from "../../uitls/config";
 Vue.use(Tab)
   .use(Tabs)
   .use(Rate)
   .use(Popup);
-
 export default {
   data() {
     return {
@@ -178,116 +143,18 @@ export default {
       getdata: []
     };
   },
-  beforeCreate() {
-    // var that = this;
-    // this.$axios({
-    //   method: "get",
-    //   url: "http://d.wbgapp.com/api/v2/user/jdk",
-    //   headers: {
-    //     token: this.getToken
-    //     // token: "4774c94460f64a01800f2672f7230f2d"
-    //   },
-    //   params: location.href.split("#")[0]
-    //   // params: "http://pub.hqyulin.com/?token=4774c94460f64a01800f2672f7230f2d"
-    // }).then(rest => {
-    //   that.getdata = rest.data;
-    //   console.log(that.getdata.appId);
-    // });
-  },
+  
   created() {
     this.list();
     this.comment();
-    let self = this;
-    this.$axios({
-      method: "post",
-      url: "http://d.wbgapp.com/api/v2/user/jdk",
-      data: {
-        url: location.href.split("#")[0]
-      },
-      headers: {
-        token: this.getToken
-      }
-    }).then(rest => {
-      self.getdata = rest.data;
-      wx.config({
-        debug: false,
-        appId: rest.data.appId,
-        timestamp: rest.data.timestamp,
-        nonceStr: rest.data.nonceStr,
-        signature: rest.data.signature,
-        jsApiList: [
-          "onMenuShareTimeline",
-          "onMenuShareAppMessage",
-          "updateAppMessageShareData"
-        ]
-      });
-    });
   },
   methods: {
     prev() {
       this.$router.go(-1);
     },
-    //分享朋友
-    sharefriend(data) {
-      this.$axios({
-        method: "get",
-        url: "http://d.wbgapp.com/api/v2/user/jdk",
-        headers: {
-          token: this.getToken
-          // token: "4774c94460f64a01800f2672f7230f2d"
-        },
-        params: location.href.split("#")[0]
-        // params: "http://pub.hqyulin.com/?token=4774c94460f64a01800f2672f7230f2d"
-      }).then(shareres => {
-        console.log(shareres);
-        wx.config({
-          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-          appId: appId, // 必填，公众号的唯一标识
-          timestamp: timestamp, // 必填，生成签名的时间戳
-          nonceStr: nonceStr, // 必填，生成签名的随机串
-          signature: signature, // 必填，签名，见附录1
-          jsApiList: ["onMenuShareTimeline", "onMenuShareAppMessage"]
-        });
-      });
-      console.log(data);
-      wx.ready(function() {
-        //需在用户可能点击分享按钮前就先调用
-        wx.updateAppMessageShareData({
-          title: data.goods_name, // 分享标题
-          desc: "", // 分享描述
-          link: window.location.href.split("#")[0], // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-          imgUrl: data.shopimg, // 分享图标
-          success: function(res) {
-            console.log(res);
-            // 设置成功
-          },
-          cancal: function(res) {
-            //取消之后
-            alert("分享失败");
-          }
-        });
-      });
-    },
-    //分享朋友圈
-    sharefriendqs(data) {
-      console.log(this);
-      wx.ready(function() {
-        //需在用户可能点击分享按钮前就先调用
-        wx.updateTimelineShareData({
-          title: data.goods_name, // 分享标题
-          desc: "", // 分享描述
-          link: window.location.href.split("#")[0], // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-          imgUrl: data.shopimg, // 分享图标
-          success: function(res) {
-            console.log(res);
-            // 设置成功
-          },
-          cancel: function(res) {
-            alert("分享失败");
-            // 用户取消分享后执行的回调函数
-          }
-        });
-      });
+   fixUrlFormat(text) {
+      let reg = new RegExp("http://api.ddjingxuan.cn/", "g");
+      return text.replace(reg, "http://d.wbgapp.com/");
     },
     setMaskShow() {
       this.maskShow = !this.maskShow;
@@ -299,7 +166,7 @@ export default {
       var newsID = this.$route.query.id;
       var that = this;
       this.$axios
-        .get("http://d.wbgapp.com/api/v2/comment/" + newsID)
+        .get( Config.restUrl+"api/v2/comment/" + newsID)
         .then(function(res) {
           that.detilcomment = res.data;
           // console.log(that.detilcomment)
@@ -308,33 +175,27 @@ export default {
           // console.log(error);
         });
     },
-
-    fixUrlFormat(text) {
-      let reg = new RegExp("http://api.ddjingxuan.cn/", "g");
-      return text.replace(reg, "http://d.wbgapp.com/");
-    },
-
     list() {
       var newsID = this.$route.query.id;
       var that = this;
       this.$axios
-        .get("http://d.wbgapp.com/api/v2/goods/" + newsID)
+        .get( Config.restUrl+"api/v2/goods/" + newsID)
         .then(function(res) {
           that.detileswiper = res.data.banner;
+  
+           let alter = that.fixUrlFormat(res.data.detail.goods_content);
 
-         let alter = that.fixUrlFormat(res.data.detail.goods_content);
-          
-          that.$set(res.data.detail, "goods_content", alter);
-          console.log(res.data.detail)
-          that.shopdetall.push(res.data.detail);
+            that.$set(res.data.detail, "goods_content", alter);
+            console.log(res.data.detail)
+            that.shopdetall.push(res.data.detail);
 
-          //            console.log(that.shopdetall)
+            //            console.log(that.shopdetall)
 
-          // // console.log(te);
+            // // console.log(te);
 
-          // that.shopdetall1 = res.data.detail;
-          // that.$set(that.shopdetall1, "shopimg", that.detileswiper[0].img_url);
-          // console.log(that.shopdetall1);
+            that.shopdetall1 = res.data.detail;
+            that.$set(that.shopdetall1, "shopimg", that.detileswiper[0].img_url);
+            console.log(that.shopdetall1);
         })
         .catch(function(error) {
           // console.log(error);
@@ -377,7 +238,6 @@ export default {
   justify-content: space-between;
   z-index: 9999;
   font-size: 1.9375rem;
-
   i {
     color: #060606;
     font-size: 2.125rem;
@@ -395,7 +255,6 @@ export default {
     line-height: 4.5rem;
   }
 }
-
 .detail-main {
   margin-top: 4.5rem;
   margin-bottom: 4.4375rem;
@@ -414,7 +273,6 @@ export default {
       padding: 0.8125rem;
       .dredge-vip {
         display: inline-block;
-
         border-top-left-radius: 10%;
         border-bottom-left-radius: 10%;
         p {
@@ -434,7 +292,6 @@ export default {
           display: flex;
           justify-content: space-evenly;
           padding: 0.89rem;
-
           i {
             font-size: 1.75rem;
           }
@@ -489,7 +346,7 @@ export default {
       }
     }
     .shopname {
-      font-size: 1.6rem;
+      font-size: 1.1rem;
       padding: 0.7rem;
     }
     .detail-main-main-content {
@@ -513,20 +370,17 @@ export default {
   width: 100%;
   position: fixed;
   bottom: 0;
-
+  border-top: 1px solid #ccc;
   z-index: 999;
   background: #fff;
   .detail-footer1 {
     display: flex;
     justify-content: flex-start;
     height: 4.4375rem;
-
+    padding: 0.625rem;
     .service {
       display: flex;
       flex: 1;
-      justify-content: center;
-      background: #fc7a33;
-      border-radius: 6.25rem;
       div {
         flex: 0.4;
       }
@@ -534,18 +388,16 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 1.5rem;
-        color: #fff;
+        font-size: 1.25rem;
         i {
-          font-size: 1.5rem;
+          font-size: 1.25rem;
         }
       }
     }
-
     .detail-buy {
       line-height: 4.4375rem;
       flex: 1;
-      border: #ef7634 2px solid;
+      border: #ef7634 1px solid;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -558,7 +410,6 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-
         p {
         }
       }
@@ -567,12 +418,8 @@ export default {
       height: 100%;
       display: flex;
       flex-direction: column;
-      font-size: 1.5rem;
-      flex: 1;
-      text-align: center;
+      font-size: 12px;
     }
   }
 }
 </style>
-
-

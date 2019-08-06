@@ -51,7 +51,7 @@
 </template> 
 <script>
 import Vue from "vue";
-import { Toast } from 'vant';
+import { Toast } from "vant";
 Vue.use(Toast);
 import DISTRICTS from "./distpicker.js";
 import { Config } from "../../uitls/config";
@@ -88,6 +88,7 @@ export default {
   },
   created() {
     this.selected = this.statusArr[0];
+
     // 在组件创建之后，把默认选中项的value值赋给绑定的属性
     //如果没有这句代码，select中初始化会是空白的，默认选中就无法实现
     // this.defaultProvince== this.DISTRICTS[0].id
@@ -104,32 +105,29 @@ export default {
         token: this.getToken
       }
     }).then(rest => {
+      console.log(rest.data);
       var result = {};
       for (var i = 0; i < rest.data.length; i++) {
         that.statusArr.push(rest.data[i]);
       }
-      console;
+      console.log(that.statusArr);
     });
   },
   methods: {
     nex() {
-     
       // console.log(this.selected);
       // console.log(this.city);
       // console.log(this.area);
-      let grade_id=0;
- if(this.selected.name=='省级代理'){
-   grade_id=1
-
- }else if(this.selected.name=='市级代理'){
-
-   grade_id=2
- }else if(this.selected.name=='区代理'){
-   grade_id=3
-    
- }
- console.log(grade_id)
-       console.log(grade_id);
+      let grade_id = 0;
+      if (this.selected.name == "省级代理") {
+        grade_id = 1;
+      } else if (this.selected.name == "市级代理") {
+        grade_id = 2;
+      } else if (this.selected.name == "区代理") {
+        grade_id = 3;
+      }
+      console.log(grade_id);
+      console.log(grade_id);
       this.$axios({
         method: "post",
         url: Config.restUrl + "api/v2/agency/add",
@@ -144,22 +142,33 @@ export default {
           city: this.city.value,
           area: this.area.value
         }
-      }).then(res => {
-        console.log(res.msg);
-        Toast(res.msg);
-      }).catch(err=>{
-         if (err) {
+      })
+        .then(res => {
+          console.log(res.data);
+          if (res.data.error_code == 10000) {
             Toast("申请失败，请稍后重试");
           }
-      });
+          // if (res.msg == "undefined") {
+          //   Toast("申请失败，请稍后重试");
+          // } else {
+          //   Toast(res.msg);
+          // }
+        })
+        .catch(err => {
+          console.log(err)
+          if (err) {
+            Toast("已提交，正在审核中，请勿重复操作");
+          }
+
+
+        });
     },
     prev() {
       this.$router.go(-1);
     },
     ge(e) {
-      console.log(e)
+      console.log(e);
       //  this.selected= this.getDistricts(e.target.value);
-     
     },
     getDefault() {
       if (this.defaultProvince !== "") {
@@ -188,7 +197,6 @@ export default {
         };
       }
     },
-
 
     //名称转代码
     nameToCode(name) {

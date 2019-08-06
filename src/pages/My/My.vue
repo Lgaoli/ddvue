@@ -218,7 +218,7 @@ export default {
         backgroundSize: "100% 100%"
       },
       pe: [],
-        timer: null  // 定时器名称     
+      timer: null // 定时器名称
     };
   },
   computed: {
@@ -251,11 +251,10 @@ export default {
       function(res) {
         //接口返回数据
         console.log(res);
-        that.$router.push({ path: "/My" })
+        that.$router.push({ path: "/My" });
       },
       function(error) {
-        that.$router.push({ path: "/Call" })
-        
+        that.$router.push({ path: "/Call" });
       }
     );
   },
@@ -278,14 +277,16 @@ export default {
           token: that.getToken
           // token: "221f8fd0ca0be03bdefccf62b1f5ff6b"
         }
-      }).then(
-        function(res) {
+      })
+        .then(function(res) {
           //接口返回数据
           console.log(res.data);
           that.pe = res.data;
-        },
-        function(error) {}
-      );
+        })
+        .catch(function(error) {
+          console.log(error);
+          window.location.href = "http://d.wbgapp.com/api/v2/code/user"
+        });
     }
   }
 };

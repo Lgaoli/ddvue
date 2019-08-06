@@ -12,14 +12,14 @@
       <div v-if="de.length">
         <div class="IntegralD-main-text" v-for="(item,index) in de" :key="index">
           <div style="line-height: 1.8rem;">
-            <div style="font-size:1.6rem;">{{item.name}}</div>
-            <p>{{item.time}}</p>
+            <div style="font-size:1.6rem;">{{item.type}}</div>
+            <p>{{item.create_time}}</p>
           </div>
-          <div v-if="item.st=='+'">
-            <div style="font-size: 2rem;">{{item.st}}{{item.money}}</div>
+          <div v-if="item.ad_type=='-'">
+            <div style="font-size: 2rem;">{{item.ad_type}}{{item.money}}</div>
           </div>
           <div v-else>
-            <div style="font-size: 2rem;color:#FE821B">{{item.st}}{{item.money}}</div>
+            <div style="font-size: 2rem;color:#FE821B">{{item.ad_type}}{{item.money}}</div>
           </div>
         </div>
       </div>
@@ -28,28 +28,48 @@
   </div>
 </template>
 <script>
+import { Config } from "../../uitls/config";
 export default {
   data() {
     return {
       de: [
-        {
-          name: "支付宝",
-          time: "2019-06-25 11：48：47",
-          money: "60",
-          st: "+"
-        },
-        {
-          name: "微信",
-          time: "2019-06-25 11：48：47",
-          money: "60",
-          st: "-"
-        }
+        // {
+        //   name: "支付宝",
+        //   time: "2019-06-25 11：48：47",
+        //   money: "60",
+        //   st: "+"
+        // },
+        // {
+        //   name: "微信",
+        //   time: "2019-06-25 11：48：47",
+        //   money: "60",
+        //   st: "-"
+        // }
       ]
     };
+  },
+  created() {
+    let that = this;
+    this.$axios({
+      method: "get",
+      url: Config.restUrl + "api/v2/user/earns" ,
+      headers: {
+        token: that.getToken
+        // token: "237cf94848711e2399fa1e8c1a74a395"
+      }
+    }).then(res => {
+      console.log(res);
+      that.de = res.data.data;
+    });
   },
   methods: {
     back() {
       this.$router.go(-1); //返回上一层
+    }
+  },
+  computed: {
+    getToken() {
+      return this.$store.getters.getToken;
     }
   }
 };

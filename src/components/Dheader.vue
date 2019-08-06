@@ -58,8 +58,13 @@ export default {
   font-size: 1.3125rem;
   .header-nav {
     display: block;
-    width: 3.125rem;
+    width: 4rem;
     height: 100%;
+    a{
+      i{
+        font-size: 2.3rem
+      }
+    }
   }
   .header-search {
     border: 1px solid #ccc;

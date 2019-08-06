@@ -20,12 +20,9 @@
           >
             <van-radio-group
               v-model="radio"
-              style="    display: flex;
-    justify-content:space-between;
-    align-items: center;
-    "
+              style="display: flex;justify-content:space-between;align-items: center;"
             >
-              <van-radio :name="item">
+       
                 <div class="address" @click="back()">
                   <div style="padding-top: 0.6rem">
                     <div>
@@ -37,7 +34,7 @@
                     <div>{{item.address}}</div>
                   </div>
                 </div>
-              </van-radio>
+          
               <router-link to="/AddressEdit">
                 <div style="color:#f15e0e;width: 30px;">编辑</div>
               </router-link>
@@ -76,14 +73,14 @@
                   <div
                     class="van-checkbox__icon van-checkbox__icon--round"
                     :class="{'van-checkbox__icon--checked':item.checked}"
-                    @click="checkeds(item.goods_id)"
-                  >
+                    @click="checkeds(item.goods_id)">
                     <i class="van-icon van-icon-success">
                       <!---->
                     </i>
                   </div>
                 </div>
-                <div style="display: flex;width:100%;">
+                <div style="
+                width:100%;display: flex;justify-content: space-between;">
                   <div class="shoping-cart-img">
                     <img :src="item.shopimg" alt style="width:100%;">
                   </div>
@@ -123,7 +120,9 @@
                   </div>
                 </div>
               </div>
-              <div style="width:100%;height: 0.6rem;background:#f7f7f7"></div>
+              <div style="width:100%;
+          height: 0.6rem;
+          background:#f7f7f7"></div>
             </div>
           </div>
           <div v-else style="padding:10rem;    text-align: center;">
@@ -153,7 +152,7 @@
         </div>
       </div>
 
-      <div class="shoping-footer" style="border-">
+      <div class="detail-footer" style="border-">
         <!--:price="parseFloat(shoplists[index].shop_price*100)" -->
         <van-submit-bar button-text="结算" :price="checkedmoney*100" @submit="indent">
           <!--         :disabled="{flase:checkedcount<0}" -->
@@ -202,7 +201,7 @@
 <script>
 import Vue from "vue";
 import { mapState, mapGetters } from "vuex";
-import {Config} from "../../uitls/config";
+import {Config}from '../../uitls/config.js'
 import {
   RadioGroup,
   Radio,
@@ -243,7 +242,37 @@ export default {
   created() {
     this.testlist();
     console.log(this)
-
+  },
+    beforeCreate() {
+    let that = this;
+    let url = window.location.href;
+    //let url =
+    //  "http://pub.hqyulin.com/?token=899a7451d56be0b3e66cf98fc8ea9f12#/";
+    let str = url.split("?")[1].split("#")[0];
+    let arr = str.split("=");
+    let strs = str.split("=")[1];
+    this.$axios({
+      //调用接口
+      method: "post",
+      url: Config.restUrl + "api/v2/user/isb",
+      // params: {
+      //   token: Token
+      // },
+      headers: {
+        token: strs
+        // token: "221f8fd0ca0be03bdefccf62b1f5ff6b"
+      }
+    }).then(
+      function(res) {
+        //接口返回数据
+        console.log(res);
+      //  that.$router.push({ path: "/My" })
+      },
+      function(error) {
+        that.$router.push({ path: "/Call" })
+        
+      }
+    );
   },
   computed: {
     //购物车的商品
@@ -280,13 +309,12 @@ export default {
       // console.log(that);
       this.$axios({
         method: "get",
-        url: Config.restUrl +"api/v2/address",
+        url:Config.restUrl+ "api/v2/address",
         headers: {
           token: that.getToken
         }
       }).then(res => {
         // console.log(res.data);
-
         that.list.name = res.data.consigner;
         that.list.id = res.data.user_id;
         that.list.address =
@@ -295,7 +323,6 @@ export default {
           res.data.district +
           res.data.address;
         that.list.tel = res.data.phone * 1;
-
         that.list = [
           {
             name: res.data.consigner,
@@ -328,7 +355,6 @@ export default {
       // console.log("减少" + id);
       this.$store.commit("minCart", id);
     },
-
     checkeds(id) {
       // console.log(id);
       this.$store.commit("checkGoods", id);

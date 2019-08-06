@@ -23,6 +23,7 @@ const IntegralDetail = r => require.ensure([], () => r(require('../pages/Integra
 const Setup = r => require.ensure([], () => r(require('../pages/Setup/Setup.vue')), 'Setup')
 const SetupDetail = r => require.ensure([], () => r(require('../pages/Setup/SetupDetail.vue')), 'SetupDetail')
 const SetupIndent = r => require.ensure([], () => r(require('../pages/Setup/SetupIndent.vue')), 'SetupIndent')
+const SetupPicking= r => require.ensure([], () => r(require('../pages/Setup/SetupPicking.vue')), 'SetupPicking')
 const Service = r => require.ensure([], () => r(require('../pages/Service/Service.vue')), 'Service')
 const Team = r => require.ensure([], () => r(require('../pages/Team/Team.vue')), 'Team')
 const Study = r => require.ensure([], () => r(require('../pages/Study/Study.vue')), 'Study')
@@ -99,6 +100,7 @@ const router = new Router({
       name: 'shippingAddress',
       meta: {
         requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+        title: '收货地址'
       },
       component: shippingAddress
     }, {
@@ -106,7 +108,7 @@ const router = new Router({
       name: 'AddressEdit',
       meta: {
         requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
-        title: ''
+        title: '收货地址'
       },
       component: AddressEdit
     },
@@ -115,6 +117,7 @@ const router = new Router({
       name: 'Indent',
       meta: {
         requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+        title: '订单页面'
       },
       component: Indent
     },
@@ -123,12 +126,15 @@ const router = new Router({
       name: 'Indent1',
       meta: {
         requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
+        title: '订单页面'
       },
       component: Indent1
-    }, {
+    },
+    {
       path: '/Call',
       name: 'Call',
       meta: {
+        title: '绑定手机',
         requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
       },
       component: Call
@@ -136,6 +142,7 @@ const router = new Router({
       path: '/Agency',
       name: 'Agency',
       meta: {
+        title: '申请代理',
         requireAuth: false,  // 添加该字段，表示进入这个路由是需要登录的
       },
       component: Agency
@@ -144,6 +151,7 @@ const router = new Router({
       path: '/Order',
       name: 'Order',
       meta: {
+        title: '订单管理',
         requireAuth: true,  // 添加该字段，表示进入这个路由是需要登录的
       },
       component: Order
@@ -151,6 +159,7 @@ const router = new Router({
       path: '/Integral',
       name: 'Integral',
       meta: {
+        title: '我的积分',
         requireAuth: true,
       },
       component: Integral
@@ -158,6 +167,8 @@ const router = new Router({
       path: '/IntegralExplain',
       name: 'IntegralExplain',
       meta: {
+        title: '积分说明',
+
         requireAuth: true,
       },
       component: IntegralExplain
@@ -165,6 +176,7 @@ const router = new Router({
       path: '/IntegralDetail',
       name: 'IntegralDetail',
       meta: {
+        title: '积分详情',
         requireAuth: true,
       },
       component: IntegralDetail
@@ -172,6 +184,7 @@ const router = new Router({
       path: '/Setup',
       name: 'Setup',
       meta: {
+        title: '我要开店',
         requireAuth: true,
       },
       component: Setup
@@ -179,6 +192,7 @@ const router = new Router({
       path: '/Service',
       name: 'Service',
       meta: {
+        title: '我的客服',
         requireAuth: true,
       },
       component: Service
@@ -186,6 +200,7 @@ const router = new Router({
       path: '/Team',
       name: 'Team',
       meta: {
+        title: '我的团队',
         requireAuth: false,
       },
       component: Team
@@ -202,6 +217,7 @@ const router = new Router({
       path: '/StudyDetails',
       name: 'StudyDetails',
       meta: {
+        title: '学习详情',
         requireAuth: false,
         title: '资讯详情'
       },
@@ -222,6 +238,14 @@ const router = new Router({
         title: '资讯详情'
       },
       component: SetupIndent
+    }, {
+      path: '/SetupPicking',
+      name: 'SetupPicking',
+      meta: {
+        requireAuth: false,
+        title: '资讯详情'
+      },
+      component: SetupPicking
     }, {
       path: '/picking',
       name: 'picking',
@@ -249,9 +273,6 @@ router.beforeEach((to, from, next) => {
   else {
     window.location.href = "http://d.wbgapp.com/api/v2/code/user"
   }
-
-
-
 
 })
 

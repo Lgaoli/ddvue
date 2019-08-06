@@ -66,7 +66,7 @@ export default {
         text-justify: inter-ideograph;
 
       }
-      p /deep/ img{
+      p >>> img{
         width: 100%
       }
     }

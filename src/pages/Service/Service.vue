@@ -1,5 +1,5 @@
 <template>
-  <div class="Service">
+  <div class="Service" style="background: #ccc;">
     <div class="Service-main-header">
       <div>
         <p>客服点点</p>
@@ -56,15 +56,12 @@
         </div>
         <div class="xw-chat-tool">
           <div style="height:100%;width:100%;">
-          <div class="xw-chat-tool-item" @click="sendMsg">
-            <transition name="fade">
-              <p
-                
-                
-              >发送</p>
-            </transition>
+            <div class="xw-chat-tool-item" @click="sendMsg">
+              <transition name="fade">
+                <p>发送</p>
+              </transition>
+            </div>
           </div>
-</div>
           <!-- <div class="xw-chat-tool-item">
             <a
               href="javascript:;"
@@ -119,12 +116,9 @@
 </template>
 
 <script>
-
-
 // import emojiSlider from '.././components/emojiSlide.vue'
 export default {
   components: {
- 
     // Toast
     // emojiSlider
   },
@@ -332,7 +326,7 @@ export default {
   position: relative;
   overflow: auto;
   .xw-chat-wrap {
-    background: #fff;
+    background: #f7f7f7;
     border-color: #efefef;
     float: left;
     .xw-chat-time {
@@ -413,7 +407,7 @@ export default {
   bottom: 0;
   width: 100%;
   box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.05);
-  // background: #fff;
+  background: #fff;
   z-index: 2;
   .xw-footer-content {
     position: relative;
@@ -433,26 +427,25 @@ export default {
       height: 100%;
       flex: 1;
       align-items: center;
-    flex-direction: column;
-    justify-content: center;
-    display: flex;
+      flex-direction: column;
+      justify-content: center;
+      display: flex;
 
-  color: #f7f7f7;
+      color: #f7f7f7;
       .xw-chat-tool-item {
-              height: 100%;
+        height: 100%;
         width: 100%;
-              background: #f15e0e;
+        background: #f15e0e;
         display: flex;
         justify-content: center;
         align-items: center;
         .xw-send-btn-text {
           // color: #fff;
           border-radius: 5px;
-            height: 100%;
-        width: 100%;
-  
+          height: 100%;
+          width: 100%;
         }
- 
+
         .xw-chat-tool-btn {
           padding: 12px 10px;
 

@@ -1,10 +1,9 @@
-<template>
+        
+    <template>
   <div class="indent">
     <div class="detail-header">
-      <div class="back">
-        <router-link to="/">
-          <i class="iconfont">&#xe771;</i>
-        </router-link>
+      <div class="back" @click="back">
+        <i class="iconfont">&#xe771;</i>
       </div>
       <div class>确认订单</div>
       <div class="shop"></div>
@@ -19,24 +18,19 @@
         >
           <van-radio-group
             v-model="radio"
-            style="    display: flex;
-    justify-content:space-between;
-    align-items: center;
-    "
+            style="display: flex;justify-content:space-between;align-items: center;"
           >
-            <van-radio :name="item">
-              <div class="address" @click="back()">
-                <div style="padding-top: 0.6rem">
-                  <div>
-                    <span
-                      style="font-size:1.4rem;font-weight:600;padding-right:0.3ren=m"
-                    >{{item.name}}</span>
-                    <span>{{item.tel}}</span>
-                  </div>
-                  <div>{{item.address}}</div>
+            <div class="address">
+              <div style="padding-top: 0.6rem">
+                <div>
+                  <span
+                    style="font-size:1.4rem;font-weight:600;padding-right:0.3ren=m"
+                  >{{item.name}}</span>
+                  <span>{{item.tel}}</span>
                 </div>
+                <div>{{item.address}}</div>
               </div>
-            </van-radio>
+            </div>
             <router-link to="/AddressEdit">
               <div style="color:#f15e0e;width: 30px;">编辑</div>
             </router-link>
@@ -45,77 +39,65 @@
       </div>
       <div v-else>
         <router-link to="/shippingAddress">
-          <div class="indent-cart-header">
+          <div class="shopping-cart-header" style="display: flex;padding: 0.8rem;">
             <div>
-              <i class="iconfont">&#xe611;</i>
               <span>添加收货地址</span>
-            </div>
-            <div>
-              <i class="iconfont">&#xe632;</i>
             </div>
           </div>
         </router-link>
       </div>
       <div style="width:100%;
-          height: 0.6rem;
-          background:#f7f7f7"></div>
+              height: 0.6rem;
+              background:#f7f7f7"></div>
       <div class="indent-main">
+        <!-- 问题大全 -->
         <div>
-          <div v-if="SetupCart.length>0">
-            <div v-for="(item,index) in SetupCart" :key="index">
-              <van-card
-                :num="item.goods_num"
-                :price="item.market_price"
-                :desc="item.goods_name"
-                :thumb="item.shopimg"
-              />
+          <div v-if="set.length>0">
+            <div v-for="(item,index) in set" :key="index">
+              <van-card :num="item.num" :desc="item.name" :thumb="item.image"/>
             </div>
           </div>
           <div v-else style="padding:1.25rem;">暂时无商品</div>
         </div>
       </div>
       <div style="width:100%;
-          height: 0.6rem;
-          background:#f7f7f7"></div>
+              height: 0.6rem;
+              background:#f7f7f7"></div>
     </div>
     <div>
-      <router-link to="/shippingAddress">
-        <div class="indent-cart-header">
-          <div>
-            <span>支付方式</span>
-          </div>
-          <div>
-            <span>余额支付</span>
-            <i class="iconfont">&#xe632;</i>
-          </div>
+      <div class="indent-cart-header">
+        <div>
+          <span>支付方式</span>
         </div>
-      </router-link>
-     
-        <div class="indent-cart-header">
-          <div>
-            <span>运费</span>
-          </div>
-          <div>
-            <span>0元</span>
-            <i class="iconfont">&#xe632;</i>
-          </div>
+        <div>
+          <span>余额支付</span>
         </div>
-     
+      </div>
+
+      <div class="indent-cart-header">
+        <div>
+          <span>运费</span>
+        </div>
+        <div>
+          <span>0元</span>
+        </div>
+      </div>
     </div>
     <div style="width:100%;
-          height: 0.6rem;
-          background:#f7f7f7"></div>
+              height: 0.6rem;
+              background:#f7f7f7"></div>
     <div class="postscript">
       <textarea type="text" placeholder="备注信息"></textarea>
     </div>
     <div class="indent-footer">
-      <van-submit-bar :price="checkedmoney*100" button-text="立即支付" @submit="SubmitOrderHan"/>
+      <van-submit-bar :price="money.money*100" button-text="立即支付" @submit="SubmitOrderHan"/>
     </div>
   </div>
 </template>
-<script>
+    <script>
 import Vue from "vue";
 import wx from "weixin-js-sdk";
+import { Config } from "../../uitls/config";
 import {
   RadioGroup,
   Radio,
@@ -128,7 +110,6 @@ import {
   SwipeCell,
   Dialog
 } from "vant";
-
 Vue.use(Checkbox)
   .use(CheckboxGroup)
   .use(Stepper)
@@ -143,36 +124,32 @@ export default {
     return {
       list: [],
       getJsSdkData: [],
-      SetupCart:[]
+      addCart: [],
+      money: []
     };
   },
-
   created() {
+    this.set = this.$route.query.set;
+
+    let num = 0;
+    for (var i = 0; i < this.set.length; i++) {
+      num += this.set[i].num;
+      if (num === 30) {
+        this.$set(this.money, "money", 9680);
+      } else if (num === 2) {
+        this.$set(this.money, "money", 299);
+        console.log(this.money);
+      } else if (num * 1 === 1) {
+        this.$set(this.money, "money", 99);
+      }
+    }
+
+    this.addCart.push(this.addSetupCart);
     this.testlist();
-    var newsID = this.$route.query.id;
-    console.log(this)
-    var url = 'http://pub.hqyulin.com/?token=07e11a43943202d322a310886318b9bd#/Detail?id=1754';
-    var arr=url.split("?")[1].split('=')
-  // if(arr[0]==='token'){
-  //   console.log('是')
-  // }
-  // else{
-  //   console.log('不是')
-  // }
-  
-    // for(var i=0;i<arr.length;i++){
-    //  console.log(arr[i].split('='))
-    // }
-;
-
-
-
-    var newsID = this.$route.query.shopdetall;
-
     let self = this;
     this.$axios({
       method: "post",
-      url: "http://d.wbgapp.com/api/v2/user/jdk",
+      url: Config.restUrl + "api/v2/user/jdk",
       data: {
         url: location.href.split("#")[0]
       },
@@ -180,7 +157,7 @@ export default {
         token: this.getToken
       }
     }).then(rest => {
-      self.getJsSdkData = rest.data;
+      self.getdata = rest.data;
       wx.config({
         debug: false,
         appId: rest.data.appId,
@@ -195,12 +172,11 @@ export default {
     addSetupCart() {
       return this.$store.getters.addSetupCart;
     },
-    checkedmoney() {
-      return this.$store.getters.checkedmoney;
-    },
+
     getToken() {
       return this.$store.getters.getToken;
     }
+
     // freight() {
     //   let freight = 8;
     //   if (this.checkedmoney >= 88) {
@@ -210,13 +186,15 @@ export default {
     // }
   },
   methods: {
-    conn() {},
+    back() {
+      this.$router.go(-1); //返回上一层
+    },
     testlist() {
       var that = this;
       // console.log(that);
       this.$axios({
         method: "get",
-        url: "http://d.wbgapp.com/api/v2/address",
+        url: Config.restUrl + "api/v2/address",
         headers: {
           token: that.getToken
           // token: "237cf94848711e2399fa1e8c1a74a395"
@@ -231,7 +209,6 @@ export default {
           res.data.district +
           res.data.address;
         that.list.tel = res.data.phone * 1;
-
         that.list = [
           {
             name: res.data.consigner,
@@ -249,60 +226,81 @@ export default {
     },
     SubmitOrderHan() {
       var that = this;
-      var datas = [];
-      for (let i = 0; i < this.SetupCart.length; i++) {
-        datas.push({
-          goods_id: this.SetupCart[i].goods_id,
-          goods_num: this.SetupCart[i].goods_num
-        });
-      }
-      //下订单
-      this.$axios({
-        method: "POST",
-        url: "http://d.wbgapp.com/api/v2/order",
-        data: { goods: JSON.stringify(datas) },
-        headers: {
-          token: this.getToken
-          // token: "237cf94848711e2399fa1e8c1a74a395"
+
+      if (that.set.length) {
+        var datas = [];
+        for (let i = 0; i < that.set.length; i++) {
+          datas.push({
+            give_product_id: that.set[i].id,
+            num: that.set[i].num,
+            price: that.money.money
+          });
         }
-      }).then(ress => {
-        console.log(ress.data.order_no);
-        window.localStorage.setItem(
-          "order_no",
-          JSON.stringify(ress.data.order_no)
-        );
-        //支付
+
+        //下订单
         this.$axios({
           method: "POST",
-          url: "http://d.wbgapp.com/api/v2/pay/pre_order",
+          url: Config.restUrl + "api/v2/order",
+          data: { grade: JSON.stringify(datas) },
           headers: {
             token: this.getToken
             // token: "237cf94848711e2399fa1e8c1a74a395"
-          },
-          data: { id: ress.data.order_id }
-        }).then(pre_order => {
-          let jsapi = pre_order.data;
-          wx.ready(function() {
-            wx.chooseWXPay({
-              timestamp: jsapi.timeStamp,
-              nonceStr: jsapi.nonceStr,
-              package: jsapi.package,
-              signType: jsapi.signType,
-              paySign: jsapi.paySign,
-              success: function(jsres) {
-                alert("支付成功");
-                // console.log(jsres)
-              }
+          }
+        }).then(ress => {
+          console.log(ress.data);
+          window.localStorage.setItem(
+            "order_no",
+            JSON.stringify(ress.data.order_no)
+          );
+          //支付
+          if (ress.data.type == "grade") {
+            this.$axios({
+              method: "POST",
+              url: Config.restUrl + "api/v2/pay/grade_pre_order",
+              headers: {
+                token: that.getToken
+                // token: "237cf94848711e2399fa1e8c1a74a395"
+              },
+              data: { id: ress.data.order_id }
+            }).then(pre_order => {
+              let jsapi = pre_order.data;
+              wx.ready(function() {
+                wx.chooseWXPay({
+                  timestamp: jsapi.timeStamp,
+                  nonceStr: jsapi.nonceStr,
+                  package: jsapi.package,
+                  signType: jsapi.signType,
+                  paySign: jsapi.paySign,
+                  success: function(res) {
+                    if (res.errMsg === "chooseWXPay:ok") {
+                      that.$router.push({
+                        name: "Indent1",
+                        query: {
+                          orderNo: res.data
+                        }
+                      });
+                    }
+                  },
+                  fail: function(res) {
+                    alert("支付失败");
+                  },
+                  cancel: function(res) {
+                    alert("支付取消");
+                  }
+                });
+              });
             });
-          });
+          }
         });
-      });
+      } else {
+        alert("收货地址有误");
+      }
     }
   }
 };
 </script>
 
-<style lang="scss">
+    <style lang="scss">
 .indent {
   margin-top: 4.5rem;
   margin-bottom: 4.5rem;
@@ -322,7 +320,6 @@ export default {
     justify-content: space-between;
     z-index: 9999;
     font-size: 1.9375rem;
-
     i {
       color: #060606;
       font-size: 2.125rem;
@@ -348,11 +345,13 @@ export default {
     }
   }
   .indent-cart {
-    .indent-cart-header {
-      background: #fff;
-      padding: 1.25rem;
-      display: flex;
-      justify-content: space-between;
+    a {
+      .indent-cart-header {
+        background: #fff;
+        padding: 1.25rem;
+        display: flex;
+        justify-content: space-between;
+      }
     }
   }
   .indent-cart-header {

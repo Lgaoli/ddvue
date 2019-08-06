@@ -10,8 +10,8 @@
       <div class="shop"></div>
     </div>
     <div class="Integral-main">
-      <div v-if="money.length">
-        <div >
+      <div v-if="money">
+        <div v-for="(item,index) in money" :key="index">
           <div class="Integral-main-header" :style="bg" >
             <div style="text-align: right;">
               <router-link :to="{ path:'/IntegralDetail' }">
@@ -24,7 +24,7 @@
               <p>我的余额（积分）</p>
 
               <div style="padding:1.25rem;font-size:4rem;    font-weight: 700;">
-                <p>{{money}}</p>
+                <p>{{item.money}}</p>
               </div>
               <div style="padding:1.25rem">
                 <span style="padding:0.3rem 3rem;border:1px solid #fff;    border-radius: 50px;">可提现</span>
@@ -33,12 +33,12 @@
           </div>
           <div class="Integral-main-main">
             <div>
-              <p>500</p>
+              <p>{{item.total_income}}</p>
               <p style="font-size:1.3rem;color:#666666">累计收入</p>
             </div>
             <div style="width:1px;background:#999999"></div>
             <div>
-              <p>152</p>
+              <p>{{item.today_income}}</p>
               <p style="font-size:1.3rem;color:#666666">今日收入</p>
             </div>
           </div>
@@ -52,7 +52,7 @@
               制。
             </p>
             <router-link :to="{ path:'/IntegralExplain' }">
-              <div style="margin-top: 180px;
+              <div style="margin-top: 130px;
     text-align: center;color:#495587">
                 <p>提现说明</p>
               </div>
@@ -122,9 +122,12 @@ export default {
         // token: "237cf94848711e2399fa1e8c1a74a395"
       }
     }).then(res => {
+       console.log(res)
+      this.$set(that.money,'money',res.data.money)
+      this.$set(that.money,'today_income',res.data.today_income)
+      this.$set(that.money,'total_income',res.data.total_income)  
+      console.log(that.money)
      
-      that.money = res.data.money;
-       console.log(that.money)
     });
   }
 };

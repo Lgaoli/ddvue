@@ -16,9 +16,7 @@
         </div>
       </div>
       <div class="shop">
-        <router-link to="/shop">
-          <i class="iconfont icon-htmal5icon29"></i>
-        </router-link>
+     
       </div>
     </div>
     <div class="search-main">
@@ -84,7 +82,7 @@ export default {
           )
           .then(function(res) {
             that.searchshop = res.data;
-            // console.log(that.searchshop);
+            console.log(that.searchshop);
           })
           .catch(function(error) {
             that.searchshop.length == "0";

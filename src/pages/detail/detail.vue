@@ -20,13 +20,10 @@
         <div class="swiper-pagination" slot="pagination" style="text-align: right;"></div>
       </swiper>
       <div class="detail-main-main">
-     
         <div class="shopdetall">
           <div v-for="(items,indexs) in shopdetall" :key="indexs">
             <div class="shopmoney">
               <span class="supply_price">优惠价：￥ {{items.market_price}}</span>
-            
-           
             </div>
 
             <div class="shopname">
@@ -67,13 +64,13 @@
     <div class="detail-footer">
       <div class="detail-footer1">
         <div class="service">
-          <div class="service1">
-            <a>
+          <div class="service1" @click="service">
+            <router-link to="/service">
               <i class="iconfont">&#xe61c;</i>
               <span>客服</span>
-            </a>
+            </router-link>
           </div>
-          <div class="collect">
+          <div class="collect" :class="{'': !isshow,Selectcollect: isshow}" @click="isshow=!isshow">
             <a>
               <i class="iconfont">&#xe613;</i>
               <span>收藏</span>
@@ -93,9 +90,9 @@
           <div
             style=" border-top-right-radius: 6.25rem;border-bottom-right-radius: 6.25rem;background: #ef7634;font-size: 1.25rem; "
           >
-            <router-link :to="{path:'/shop'}">
+            <div @click="plank(shopdetall1)">
               <p style="color:#fff;font-size: 1.25rem;">立即购买</p>
-            </router-link>
+            </div>
           </div>
         </div>
       </div>
@@ -112,13 +109,14 @@
 </template>
 <script>
 import Vue from "vue";
-import { Tab, Tabs, Rate, Popup } from "vant";
+import { Tab, Tabs, Rate, Popup, Toast } from "vant";
 import { mapState, mapActions } from "vuex";
-import {Config} from "../../uitls/config";
+import { Config } from "../../uitls/config";
 Vue.use(Tab)
   .use(Tabs)
   .use(Rate)
-  .use(Popup);
+  .use(Popup)
+  .use(Toast);
 export default {
   data() {
     return {
@@ -140,10 +138,42 @@ export default {
       show: false,
       show1: false,
       maskShow: false,
-      getdata: []
+      getdata: [],
+
+      isshow: false
     };
   },
-  
+  beforeCreate() {
+    let that = this;
+    let url = window.location.href;
+    //let url =
+    //  "http://pub.hqyulin.com/?token=899a7451d56be0b3e66cf98fc8ea9f12#/";
+    let str = url.split("?")[1].split("#")[0];
+    let arr = str.split("=");
+    let strs = str.split("=")[1];
+    this.$axios({
+      //调用接口
+      method: "post",
+      url: Config.restUrl + "api/v2/user/isb",
+      // params: {
+      //   token: Token
+      // },
+      headers: {
+        token: strs
+        // token: "221f8fd0ca0be03bdefccf62b1f5ff6b"
+      }
+    }).then(
+      function(res) {
+        //接口返回数据
+        console.log(res);
+        // that.$router.push({ path: "/My" })
+      },
+      function(error) {
+        that.$router.push({ path: "/Call" });
+      }
+    );
+  },
+
   created() {
     this.list();
     this.comment();
@@ -152,7 +182,7 @@ export default {
     prev() {
       this.$router.go(-1);
     },
-   fixUrlFormat(text) {
+    fixUrlFormat(text) {
       let reg = new RegExp("http://api.ddjingxuan.cn/", "g");
       return text.replace(reg, "http://d.wbgapp.com/");
     },
@@ -160,13 +190,22 @@ export default {
       this.maskShow = !this.maskShow;
     },
     addCart(data) {
+      // this.$toast({
+      //   message: "已添加到购物车"
+      // });
+
+      // this.$router.push({ path: "/shop" });
+      this.$store.commit("addCart", data);
+    },
+    plank(data) {
+      this.$router.push({ path: "/Indent" });
       this.$store.commit("addCart", data);
     },
     comment() {
       var newsID = this.$route.query.id;
       var that = this;
       this.$axios
-        .get( Config.restUrl+"api/v2/comment/" + newsID)
+        .get(Config.restUrl + "api/v2/comment/" + newsID)
         .then(function(res) {
           that.detilcomment = res.data;
           // console.log(that.detilcomment)
@@ -179,27 +218,30 @@ export default {
       var newsID = this.$route.query.id;
       var that = this;
       this.$axios
-        .get( Config.restUrl+"api/v2/goods/" + newsID)
+        .get(Config.restUrl + "api/v2/goods/" + newsID)
         .then(function(res) {
           that.detileswiper = res.data.banner;
-  
-           let alter = that.fixUrlFormat(res.data.detail.goods_content);
 
-            that.$set(res.data.detail, "goods_content", alter);
-            console.log(res.data.detail)
-            that.shopdetall.push(res.data.detail);
+          let alter = that.fixUrlFormat(res.data.detail.goods_content);
 
-            //            console.log(that.shopdetall)
+          that.$set(res.data.detail, "goods_content", alter);
+          console.log(res.data.detail);
+          that.shopdetall.push(res.data.detail);
 
-            // // console.log(te);
+          //            console.log(that.shopdetall)
 
-            that.shopdetall1 = res.data.detail;
-            that.$set(that.shopdetall1, "shopimg", that.detileswiper[0].img_url);
-            console.log(that.shopdetall1);
+          // // console.log(te);
+
+          that.shopdetall1 = res.data.detail;
+          that.$set(that.shopdetall1, "shopimg", that.detileswiper[0].img_url);
+          console.log(that.shopdetall1);
         })
         .catch(function(error) {
           // console.log(error);
         });
+    },
+    service() {
+      this.$router.push({ path: "/service" });
     }
   },
   computed: {
@@ -243,13 +285,13 @@ export default {
     font-size: 2.125rem;
   }
   .back {
-    width: 3.125rem;
+    width: 4.125rem;
     text-align: center;
     height: 100%;
     line-height: 4.5rem;
   }
   .shop {
-    width: 3.125rem;
+    width: 5.125rem;
     text-align: center;
     height: 100%;
     line-height: 4.5rem;
@@ -381,19 +423,40 @@ export default {
     .service {
       display: flex;
       flex: 1;
-      div {
+      .service1 {
         flex: 0.4;
-      }
-      a {
+         a {
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 1.25rem;
+        font-size: 1.69rem;
         i {
-          font-size: 1.25rem;
+          font-size: 2rem;
+        }
+      }
+     
+      }
+ .collect{
+        flex: 0.4;
+         a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.69rem;
+        i {
+          font-size: 2rem;
+        }
+      }
+     
+      }
+      .Selectcollect {
+        color: #fc7a33;
+        a {
+          color: #fc7a33;
         }
       }
     }
+
     .detail-buy {
       line-height: 4.4375rem;
       flex: 1;

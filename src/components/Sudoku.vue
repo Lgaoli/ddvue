@@ -1,6 +1,6 @@
 <template>
   <div class="Sudoku">
-    <div class="Sud-list">
+    <div class="Sud-list" @click="click">
       <img src="../assets/img/点.png" alt>
       <p>新人专区</p>
     </div>
@@ -16,12 +16,36 @@
       <p>联系客服</p>
     </div>
     </router-link>
-    <div class="Sud-list">
+    <div class="Sud-list" @click="clickt">
       <img src="../assets/img/选.png" alt>
       <p>品牌直供</p>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      selectedId:1,
+      selectedIdt:3
+    }
+  },
+    methods: {
+      click(){
+        this.$emit('Click',this.selectedId)
+
+      }
+,
+
+       clickt(){
+        this.$emit('Clickt',this.selectedIdt)
+
+      }
+    },
+}
+</script>
+
 <style lang="scss">
 .Sudoku {
   width: 100%;

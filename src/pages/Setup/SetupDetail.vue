@@ -14,64 +14,32 @@
 
     <div class="detail-main">
       <swiper :options="swiperOption">
-        <swiper-slide v-for="(item,index) in detileswiper" :key="index">
-          <img :src="item.img_url" class="swiper-img">
+        <swiper-slide :key="index">
+          <img
+            src="http://d.wbgapp.com/uploads/20190712/6a168ea963696319d5eb719e285d9f8a.jpg"
+            class="swiper-img"
+          >
         </swiper-slide>
         <div class="swiper-pagination" slot="pagination" style="text-align: right;"></div>
       </swiper>
       <div class="detail-main-main">
         <div class="shopdetall">
-          <div v-for="(items,indexs) in shopdetall" :key="indexs">
+          <div>
             <div class="shopmoney">
-              <span class="supply_price">优惠价：￥ {{items.market_price}}</span>
-              <div class="share" @click="show1=true">
-                <span>
-                  <i class="iconfont">&#xe63e;</i>
-                  分享
-                </span>
-              </div>
-              <van-popup v-model="show1" position="bottom" :overlay="true">
-                <div>
-                  <div class="popup" style="text-aligh:center;padding:0.8rem">
-                    <div style @click="sharefriend(shopdetall1)">
-                      <img
-                        src="../../assets/img/share_ic_weixin.png"
-                        alt
-                        style="  width: 4.6875rem;height:4.6875rem"
-                      >
-                      <p style="padding:1.2rem">微信好友</p>
-                    </div>
-                    <div style="background:rgb(247, 247, 247);height:8.6rem;width:0.19rem"></div>
-                    <div @click="sharefriendqs(shopdetall1)">
-                      <img
-                        src="../../assets/img/share_ic_moments.png"
-                        style="  width: 4.6875rem;height4.6875rem"
-                      >
-                      <p style="padding:1.2rem">微信朋友圈</p>
-                    </div>
-                  </div>
-                  <div style="width:100%;
-          height: 0.6rem;
-          background:#f7f7f7"></div>
-                  <div class="close" @click="show1=false">取消</div>
-                </div>
-              </van-popup>
+              <span class="supply_price">优惠价：￥ {{money}}</span>
             </div>
 
             <div class="shopname">
-              <p style="font-weight:600">{{items.goods_name}}</p>
+              <p style="font-weight:600">{{goods_name}}</p>
             </div>
             <div class="goods_sales" style="padding:0.95rem">
-              <div
-                class="goods_sale_text"
-                style="  text-decoration: line-through;"
-              >原价:{{items.market_price}}</div>
-              <div class="goods_sale_text">库存量:{{items.store_count}}</div>
-              <div class="goods_sale_text">销量:{{items.good_sales}}</div>
+              <div class="goods_sale_text" style="  text-decoration: line-through;">原价:{{money}}</div>
+              <div class="goods_sale_text">库存量:1000</div>
+              <div class="goods_sale_text">销量:10000</div>
             </div>
             <div class="detail-main-main-content" style="overflow: hidden;">
               <van-tabs v-model="active">
-                <van-tab title="商品介绍" v-html="items.goods_content"></van-tab>
+                <van-tab title="商品介绍">暂无数据</van-tab>
                 <van-tab title="评论" style="       padding: 0.5rem;">
                   <div v-if="detilcomment.length>0">
                     <div v-for="(items,indexs) in detilcomment" :key="indexs" class="commentitems">
@@ -94,11 +62,11 @@
       </div>
     </div>
     <div class="detail-footer">
-      <div class="detail-buy" @click="addSetupCart(shopdetall)">
+      <div class="detail-buy" @click="SetupCart(shopdetall1)">
         <div
           style="background: #ef7634;font-size: 1.25rem;    padding: 1.25rem;text-align: center; "
         >
-          <router-link :to="{path:'/SetupIndent',query:{id:newsID}}">
+          <router-link :to="{path:''}">
             <p style="color:#fff;font-size: 1.25rem;etter-spacing: 8px;">立即购买</p>
           </router-link>
         </div>
@@ -146,7 +114,8 @@ export default {
       show1: false,
       maskShow: false,
       getdata: [],
-      newsID: ""
+      money: 0,
+      goods_name: ""
     };
   },
   beforeCreate() {
@@ -168,134 +137,72 @@ export default {
   created() {
     this.list();
     this.comment();
-    let self = this;
-    this.$axios({
-      method: "post",
-      url: Config.restUrl + "api/v2/user/jdk",
-      data: {
-        url: location.href.split("#")[0]
-      },
-      headers: {
-        token: this.getToken
-      }
-    }).then(rest => {
-      self.getdata = rest.data;
-      wx.config({
-        debug: false,
-        appId: rest.data.appId,
-        timestamp: rest.data.timestamp,
-        nonceStr: rest.data.nonceStr,
-        signature: rest.data.signature,
-        jsApiList: [
-          "onMenuShareTimeline",
-          "onMenuShareAppMessage",
-          "updateAppMessageShareData"
-        ]
-      });
-    });
   },
   methods: {
     prev() {
       this.$router.go(-1);
     },
-    //分享朋友
-    sharefriend(data) {
-      this.$axios({
-        method: "get",
-        url: Config.restUrl + "api/v2/user/jdk",
-        headers: {
-          token: this.getToken
-          // token: "4774c94460f64a01800f2672f7230f2d"
-        },
-        params: location.href.split("#")[0]
-        // params: "http://pub.hqyulin.com/?token=4774c94460f64a01800f2672f7230f2d"
-      }).then(shareres => {
-        console.log(shareres);
-        wx.config({
-          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-          appId: appId, // 必填，公众号的唯一标识
-          timestamp: timestamp, // 必填，生成签名的时间戳
-          nonceStr: nonceStr, // 必填，生成签名的随机串
-          signature: signature, // 必填，签名，见附录1
-          jsApiList: ["onMenuShareTimeline", "onMenuShareAppMessage"]
-        });
-      });
-      console.log(data);
-      wx.ready(function() {
-        //需在用户可能点击分享按钮前就先调用
-        wx.updateAppMessageShareData({
-          title: data.goods_name, // 分享标题
-          desc: "", // 分享描述
-          link: window.location.href.split("#")[0], // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-          imgUrl: data.shopimg, // 分享图标
-          success: function(res) {
-            console.log(res);
-            // 设置成功
-          },
-          cancal: function(res) {
-            //取消之后
-            alert("分享失败");
-          }
-        });
-      });
+    fixUrlFormat(text) {
+      let reg = new RegExp("http://api.ddjingxuan.cn/", "g");
+      return text.replace(reg, "http://d.wbgapp.com/");
     },
-    //分享朋友圈
-    sharefriendqs(data) {
-      console.log(this);
-      wx.ready(function() {
-        //需在用户可能点击分享按钮前就先调用
-        wx.updateTimelineShareData({
-          title: data.goods_name, // 分享标题
-          desc: "", // 分享描述
-          link: window.location.href.split("#")[0], // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-          imgUrl: data.shopimg, // 分享图标
-          success: function(res) {
-            console.log(res);
-            // 设置成功
-          },
-          cancel: function(res) {
-            alert("分享失败");
-            // 用户取消分享后执行的回调函数
-          }
-        });
-      });
-    },
+
     setMaskShow() {
       this.maskShow = !this.maskShow;
     },
-    addSetupCart(data) {
-    
-      this.$store.commit("addSetupCart", data);
+    SetupCart(data) {
+      this.$router.push({
+        path: "/SetupPicking",
+        query: { money: this.money }
+      });
     },
     comment() {
-      this.newsID = this.$route.query.id;
-      var that = this;
-      this.$axios
-        .get(Config.restUrl + "api/v2/comment/" + this.newsID)
-        .then(function(res) {
-          that.detilcomment = res.data;
-          // console.log(that.detilcomment)
-        })
-        .catch(function(error) {
-          // console.log(error);
-        });
+      this.money = this.$route.query.money;
+      if (this.money) {
+        if (this.money == 99) {
+          this.goods_name = "黄金会员";
+        } else if (this.money == 299) {
+          this.goods_name = "钻石会员";
+        } else if (this.money == 9680) {
+          this.goods_name = "至尊合伙人";
+        }
+      }else{
+        this.$router.push({
+        path: "/Setup"
+    
+      })
+      }
+
+      // this.$axios
+      //   .get(Config.restUrl + "api/v2/comment/" + this.newsID)
+      //   .then(function(res) {
+      //     that.detilcomment = res.data;
+
+      //     // let alter = that.fixUrlFormat(res.data.detail.goods_content);
+      //     // console.log(that.detilcomment)
+      //   })
+      //   .catch(function(error) {
+      //     // console.log(error);
+      //   });
     },
 
     list() {
-      var newsID = this.$route.query.id;
-      var that = this;
-      this.$axios
-        .get(Config.restUrl + "api/v2/goods/" + newsID)
-        .then(function(res) {
-          that.detileswiper = res.data.banner;
-          that.shopdetall.push(res.data.detail);
-          that.shopdetall1 = res.data.detail;
-          that.$set(that.shopdetall1, "shopimg", that.detileswiper[0].img_url);
-          // console.log(that.shopdetall1);
-        })
-        .catch(function(error) {
-          // console.log(error);
-        });
+      //   var newsID = this.$route.query.id;
+      //   var that = this;
+      //   this.$axios
+      //     .get(Config.restUrl + "api/v2/goods/" + newsID)
+      //     .then(function(res) {
+      //       that.detileswiper = res.data.banner;
+      //       let alter = that.fixUrlFormat(res.data.detail.goods_content);
+      //       that.$set(res.data.detail, "goods_content", alter);
+      //       that.shopdetall.push(res.data.detail);
+      //       that.shopdetall1 = res.data.detail;
+      //       that.$set(that.shopdetall1, "shopimg", that.detileswiper[0].img_url);
+      //       // console.log(that.shopdetall1);
+      //     })
+      //     .catch(function(error) {
+      //       // console.log(error);
+      //     });
     }
   },
   computed: {

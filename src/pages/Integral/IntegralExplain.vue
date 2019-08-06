@@ -29,7 +29,7 @@
         询。
       </div>
     </div>
-    <div>&nbsp;&nbsp;&nbsp;4.10积分=1块钱，每满1000积分可提现。</div>
+    <div>&nbsp;&nbsp;&nbsp;4.1积分=1块钱，每满1000积分可提现。</div>
   </div>
 </template>
 

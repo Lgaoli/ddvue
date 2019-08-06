@@ -83,7 +83,7 @@ export default {
   },
   methods: {
     back() {
-      this.$router.go(-1); //返回上一层
+    this.$router.push({ path: "/" });
     },
     getAuthCode() {
       if (this.phone) {

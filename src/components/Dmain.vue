@@ -14,13 +14,7 @@
         <div class="wrapper">
           <swiper :options="swiperOption">
             <swiper-slide v-for="(item,index) in swiperList" :key="index">
-              <img
-                v-if="item.img"
-                :src="item.img"
-                :key="item.img"
-                class="swiper-img"
-               
-              >
+              <img v-if="item.img" :src="item.img" :key="item.img" class="swiper-img">
 
               <img src="../assets/loading.gif" alt v-else>
             </swiper-slide>
@@ -31,7 +25,7 @@
             ></div>
           </swiper>
         </div>
-        <Dsudoku></Dsudoku>
+        <Dsudoku @Click="clickid" @Clickt="clickidt"></Dsudoku>
         <Dhot></Dhot>
         <Drecently></Drecently>
       </div>
@@ -47,13 +41,7 @@
               <router-link :to="{path:'/Detail',query:{id:item.goods_id}}" class="rec-list-a">
                 <div class="rec-list-a1">
                   <div class="rec-list-img">
-                    <img
-                      v-if="item.img_url"
-                      :src="item.img_url"
-                      :key="item.img_url"
-                      
-                      alt
-                    >
+                    <img v-if="item.img_url" :src="item.img_url" :key="item.img_url" alt>
 
                     <img src="../assets/loading.gif" alt v-else>
                   </div>
@@ -99,6 +87,7 @@ import Dswiper from "../components/Dswiper";
 import Dgotop from "../components/Dgotop";
 import Drecently from "../components/recently";
 import Dhot from "../components/Dhot";
+import { Config } from "../uitls/config";
 export default {
   components: {
     Dswiper,
@@ -124,6 +113,8 @@ export default {
       selectedId: 0,
       items: [{ name: "首页", cat_id: 0 }],
       shop: [],
+
+      value: "",
       options: {
         activeColor: "#ef7634",
         // 可在这里指定labelKey为你数据里文字对应的字段
@@ -134,7 +125,7 @@ export default {
   created() {
     let that = this;
     this.$axios
-      .get("http://d.wbgapp.com/api/v2/cate")
+      .get(Config.restUrl + "api/v2/cate")
       .then(function(res) {
         that.items = that.items.concat(res.data);
       })
@@ -152,10 +143,52 @@ export default {
     window.removeEventListener("scroll", this.scrollToTop);
   },
   methods: {
+    //子传给父的值
+    clickid(value) {
+      this.selectedId = value;
+
+      
+  
+          let that = this;
+          this.$axios
+            .get(Config.restUrl + "api/v2/goods/by_category", {
+              params: {
+                id: this.items[1].cat_id
+              }
+            })
+            .then(function(res) {
+              that.shop = res.data;
+              that.hackReset = true;
+            })
+            .catch(function(error) {
+              that.show = false;
+            });
+        
+      
+    },
+     clickidt(value) {
+      this.selectedId = value;
+      console.log(this);
+      
+          let that = this;
+          this.$axios
+            .get(Config.restUrl + "api/v2/goods/by_category", {
+              params: {
+                id: this.items[3].cat_id
+              }
+            })
+            .then(function(res) {
+              that.shop = res.data;
+              that.hackReset = true;
+            })
+            .catch(function(error) {
+              that.show = false;
+            });
+    },
     swiper() {
       var that = this;
       this.$axios
-        .get("http://d.wbgapp.com/api/v2/banner")
+        .get(Config.restUrl + "api/v2/banner")
         .then(function(res) {
           that.swiperList = res.data;
 
@@ -173,10 +206,11 @@ export default {
         document.body.scrollTop; //原生兼容
     },
     onClick(index) {
+      console.log(this);
       if (this.items[index].cat_id > 0) {
         let that = this;
         this.$axios
-          .get("http://d.wbgapp.com/api/v2/goods/by_category", {
+          .get(Config.restUrl + "api/v2/goods/by_category", {
             params: {
               id: this.items[index].cat_id
             }

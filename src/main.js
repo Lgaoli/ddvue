@@ -8,9 +8,9 @@ import './uitls/rem'
 import axios from 'axios'
 import Vuex from 'vuex'
 import store from './vuex/store'
-import te from './vuex/test'
-import fastclick from 'fastclick'
-fastclick.attach(document.body)
+
+import FastClick from 'fastclick'
+FastClick.attach(document.body)
 // import ajax from './lib/ajax/Ajax.js'//----------------注意这个地方--axios
 
 
@@ -25,6 +25,20 @@ axios.defaults.transformRequest = [function (data) {
   }
   return ret
 }]
+
+
+
+
+FastClick.prototype.focus = function (targetElement) {
+  let length;
+  if (targetElement.setSelectionRange && targetElement.type.indexOf('date') !== 0 && targetElement.type !== 'time' && targetElement.type !== 'month') {
+    length = targetElement.value.length;
+    targetElement.focus();
+    targetElement.setSelectionRange(length, length);
+  } else {
+    targetElement.focus();
+  }
+};
 
 
 Vue.prototype.$axios = axios
@@ -43,7 +57,7 @@ import 'swiper/dist/css/swiper.css'
 new Vue({
   el: '#app',
   router,
-  store,te,
+  store,
   components: { App },
   template: '<App/>'
 })

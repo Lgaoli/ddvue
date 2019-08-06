@@ -8,28 +8,79 @@
       <div class="shop"></div>
     </div>
     <div class="Setup-main">
-      <div v-if="Setuplist.length==0">商品不存在</div>
-      <div v-else>
-        <div v-for="(item,index) in Setuplist" :key="index">
-          <router-link :to="{path:'/SetupDetail',query:{id:item.goods_id}}" class="rec-list-a">
-            <div style="border-bottom:1px solid #DEDEDE">
-              <div class="Setup-main-img" style="padding:1.5rem 0px 0rem">
-                <img :src="item.img_url" alt style="width: 100%;border-radius: 5px;">
-              </div>
-              <div class="Setup-main-text" style="padding:0.8rem 0">
-                <div style="padding:.8rem 0">{{item.goods_name}}</div>
-                <div
-                  style="display: flex;justify-content: space-between;align-items: center;justify-items: center;"
-                >
-                  <div style="color:#EF7634">￥{{item.market_price}}</div>
-                  <div style="color: #fff;background: #F15E0E;padding:.3rem;border-radius: 5px;">
-                    <p>立即购买</p>
-                  </div>
+      <!-- <div v-if="Setuplist.length==0">商品不存在</div> -->
+
+      <div>
+        <router-link :to="{path:'/SetupDetail',query:{money:99}}" class="rec-list-a">
+          <div style="border-bottom:1px solid #DEDEDE">
+            <div class="Setup-main-img" style="padding:1.5rem 0px 0rem">
+              <img
+                src="http://d.wbgapp.com/uploads/20190712/6a168ea963696319d5eb719e285d9f8a.jpg"
+                alt
+                style="width: 100%;border-radius: 5px;"
+              >
+            </div>
+            <div class="Setup-main-text" style="padding:0.8rem 0">
+              <div style="padding:.8rem 0">黄金会员</div>
+              <div
+                style="display: flex;justify-content: space-between;align-items: center;justify-items: center;"
+              >
+                <div style="color:#EF7634">￥99</div>
+                <div style="color: #fff;background: #F15E0E;padding:.3rem;border-radius: 5px;">
+                  <p>立即购买</p>
                 </div>
               </div>
             </div>
-          </router-link>
-        </div>
+          </div>
+        </router-link>
+      </div>
+      <div>
+        <router-link :to="{path:'/SetupDetail',query:{money:299}}" class="rec-list-a">
+          <div style="border-bottom:1px solid #DEDEDE">
+            <div class="Setup-main-img" style="padding:1.5rem 0px 0rem">
+              <img
+                src="http://d.wbgapp.com/uploads/20190712/6a168ea963696319d5eb719e285d9f8a.jpg"
+                alt
+                style="width: 100%;border-radius: 5px;"
+              >
+            </div>
+            <div class="Setup-main-text" style="padding:0.8rem 0">
+              <div style="padding:.8rem 0">钻石会员</div>
+              <div
+                style="display: flex;justify-content: space-between;align-items: center;justify-items: center;"
+              >
+                <div style="color:#EF7634">￥299</div>
+                <div style="color: #fff;background: #F15E0E;padding:.3rem;border-radius: 5px;">
+                  <p>立即购买</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </router-link>
+      </div>
+      <div>
+        <router-link :to="{path:'/SetupDetail',query:{money:9680}}" class="rec-list-a">
+          <div style="border-bottom:1px solid #DEDEDE">
+            <div class="Setup-main-img" style="padding:1.5rem 0px 0rem">
+              <img
+                src="http://d.wbgapp.com/uploads/20190712/6a168ea963696319d5eb719e285d9f8a.jpg"
+                alt
+                style="width: 100%;border-radius: 5px;"
+              >
+            </div>
+            <div class="Setup-main-text" style="padding:0.8rem 0">
+              <div style="padding:.8rem 0">至尊合伙人</div>
+              <div
+                style="display: flex;justify-content: space-between;align-items: center;justify-items: center;"
+              >
+                <div style="color:#EF7634">￥9680元</div>
+                <div style="color: #fff;background: #F15E0E;padding:.3rem;border-radius: 5px;">
+                  <p>立即购买</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </router-link>
       </div>
     </div>
   </div>
@@ -60,7 +111,10 @@ export default {
   },
   methods: {
     back() {
-      this.$router.go(-1); //返回上一层
+     this.$router.push({
+        path: "/"
+    
+      })
     }
   }
 };

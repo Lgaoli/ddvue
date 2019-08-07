@@ -16,12 +16,12 @@
             <div style="text-align: right;">
               <router-link :to="{ path:'/IntegralDetail' }">
                 <span
-                  style="padding:0.1rem 0.8rem;border:1px solid #fff;    border-radius: 50px;color:#fff"
+                  style="padding:0.3rem 0.96rem;border:1px solid #fff;    border-radius: 50px;color:#fff"
                 >积分明细</span>
               </router-link>
             </div>
             <div style="text-align: center;">
-              <p>我的余额（积分）</p>
+              <p style="font-size: 1.5rem;">我的余额（积分）</p>
 
               <div style="padding:1.25rem;font-size:4rem;    font-weight: 700;">
                 <p>{{item.money}}</p>
@@ -123,9 +123,10 @@ export default {
       }
     }).then(res => {
        console.log(res)
-      this.$set(that.money,'money',res.data.money)
-      this.$set(that.money,'today_income',res.data.today_income)
-      this.$set(that.money,'total_income',res.data.total_income)  
+    that.money.push(res.data)
+ //     this.$set(that.money,'money',res.data.money)
+   //   this.$set(that.money,'today_income',res.data.today_income)
+   //   this.$set(that.money,'total_income',res.data.total_income)  
       console.log(that.money)
      
     });

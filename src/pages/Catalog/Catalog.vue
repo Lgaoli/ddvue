@@ -5,7 +5,7 @@
       <div class>我的二维码</div>
       <div class="shop"></div>
     </div> -->
-    <div class="Catalog-main" :style="bg" v-if="is_qrcode===1">
+    <div class="Catalog-main" :style="bg" v-if="is_qrcode==0">
       <div
         style="
     padding-top: 0.5rem;

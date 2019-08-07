@@ -1,6 +1,6 @@
 <template>
   <div id="app" style="font-size:1.3rem;background:#fff">
-    <router-view  v-if="isRouterAlive"/>
+    <router-view v-if="isRouterAlive"/>
   </div>
 </template>
 
@@ -23,6 +23,9 @@ export default {
     return {
       isRouterAlive: true
     };
+  },
+  beforeDestroy() {
+    document.querySelector("body").style.backgroundColor = "#fff";
   },
   beforeCreate() {
     let that = this;

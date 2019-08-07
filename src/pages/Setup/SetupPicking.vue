@@ -367,6 +367,11 @@ export default {
           justify-content: space-between;
           padding: 0 0.8rem;
           align-items: center;
+          .van-stepper{
+            .van-stepper__input{
+                  color: #000;
+            }
+          }
         }
       }
     }

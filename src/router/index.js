@@ -12,6 +12,7 @@ const Search = r => require.ensure([], () => r(require('../pages/Search/Search.v
 const Detail = r => require.ensure([], () => r(require('../pages/detail/detail.vue')), 'Detail')
 const shippingAddress = r => require.ensure([], () => r(require('../pages/shippingAddress/shippingAddress.vue')), 'shippingAddress')
 const AddressEdit = r => require.ensure([], () => r(require('../pages/shippingAddress/AddressEdit.vue')), 'AddressEdit')
+// const testadd = r => require.ensure([], () => r(require('../pages/shippingAddress/testadd.vue')), 'testadd')
 const Indent = r => require.ensure([], () => r(require('../pages/Indent/indent.vue')), 'Indent')
 const Indent1 = r => require.ensure([], () => r(require('../pages/Indent/indent1.vue')), 'Indent1')
 const Call = r => require.ensure([], () => r(require('../pages/call/call.vue')), 'Call')
@@ -112,6 +113,18 @@ const router = new Router({
       },
       component: AddressEdit
     },
+
+    // {
+    //   path: '/testadd',
+    //   name: 'testadd',
+    //   meta: {
+    //     requireAuth: false,  // 添加该字段，表示进入这个路由是需要登录的
+    //     title: '收货地址'
+    //   },
+    //   component: testadd
+    // },
+
+
     {
       path: '/Indent',
       name: 'Indent',
@@ -217,7 +230,7 @@ const router = new Router({
       path: '/StudyDetails',
       name: 'StudyDetails',
       meta: {
-        title: '学习详情',
+  
         requireAuth: false,
         title: '资讯详情'
       },
@@ -227,7 +240,7 @@ const router = new Router({
       name: 'SetupDetail',
       meta: {
         requireAuth: false,
-        title: '资讯详情'
+        title: '我要开店'
       },
       component: SetupDetail
     }, {
@@ -235,7 +248,7 @@ const router = new Router({
       name: 'SetupIndent',
       meta: {
         requireAuth: false,
-        title: '资讯详情'
+        title: '我要开店'
       },
       component: SetupIndent
     }, {
@@ -243,7 +256,7 @@ const router = new Router({
       name: 'SetupPicking',
       meta: {
         requireAuth: false,
-        title: '资讯详情'
+        title: '我要开店'
       },
       component: SetupPicking
     }, {
@@ -260,21 +273,21 @@ const router = new Router({
 
 })
 
-router.beforeEach((to, from, next) => {
-  next()
+// router.beforeEach((to, from, next) => {
+//   next()
 
-  let token = window.localStorage.getItem("token");
-  if (token) {
-    if (to.meta.title) {
-      document.title = to.meta.title
-    }
-    next()
-  }
-  else {
-    window.location.href = "http://d.wbgapp.com/api/v2/code/user"
-  }
+//   let token = window.localStorage.getItem("token");
+//   if (token) {
+//     if (to.meta.title) {
+//       document.title = to.meta.title
+//     }
+//     next()
+//   }
+//   else {
+//     window.location.href = "http://d.wbgapp.com/api/v2/code/user"
+//   }
 
-})
+// })
 
 
 export default router

@@ -84,13 +84,14 @@
 </template>
 <script>
 import Vue from "vue";
-import { Tab, Tabs, Rate, Popup } from "vant";
+import { Tab, Tabs, Rate, Popup, Toast } from "vant";
 import { mapState, mapActions } from "vuex";
 import wx from "weixin-js-sdk";
 Vue.use(Tab)
   .use(Tabs)
   .use(Rate)
-  .use(Popup);
+  .use(Popup)
+  .use(Toast);
 import { Config } from "../../uitls/config";
 export default {
   data() {
@@ -151,9 +152,28 @@ export default {
       this.maskShow = !this.maskShow;
     },
     SetupCart(data) {
-      this.$router.push({
-        path: "/SetupPicking",
-        query: { money: this.money }
+      this.$axios({
+        //调用接口
+        method: "post",
+        url: Config.restUrl + "api/v2/agency/is_buy",
+       data: {
+          price: this.money
+        },
+        headers: {
+          token: this.getToken
+          // token: "221f8fd0ca0be03bdefccf62b1f5ff6b"
+        }
+      }).then(res => {
+        console.log(res);
+       
+          
+         this.$router.push({
+           path: "/SetupPicking",
+           query: { money: this.money }
+         });
+      
+      }).catch(err=>{
+             Toast('请勿重复购买或低于当前等级');
       });
     },
     comment() {
@@ -166,11 +186,10 @@ export default {
         } else if (this.money == 9680) {
           this.goods_name = "至尊合伙人";
         }
-      }else{
+      } else {
         this.$router.push({
-        path: "/Setup"
-    
-      })
+          path: "/Setup"
+        });
       }
 
       // this.$axios
@@ -208,6 +227,10 @@ export default {
   computed: {
     goods_num() {
       return this.$store.state;
+    },
+
+    getToken() {
+      return this.$store.getters.getToken;
     }
   }
 };

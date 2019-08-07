@@ -9,7 +9,7 @@
       <div class="shop"></div>
     </div>
     <div class="IntegralD-main">
-      <div v-if="de.length">
+      <div v-if="de">
         <div class="IntegralD-main-text" v-for="(item,index) in de" :key="index">
           <div style="line-height: 1.8rem;">
             <div style="font-size:1.6rem;">{{item.type}}</div>
@@ -23,7 +23,30 @@
           </div>
         </div>
       </div>
-      <div v-else>暂无数据</div>
+      <div v-else>
+        <div>
+          <div class="shopimg" style="padding:1.3rem">
+            <img src="../../assets/img/img_empty_shopping_cart.png">
+          </div>
+          <p style="color:#9FA4A5;font-size:1.5rem">暂时没有数据，快去逛逛吧~</p>
+          <router-link to="/My">
+            <div
+              class="shopbut"
+              style="color:#9FA4A5;font-size:1.5rm;padding:1.16rem;border:#dedede 1px solid;margin-top:1rem;border-radius: 10px;"
+            >
+              <p>个人中心</p>
+            </div>
+          </router-link>
+          <router-link to="/">
+            <div
+              class="shopbut"
+              style="color:#9FA4A5;font-size:1.5rm;padding:1.16rem;border:#dedede 1px solid;margin-top:1rem;border-radius: 10px;"
+            >
+              <p>立即逛逛</p>
+            </div>
+          </router-link>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -52,14 +75,14 @@ export default {
     let that = this;
     this.$axios({
       method: "get",
-      url: Config.restUrl + "api/v2/user/earns" ,
+      url: Config.restUrl + "api/v2/user/earns",
       headers: {
         token: that.getToken
         // token: "237cf94848711e2399fa1e8c1a74a395"
       }
     }).then(res => {
       console.log(res);
-      that.de = res.data.data;
+      that.de = res.data.data.data;
     });
   },
   methods: {

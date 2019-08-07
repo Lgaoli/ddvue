@@ -98,6 +98,7 @@
 import Vue from "vue";
 import wx from "weixin-js-sdk";
 import { Config } from "../../uitls/config";
+
 import {
   RadioGroup,
   Radio,
@@ -108,7 +109,8 @@ import {
   SubmitBar,
   Card,
   SwipeCell,
-  Dialog
+  Dialog,
+  Toast
 } from "vant";
 Vue.use(Checkbox)
   .use(CheckboxGroup)
@@ -118,7 +120,8 @@ Vue.use(Checkbox)
   .use(SwipeCell)
   .use(RadioGroup)
   .use(Radio)
-  .use(AddressList);
+  .use(AddressList)
+  .use(Toast);
 export default {
   data() {
     return {
@@ -241,7 +244,7 @@ export default {
         this.$axios({
           method: "POST",
           url: Config.restUrl + "api/v2/order",
-          data: { grade: JSON.stringify(datas) },
+          data: { grade: JSON.stringify(datas),price:that.money.money },
           headers: {
             token: this.getToken
             // token: "237cf94848711e2399fa1e8c1a74a395"

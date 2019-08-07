@@ -366,7 +366,7 @@ export default {
   watch: {}
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss" >
 .detail-header {
   border-bottom: 1px solid #ccc;
   background-color: #fff;
@@ -383,7 +383,6 @@ export default {
   justify-content: space-between;
   z-index: 9999;
   font-size: 1.9375rem;
-
   i {
     color: #060606;
     font-size: 2.125rem;
@@ -422,7 +421,6 @@ export default {
           height: 8.25rem;
           img {
             box-sizing: border-box;
-
             height: 100%;
           }
           .shoping-cart-de {
@@ -441,7 +439,6 @@ export default {
         }
         .shopname {
           flex: 1;
-
           p {
             display: -webkit-box;
             -webkit-box-orient: vertical;
@@ -458,6 +455,11 @@ export default {
               justify-content: space-between;
               .del {
             padding: 0.7rem;
+              }
+              .van-stepper{
+                .van-stepper__input{
+                  color: #333;
+                }
               }
             }
           }

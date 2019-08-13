@@ -7,11 +7,13 @@
 <script>
 import Vue from "vue";
 import wx from "weixin-js-sdk";
-import { Tab, Tabs, Popup, Loading } from "vant";
+import { Config } from "@/uitls/config";
+import { Tab, Tabs, Popup, Loading, Toast } from "vant";
 Vue.use(Tab)
   .use(Tabs)
   .use(Popup)
-  .use(Loading);
+  .use(Loading)
+  .use(Toast);
 export default {
   name: "App",
   provide() {
@@ -24,8 +26,8 @@ export default {
       isRouterAlive: true
     };
   },
-  beforeDestroy() {
-    document.querySelector("body").style.backgroundColor = "#fff";
+  mounted() {
+    var that = this;
   },
   beforeCreate() {
     let that = this;
@@ -59,15 +61,8 @@ export default {
         ) {
           localStorage.setItem("token", "");
           var newdata = localStorage.getItem("token");
-          // var newdataObj = JSON.parse(newdata);
-
           this.$store.commit("setToken", newdata.data);
-
-          //   if (this.$store.state.token) {
-          //     this.$router.push("/");
-          //   } else {
-          //  window.location.href = "https://d.wbgapp.com/api/v2/code/user"
-          //   }
+          window.location.href = "https://api.ddjingxuan.cn/api/v2/code/user";
         } else {
           this.$store.commit("setToken", dataObj.data);
         }
@@ -75,7 +70,20 @@ export default {
     } else {
     }
   },
-
+  created() {
+    var that = this;
+    this.$axios({
+      method: "post",
+      url: Config.restUrl + "api/v2/token/inviter",
+      headers: {
+        token: that.getToken
+      }
+    })
+      .then(res => {})
+      .catch(err => {
+        Toast("请重新刷新下页面");
+      });
+  },
   beforeDestroy() {
     if (this.timer) {
       clearInterval(this.timer); // 在Vue实例销毁前，清除我们的定时器
@@ -87,6 +95,11 @@ export default {
       this.$nextTick(function() {
         this.isRouterAlive = true;
       });
+    }
+  },
+  computed: {
+    getToken() {
+      return this.$store.getters.getToken;
     }
   }
 };

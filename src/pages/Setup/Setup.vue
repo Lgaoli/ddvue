@@ -93,6 +93,39 @@ export default {
       Setuplist: []
     };
   },
+    beforeCreate() {
+    let that = this;
+    let url = window.location.href;
+    //let url =
+    //  "http://pub.hqyulin.com/?token=899a7451d56be0b3e66cf98fc8ea9f12#/";
+    let str = url.split("?")[1].split("#")[0];
+    let arr = str.split("=");
+    let strs = str.split("=")[1];
+    this.$axios({
+      //调用接口
+      method: "post",
+      url: Config.restUrl + "api/v2/user/isb",
+      // params: {
+      //   token: Token
+      // },
+      headers: {
+        token: strs
+        // token: "221f8fd0ca0be03bdefccf62b1f5ff6b"
+      }
+    }).then(
+      function(res) {
+        //接口返回数据
+        console.log(res);
+      //  that.$router.push({ path: "/My" })
+      },
+      function(error) {
+     
+        window.location.href = "http://d.wbgapp.com/api/v2/code/user"
+
+        
+      }
+    );
+  },
   created() {
     let that = this;
     this.$axios({

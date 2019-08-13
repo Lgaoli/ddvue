@@ -5,7 +5,7 @@
       <div class>我的二维码</div>
       <div class="shop"></div>
     </div> -->
-    <div class="Catalog-main" :style="bg" v-if="is_qrcode==0">
+    <div class="Catalog-main" :style="bg" v-if="is_qrcode==1">
       <div
         style="
     padding-top: 0.5rem;
@@ -58,6 +58,7 @@
 </template>
 
 <script>
+import { Config } from "../../uitls/config";
 import Dfooter from "../../components/Dfooter";
 export default {
   components: {
@@ -85,7 +86,7 @@ export default {
 
     this.$axios({
       method: "get",
-      url: "http://d.wbgapp.com/api/v2/user/qr",
+      url: Config.restUrl +"api/v2/user/qr",
       headers: {
         token: that.getToken
         // token: "221f8fd0ca0be03bdefccf62b1f5ff6b"

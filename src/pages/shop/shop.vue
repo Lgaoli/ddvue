@@ -14,7 +14,7 @@
       <div class="shopping-cart">
         <div v-if="list.length">
           <div
-            style="  border-bottom: 1px solid #ccc;padding:0 1.25rem  0  1.25rem"
+            style="  border-bottom: 1px solid #ccc;padding:1rem  1.25rem"
             v-for="(item, index) in list"
             :key="index"
           >
@@ -28,14 +28,14 @@
                     <div>
                       <span
                         style="font-size:1.4rem;font-weight:600;padding-right:0.3ren=m"
-                      >{{item.name}}</span>
-                      <span>{{item.tel}}</span>
+                      >{{item.consigner}}</span>
+                      <span>{{item.phone}}</span>
                     </div>
-                    <div>{{item.address}}</div>
+                    <div>{{item.province}}{{item.city}}{{item.district}}{{item.address}}  </div>
                   </div>
                 </div>
           
-              <router-link to="/AddressEdit">
+              <router-link :to="{path:'/testadd',query:{id:item.ua_id}}">
                 <div style="color:#f15e0e;width: 30px;">编辑</div>
               </router-link>
             </van-radio-group>
@@ -239,6 +239,7 @@ export default {
       radio: "1"
     };
   },
+  
   created() {
     this.testlist();
     console.log(this)
@@ -267,12 +268,10 @@ export default {
         //接口返回数据
         console.log(res);
       //  that.$router.push({ path: "/My" })
-      },
-      function(error) {
-        that.$router.push({ path: "/Call" })
-        
       }
-    );
+    ).catch(err=>{
+        window.location.href = "http://d.wbgapp.com/api/v2/code/user"
+    });
   },
   computed: {
     //购物车的商品
@@ -305,38 +304,22 @@ export default {
   },
   methods: {
     testlist() {
-      var that = this;
-      // console.log(that);
-      this.$axios({
-        method: "get",
-        url:Config.restUrl+ "api/v2/address",
-        headers: {
-          token: that.getToken
+         let that = this;
+    // console.log(that);
+    this.$axios({
+      method: "get",
+      url: Config.restUrl + "api/v2/address",
+      headers: {
+        token: that.getToken
+        // token: "9b85bc5fa49dce8a5ef0e29f4f0076b5"
+      }
+    }).then(res => {
+      for (let i = 0; i < res.data.length; i++) {
+        if (res.data[i].is_default == 1) {
+          that.list.push(res.data[i]);
         }
-      }).then(res => {
-        // console.log(res.data);
-        that.list.name = res.data.consigner;
-        that.list.id = res.data.user_id;
-        that.list.address =
-          res.data.province +
-          res.data.city +
-          res.data.district +
-          res.data.address;
-        that.list.tel = res.data.phone * 1;
-        that.list = [
-          {
-            name: res.data.consigner,
-            id: res.data.user_id,
-            address:
-              res.data.province +
-              res.data.city +
-              res.data.district +
-              res.data.address,
-            tel: res.data.phone * 1
-          }
-        ];
-        // console.log(that.list);
-      });
+      }
+    });
     },
     indent() {
       this.$router.push("/Indent");
@@ -345,6 +328,7 @@ export default {
     del(id) {
       // console.log(id);
       this.$store.commit("delCart", id);
+      console.log(id)
     },
     //增加
     add_num(id) {

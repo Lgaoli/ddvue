@@ -13,37 +13,58 @@
         </router-link>
       </div>
     </div>
-      <div class="order-form-main" style="padding: 0 1.25rem 0 1.25rem;">
-       <div v-if="list.length">
+    <div class="order-form-main" style="padding: 0 1.25rem 0 1.25rem;">
+      <div v-if="list.length">
         <div
           style="  border-bottom: 1px solid #ccc;padding:0 1.25rem  0  1.25rem"
           v-for="(item, index) in list"
           :key="index"
         >
-          <van-radio-group
-            v-model="radio"
-            style="    display: flex;
-    justify-content:space-between;
-    align-items: center;
-    "
-          >
-            <van-radio :name="item">
-              <div class="address" @click="back()">
-                <div style="padding-top: 0.6rem">
-                  <div>
-                    <span
-                      style="font-size:1.4rem;font-weight:600;padding-right:0.3rem"
-                    >{{item.name}}</span>
-                    <span>{{item.tel}}</span>
+          <div v-if="item.is_default==1">
+            <van-radio-group
+              v-model="radio"
+              style="display: flex;justify-content:space-between;align-items: center;"
+            >
+              <van-radio :name="radio">
+                <div class="address" @click="back(item.ua_id)">
+                  <div style="padding-top: 0.6rem">
+                    <div>
+                      <span
+                        style="font-size:1.4rem;font-weight:600;padding-right:0.3rem"
+                      >{{item.consigner}}</span>
+                      <span>{{item.phone}}</span>
+                    </div>
+                    <div>{{item.province}}{{item.city}}{{item.district}}{{item.address}}</div>
                   </div>
-                  <div>{{item.address}}</div>
                 </div>
-              </div>
-            </van-radio>
-            <router-link to="/AddressEdit">
-              <div style="color:#f15e0e;width: 30px;">编辑</div>
-            </router-link>
-          </van-radio-group>
+              </van-radio>
+              <router-link :to="{path:'/testadd',query:{id:item.ua_id}}">
+                <div style="color:#f15e0e;width: 30px;">编辑</div>
+              </router-link>
+            </van-radio-group>
+          </div>
+          <div v-else>
+            <van-radio-group
+              style="display: flex;justify-content:space-between;align-items: center;"
+            >
+              <van-radio :name="radio" @click="click(item)">
+                <div class="address" @click="back(item.ua_id)">
+                  <div style="padding-top: 0.6rem">
+                    <div>
+                      <span
+                        style="font-size:1.4rem;font-weight:600;padding-right:0.3rem"
+                      >{{item.consigner}}</span>
+                      <span>{{item.phone}}</span>
+                    </div>
+                    <div>{{item.province}}{{item.city}}{{item.district}}{{item.address}}</div>
+                  </div>
+                </div>
+              </van-radio>
+              <router-link :to="{path:'/testadd',query:{id:item.ua_id}}">
+                <div style="color:#f15e0e;width: 30px;">编辑</div>
+              </router-link>
+            </van-radio-group>
+          </div>
         </div>
       </div>
       <div v-else>
@@ -53,14 +74,11 @@
               <i class="iconfont">&#xe611;</i>
               <span>暂无收货地址</span>
             </div>
-            <div>
-        
-            </div>
+            <div></div>
           </div>
-     
         </router-link>
       </div>
-           <div data-v-78cb6dca="" style="width: 100%; height: 0.6rem; background: rgb(247, 247, 247);"></div>
+      <div data-v-78cb6dca style="width: 100%; height: 0.6rem; background: rgb(247, 247, 247);"></div>
     </div>
   </div>
 </template>
@@ -68,7 +86,7 @@
 import Vue from "vue";
 import { RadioGroup, Radio, AddressList } from "vant";
 import test from "../../assets/test.js";
-import {Config} from "../../uitls/config";
+import { Config } from "../../uitls/config";
 Vue.use(RadioGroup)
   .use(Radio)
   .use(AddressList);
@@ -77,7 +95,7 @@ export default {
     return {
       chosenAddressId: "1",
       list: [],
-      radio: '1'
+      radio: "1"
     };
   },
   computed: {
@@ -103,40 +121,40 @@ export default {
     // console.log(that);
     this.$axios({
       method: "get",
-      url:Config.restUrl + "api/v2/address",
+      url: Config.restUrl + "api/v2/address",
       headers: {
         token: that.getToken
       }
     }).then(res => {
-      // console.log(res.data);
-
-      that.list.name = res.data.consigner;
-      that.list.id = res.data.user_id;
-      that.list.address =
-        res.data.province +
-        res.data.city +
-        res.data.district +
-        res.data.address;
-      that.list.tel = res.data.phone * 1;
-
-      that.list = [
-        {
-          name: res.data.consigner,
-          id: res.data.user_id,
-          address:
-            res.data.province +
-            res.data.city +
-            res.data.district +
-            res.data.address,
-          tel: res.data.phone * 1
+      console.log(res.data);
+      that.list = res.data;
+      for (let i = 0; i < res.data.length; i++) {
+        if (res.data[i].is_default == 1) {
+          that.radio = JSON.stringify(res.data[i].is_default);
         }
-      ];
-      // console.log(that.list);
+      }
     });
   },
   methods: {
-    back() {
-      this.$router.go(-1);
+    click(item) {
+      console.log(item);
+      item.is_default = 1;
+      this.$axios({
+        method: "post",
+        url: Config.restUrl + "api/v2/address/is_default",
+        headers: {
+          token: this.getToken
+        },
+        data: {
+          is_default: item.is_default,
+          ua_id: item.ua_id
+        }
+      }).then(resg => {
+        this.$router.go(0);
+      });
+    },
+    back(id) {
+      this.$router.push({ path: "/testadd", query: { id: id } });
       // console.log("上一页");
     },
     onAdd() {
@@ -176,12 +194,12 @@ export default {
     font-size: 2.125rem;
   }
   .back {
-    width: 3.125rem;
+    width: 3.825rem;
     text-align: center;
   }
   .shop {
-    width: 3.125rem;
-    text-align: center;
+    width: 3.825rem;
+    text-align: left;
     height: 100%;
     line-height: 4.5rem;
   }

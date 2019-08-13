@@ -90,7 +90,8 @@ const store = new Vuex.Store({
         setToken(state, token) {
             state.token = token
 
-        }, del_token(state) {
+        },
+         del_token(state) {
             state.token = ''
             sessionStorage.removeItem('token')
         },
@@ -143,6 +144,8 @@ const store = new Vuex.Store({
         //删除商品
         delCart(state, id) {
             state.addCart.forEach((good, index) => {
+                console.log(good)
+
                 if (good.goods_id === id) {
                     state.addCart.splice(index, 1)
                     return

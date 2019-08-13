@@ -26,13 +26,13 @@
                           收货人：{{item.consigner
                           }}&nbsp;&nbsp;&nbsp;&nbsp;{{item.phone}}
                         </div>
-                        <div>收货地址：{{item.province}}{{item.city}}{{district}}</div>
+                        <div>收货地址：{{item.province}}{{item.city}}{{item.district}}{{item.address}}</div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div>
-                  <router-link to="/AddressEdit">
+                  <router-link to="/shippingAddress">
                     <div style>
                       <i class="iconfont">&#xe632;</i>
                     </div>
@@ -137,7 +137,11 @@ export default {
         // token: "9b85bc5fa49dce8a5ef0e29f4f0076b5"
       }
     }).then(res => {
-      that.ste.push(res.data);
+      for (let i = 0; i < res.data.length; i++) {
+        if (res.data[i].is_default == 1) {
+          that.ste.push(res.data[i]);
+        }
+      }
     });
 
     this.$axios({
@@ -156,7 +160,7 @@ export default {
   methods: {
     back() {
       shippingAddress;
-      this.$router.push({ path: "/AddressEdit" });
+      this.$router.push({ path: "/shippingAddress" });
     },
     submit() {
       let that = this;
@@ -179,7 +183,7 @@ export default {
       }).then(Gres => {
         console.log(Gres);
         alert("提货成功，请等待商家发货");
-        //this.$router.go(0);
+        this.$router.go(0);
       });
     }
   },

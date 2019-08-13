@@ -91,28 +91,11 @@ export default {
       }
     },
     onSave(val) {
-      //获取表单所有信息
-      // console.log(val);
-      //       addressDetail: "测试测试"//详细地址
-      // areaCode: "440106"
-      // city: "广州市"//城市
-      // country: ""
-      // county: "天河区"//区
-      // isDefault: true  //是否设为默认地址
-      // name: "张三"
-      // postalCode: "000000"//邮政编号
-      // province: "广东省"//省
-      // tel: "12312312312"
-      // if (val) {
-      //   console.log(val);
-      //   this.$router.go(-1);
-      // } else {
-      // }
-      // console.log(this.geToken)
+
       var that = this;
       this.$axios({
         method: "post",
-        url: Config.restUrl + "api/v2/address",
+        url: Config.restUrl + "api/v2/create/address",
         headers: {
           token: that.getToken
         },
@@ -143,12 +126,12 @@ export default {
         // console.log(res);
         if (res.data.code) {
           that.$toast({
-            message: "绑定成功"
+            message: "添加成功"
           });
            that.$router.go(-1);
         }else{
           that.$toast({
-            message: "绑定失败"
+            message: "添加失败"
           });
         }
       });

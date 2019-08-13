@@ -1,7 +1,7 @@
 export class Config {
     constructor(){}
   }
-  Config.restUrl = 'http://d.wbgapp.com/';
+  Config.restUrl = 'https://api.ddjingxuan.cn';
   
   
   

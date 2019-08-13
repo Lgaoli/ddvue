@@ -1,5 +1,4 @@
-    
-<template>
+  <template>
   <div class="indent">
     <div class="detail-header">
       <div class="back">
@@ -27,14 +26,14 @@
                 <div>
                   <span
                     style="font-size:1.4rem;font-weight:600;padding-right:0.3ren=m"
-                  >{{item.name}}</span>
-                  <span>{{item.tel}}</span>
+                  >{{item.consigner}}</span>
+                  <span>{{item.phone}}</span>
                 </div>
-                <div>{{item.address}}</div>
+                <div>{{item.province}}{{item.city}}{{item.district}}{{item.address}}</div>
               </div>
             </div>
 
-            <router-link to="/AddressEdit">
+            <router-link :to="{path:'/testadd',query:{id:item.ua_id}}">
               <div style="color:#f15e0e;width: 30px;">编辑</div>
             </router-link>
           </van-radio-group>
@@ -54,8 +53,8 @@
         </router-link>
       </div>
       <div style="width:100%;
-          height: 0.6rem;
-          background:#f7f7f7"></div>
+            height: 0.6rem;
+            background:#f7f7f7"></div>
       <div class="indent-main">
         <div>
           <div v-if="checkedgoods.length>0">
@@ -72,8 +71,8 @@
         </div>
       </div>
       <div style="width:100%;
-          height: 0.6rem;
-          background:#f7f7f7"></div>
+            height: 0.6rem;
+            background:#f7f7f7"></div>
     </div>
     <div>
       <router-link>
@@ -83,7 +82,6 @@
           </div>
           <div>
             <span>余额支付</span>
-     
           </div>
         </div>
       </router-link>
@@ -94,23 +92,22 @@
           </div>
           <div>
             <span>0元</span>
- 
           </div>
         </div>
       </router-link>
     </div>
     <div style="width:100%;
-          height: 0.6rem;
-          background:#f7f7f7"></div>
+            height: 0.6rem;
+            background:#f7f7f7"></div>
     <div class="postscript">
-      <textarea type="text" placeholder="备注信息"></textarea>
+      <textarea type="text" placeholder="备注信息" v-model="notedata"></textarea>
     </div>
     <div class="indent-footer">
       <van-submit-bar :price="checkedmoney*100" button-text="立即支付" @submit="SubmitOrderHan"/>
     </div>
   </div>
 </template>
-<script>
+  <script>
 import Vue from "vue";
 import wx from "weixin-js-sdk";
 import { Config } from "../../uitls/config";
@@ -139,7 +136,9 @@ export default {
   data() {
     return {
       list: [],
-      getJsSdkData: []
+      getJsSdkData: [],
+      notedata: "",
+      ua_id: ""
     };
   },
   created() {
@@ -186,43 +185,26 @@ export default {
   },
   methods: {
     testlist() {
-      var that = this;
+      let that = this;
       // console.log(that);
       this.$axios({
         method: "get",
         url: Config.restUrl + "api/v2/address",
         headers: {
           token: that.getToken
-          // token: "237cf94848711e2399fa1e8c1a74a395"
+          // token: "9b85bc5fa49dce8a5ef0e29f4f0076b5"
         }
       }).then(res => {
-        // console.log(res.data);
-        that.list.name = res.data.consigner;
-        that.list.id = res.data.user_id;
-        that.list.address =
-          res.data.province +
-          res.data.city +
-          res.data.district +
-          res.data.address;
-        that.list.tel = res.data.phone * 1;
-        that.list = [
-          {
-            name: res.data.consigner,
-            id: res.data.user_id,
-            address:
-              res.data.province +
-              res.data.city +
-              res.data.district +
-              res.data.address,
-            tel: res.data.phone * 1
+        for (let i = 0; i < res.data.length; i++) {
+          if (res.data[i].is_default == 1) {
+            that.list.push(res.data[i]);
           }
-        ];
-        // console.log(that.list);
+        }
       });
     },
     SubmitOrderHan() {
       var that = this;
-      if (that.list.length) {
+      if (that.list) {
         var datas = [];
         for (let i = 0; i < this.checkedgoods.length; i++) {
           datas.push({
@@ -230,11 +212,13 @@ export default {
             goods_num: this.checkedgoods[i].goods_num
           });
         }
+
         //下订单
+        that.$set(datas, "user_note", that.notedata);
         this.$axios({
           method: "POST",
           url: Config.restUrl + "api/v2/order",
-          data: { goods: JSON.stringify(datas) },
+          data: { goods: JSON.stringify(datas), user_note: that.notedata },
           headers: {
             token: this.getToken
             // token: "237cf94848711e2399fa1e8c1a74a395"
@@ -264,23 +248,20 @@ export default {
                 signType: jsapi.signType,
                 paySign: jsapi.paySign,
                 success: function(res) {
-                  if (res.errMsg === "chooseWXPay:ok") {
-                    that.$router.push({
-                      name: "Indent1",
-                      query: {
-                        orderNo: res.data
-                      }
-
-                     
-                    });  
-                    that.$store.commit("addCart", id)
-                  }
+                  that.$router.push({ path: "/Indent1" });
+                  that.$store.commit("addCart", "");
+                  window.localStorage.removeItem("vuex");
+                  that.$store.commit("checkedgoods", "");
+                  that.$store.commit("checkedmoney", "");
                 },
                 fail: function(res) {
                   alert("支付失败");
                 },
                 cancel: function(res) {
                   alert("支付取消");
+                  that.cancel()
+                  
+                 
                 }
               });
             });
@@ -289,12 +270,21 @@ export default {
       } else {
         alert("收货地址有误");
       }
+    },
+    cancel() {
+      for (var i = 0; i < this.checkedgoods.length; i++) {
+        console.log(this.checkedgoods[i].goods_id);
+        this.$store.commit("delCart", this.checkedgoods[i].goods_id);
+      
+      }
+      this.$router.push({ path: "/Order" });
     }
+    
   }
 };
 </script>
 
-<style lang="scss">
+  <style lang="scss">
 .indent {
   margin-top: 4.5rem;
   margin-bottom: 4.5rem;

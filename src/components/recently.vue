@@ -12,14 +12,7 @@
           <router-link :to="{path:'/Detail',query:{id:item.goods_id}}" class="rec-list-a">
             <div class="rec-list-a1">
               <div class="rec-list-img">
-                <img
-                  :src="item.img_url"
-                  :key="item.img_url"
-                  v-if="item.img_url"
-                  alt
-                 
-                >
-
+                <img :src="item.img_url" :key="item.img_url" v-if="item.img_url" alt>
                 <img src="../assets/loading.gif" alt v-else>
               </div>
               <div class="shopss">
@@ -29,8 +22,8 @@
                 >{{item.goods_name}}</div>
                 <div class="rec-list-buy">
                   <div class="price">
-                    <span class="supply_price">￥{{item.market_price}}</span>
-                    <span class="shop_price">原价:￥{{item.market_price}}</span>
+                    <div class="shop_price">原价:￥{{item.market_price}}</div>
+                    <div class="supply_price">￥{{item.market_price}}</div>
                   </div>
                   <div class="buy">
                     <p>{{item.good_sales}}人购买</p>
@@ -49,7 +42,7 @@
 </template>
 
 <script>
-import {Config} from "../uitls/config";
+import { Config } from "../uitls/config";
 export default {
   data() {
     return {
@@ -70,7 +63,7 @@ export default {
   methods: {}
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .recently {
   margin-bottom: 4.625rem;
   .rec-list {
@@ -105,12 +98,12 @@ export default {
               .price {
                 .supply_price {
                   color: #ff7441;
-         
+                  font-size: 1.6rem;
                   font-weight: 600;
                 }
                 .shop_price {
                   color: #ccc;
-                  font-size: 0.96rem;
+                  font-size: 1.36rem;
                   text-decoration: line-through;
                 }
               }
@@ -129,7 +122,7 @@ export default {
   .recently-header {
     padding: 1.25rem 1.25rem 0 1.25rem;
     .recently-header1 {
-font-size:1.5rem;
+      font-size: 1.5rem;
       display: inline-block;
       img {
         width: 2.4375rem;
@@ -137,7 +130,6 @@ font-size:1.5rem;
       }
       p {
         display: inline;
-
       }
     }
   }

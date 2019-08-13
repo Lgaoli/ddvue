@@ -25,10 +25,10 @@
                 <div>
                   <span
                     style="font-size:1.4rem;font-weight:600;padding-right:0.3ren=m"
-                  >{{item.name}}</span>
-                  <span>{{item.tel}}</span>
+                  >{{item.consigner}}</span>
+                  <span>{{item.phone}}</span>
                 </div>
-                <div>{{item.address}}</div>
+                <div>{{item.province}}{{item.city}}{{item.district}}{{item.address}}</div>
               </div>
             </div>
             <router-link to="/AddressEdit">
@@ -193,44 +193,27 @@ export default {
       this.$router.go(-1); //返回上一层
     },
     testlist() {
-      var that = this;
+       let that = this;
       // console.log(that);
       this.$axios({
         method: "get",
         url: Config.restUrl + "api/v2/address",
         headers: {
           token: that.getToken
-          // token: "237cf94848711e2399fa1e8c1a74a395"
+          // token: "9b85bc5fa49dce8a5ef0e29f4f0076b5"
         }
       }).then(res => {
-        // console.log(res.data);
-        that.list.name = res.data.consigner;
-        that.list.id = res.data.user_id;
-        that.list.address =
-          res.data.province +
-          res.data.city +
-          res.data.district +
-          res.data.address;
-        that.list.tel = res.data.phone * 1;
-        that.list = [
-          {
-            name: res.data.consigner,
-            id: res.data.user_id,
-            address:
-              res.data.province +
-              res.data.city +
-              res.data.district +
-              res.data.address,
-            tel: res.data.phone * 1
+        for (let i = 0; i < res.data.length; i++) {
+          if (res.data[i].is_default == 1) {
+            that.list.push(res.data[i]);
           }
-        ];
-        // console.log(that.list);
+        }
       });
     },
     SubmitOrderHan() {
       var that = this;
 
-      if (that.set.length) {
+      if (that.list.length) {
         var datas = [];
         for (let i = 0; i < that.set.length; i++) {
           datas.push({

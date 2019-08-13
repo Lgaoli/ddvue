@@ -37,40 +37,58 @@
                   :key="index"
                   style="background: #fff;border-radius: 5px;"
                 >
+                  <div class="Order-main-main-header">
+                    <div class="Order-main-id">订单号：{{item.order_sn}}</div>
+                    <div class="Order-main-time">下订单时间：{{item.create_time}}</div>
+                  </div>
                   <div
                     class="Order-main-main-shop-main"
                     v-for="(items,indexs) in item.og"
                     :key="indexs"
                   >
-                    <div class="Order-main-main-shop-main-img">
-                      <img :src="items.goods_image">
-                    </div>
-                    <div class="Order-main-main-shop-main-text">
-                      <p class="Order-main-main-shop-main-name">{{items.goods_name}}</p>
-                      <div style="display:flex;justify-content: space-between;">
-                        <p style="color:#F15E0E">￥{{items.goods_price}}</p>
-                        <p>x{{items.goods_num}}</p>
+                    <div style="display: flex;justify-content: space-between;">
+                      <div class="Order-main-main-shop-main-img">
+                        <img :src="items.goods_image">
+                      </div>
+                      <div class="Order-main-main-shop-main-text">
+                        <p class="Order-main-main-shop-main-name">{{items.goods_name}}</p>
+                        <div style="display:flex;justify-content: space-between;">
+                          <p style="color:#F15E0E">￥{{items.goods_price}}</p>
+                          <p>x{{items.goods_num}}</p>
+                        </div>
                       </div>
                     </div>
                   </div>
                   <div
-                    style="font-size:1.6rem;padding-top:0.8rem;padding-bottom:0.8rem;display:flex;justify-content: space-between;"
+                    style="font-size:1.6rem;padding-top:0.8rem;padding-bottom:0.8rem;display:flex;justify-content: space-between;border-bottom:1px #ccc soild"
                   >
                     <div>
                       合计:
                       <span style="color:#F15E0E;">{{item.goods_price}}</span>
                     </div>
 
-                    <div v-if="item.pay_status==0" style="font-size:1.6rem;">
-                      <div>
-                        <p>待付款</p>
+                    <div
+                      v-if="item.pay_status==0"
+                      style="font-size:1.6rem;display: flex;align-items: center;justify-content: space-between;"
+                    >
+                      <div
+                        style="padding: 0.3rem;border: 1px solid #666666;border-radius: 4px;"
+                        @click="cancel(item)"
+                      >
+                        <p>取消订单</p>
+                      </div>
+                      <div
+                        style="padding: 0.3rem;border: 1px solid #666666;border-radius: 4px;margin-left: 10px;"
+                        @click="gobuy(item)"
+                      >
+                        <p>立即付款</p>
                       </div>
                     </div>
                     <div v-else-if="item.pay_status==1">
                       <div v-if="item.order_status==0">
                         <p>待发货</p>
                       </div>
-                        <div v-else-if="item.order_status==1">
+                      <div v-else-if="item.order_status==1">
                         <p>待收货</p>
                       </div>
                       <div v-else-if="item.order_status==3">
@@ -84,8 +102,10 @@
                       </div>
                     </div>
                   </div>
-                  <div style="background: #f7f7f7;padding:0.3rem"></div>
+                  <div style="padding: 0 0 1rem 0;">备注信息：{{item.user_note}}</div>
+
                   <!--  -->
+                  <div style="background: #f7f7f7;padding:0.6rem"></div>
                 </div>
               </div>
               <div v-else style="padding:10rem;    text-align: center;">
@@ -116,13 +136,13 @@
             </div>
             <div class="Order-main-main-shop-list" v-else-if="act1==1" @click="nopaymentli">
               <div v-if="nopayment.length">
-                <div style="background: #fff;padding:0.3rem">
+                <!-- <div style="background: #fff;padding:0.3rem">
                   <div style="display: flex;">
                     <div
                       style="text-align: center;display: flex;flex-direction: column;justify-content: center;    padding: 0.6rem 1.25rem;"
                     >
                       <i class="iconfont" style="color:#FC7E49;font-size: 2.45rem;">&#xe651;</i>
-                      <span style="color:#999999">待发货</span>
+                      <span style="color:#999999">待付款</span>
                     </div>
                     <div
                       style="border-left: 1px solid #DEDEDE;padding-top: 0.8rem;padding-right:1.25rem;padding-bottom:0.8rem;padding-left: 1.25rem;    display: flex;    align-items: center;"
@@ -130,37 +150,24 @@
                       <p>等待卖家付款中</p>
                     </div>
                   </div>
-                </div>
+                </div>-->
                 <div style="background: #f7f7f7;padding:0.3rem"></div>
-                <!-- 收货地址 -->
-                <div style="background: #fff;padding:0.3rem">
-                  <div style="display: flex;">
-                    <div
-                      style="text-align: center;display: flex;flex-direction: column;justify-content: center;    padding: 0.6rem 1.25rem;"
-                    >
-                      <i class="iconfont" style="font-size: 2.45rem;">&#xe611;</i>
-                    </div>
-                    <div
-                      v-for="(steitem,steindex) in ste"
-                      :key="steindex"
-                      style="border-left: 1px solid #DEDEDE;padding-top: 0.8rem;padding-right:1.25rem;padding-bottom:0.8rem;padding-left: 1.25rem;    align-items: center;"
-                    >
-                      <div>收货人:{{steitem.consigner}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{steitem.phone}}</div>
-                      <div>收货地址：{{steitem.province}}{{steitem.city}}{{steitem.district}}{{steitem.address}}</div>
-                    </div>
-                  </div>
-                </div>
+
                 <div style="background: #f7f7f7;padding:0.3rem"></div>
                 <div v-for="(item,index) in nopayment" :key="index">
-                  <div class="Order-main-main-shop-main">
+                  <div
+                    class="Order-main-main-shop-main"
+                    v-for="(itemog,indexog) in item.og"
+                    :key="indexog"
+                  >
                     <div class="Order-main-main-shop-main-img">
-                      <img :src="item.goods_image">
+                      <img :src="itemog.goods_image">
                     </div>
                     <div class="Order-main-main-shop-main-text">
-                      <p class="Order-main-main-shop-main-name">{{item.goods_name}}</p>
+                      <p class="Order-main-main-shop-main-name">{{itemog.goods_name}}</p>
                       <div style="display:flex;justify-content: space-between;">
-                        <p style="color:#F15E0E">￥{{item .goods_price}}</p>
-                        <p>x{{item.goods_num}}</p>
+                        <p style="color:#F15E0E">￥{{itemog .goods_price}}</p>
+                        <p>x{{itemog.goods_num}}</p>
                       </div>
                     </div>
                   </div>
@@ -170,14 +177,27 @@
                         合计金额:
                         <span style="color:#F15E0E;">{{item.goods_price}}</span>
                       </div>
-                      <div
-                        style="padding: 0.3rem;border: 1px solid #666666;border-radius: 4px;"
-                        @click="gobuy"
-                      >
-                        <p>立即购买</p>
+                      <div style="display: flex;padding: 0.56rem;justify-content: space-between;">
+                        <div
+                          style="padding: 0.3rem;border: 1px solid #666666;border-radius: 4px;"
+                          @click="cabuy(item)"
+                        >
+                          <p>取消付款</p>
+                        </div>
+                        <div
+                          style="padding: 0.3rem;border: 1px solid #666666;border-radius: 4px;margin-left: 10px;"
+                          @click="gobuy(item)"
+                        >
+                          <p>立即付款</p>
+                        </div>
                       </div>
                     </div>
+
+                    <div>
+                      <div style="padding: 0 0 1rem 0;">备注信息：{{item.user_note}}</div>
+                    </div>
                   </div>
+                  <div style="background: #f7f7f7;padding:0.3rem"></div>
                 </div>
               </div>
               <div v-else style="padding:10rem;    text-align: center;">
@@ -217,12 +237,13 @@
                       <span style="color:#999999">待发货</span>
                     </div>
                     <div
-                      style="border-left: 1px solid #DEDEDE;padding-top: 0.8rem;padding-right:1.25rem;padding-bottom:0.8rem;padding-left: 1.25rem;    display: flex;    align-items: center;"
+                      style="border-left: 1px solid #DEDEDE;padding-top: 0.8rem;padding-right:1.25rem;padding-bottom:0.8rem;padding-left: 1.25rem;display: flex;align-items: center;"
                     >
                       <p>等待平台发货</p>
                     </div>
                   </div>
                 </div>
+                <div style="background: #f7f7f7;padding:0.3rem"></div>
                 <!-- 收货地址 -->
                 <div style="background: #fff;padding:0.3rem">
                   <div style="display: flex;">
@@ -255,7 +276,7 @@
                       </div>
                     </div>
                   </div>
-                  <div style="padding-top:0.8rem;padding-bottom:0.8rem">
+                  <div style="padding:0.8rem">
                     <div>
                       合计:
                       <span style="color:#F15E0E;">{{item.goods_price}}</span>
@@ -264,7 +285,7 @@
                 </div>
                 <div style="background: #f7f7f7;padding:0.3rem"></div>
               </div>
-              <div v-else style="padding:10rem;    text-align: center;">
+              <div v-else style="padding:10rem;text-align: center;">
                 <div>
                   <div class="shopimg" style="padding:1.3rem">
                     <img src="../../assets/img/img_empty_shopping_cart.png">
@@ -350,7 +371,7 @@
                       <!--                      是多少  -->
                       <div
                         style="border: 1px #ccc solid;padding: 0.5rem;border-radius: 10px;"
-                        @click="affirm"
+                        @click="affirm(item.order_id)"
                       >
                         <p>确认收货</p>
                       </div>
@@ -678,10 +699,11 @@
 import { Config } from "../../uitls/config";
 import Vue from "vue";
 import wx from "weixin-js-sdk";
-import { Rate, Uploader, Dialog } from "vant";
+import { Rate, Uploader, Dialog, Toast } from "vant";
 Vue.use(Rate)
   .use(Uploader)
-  .use(Dialog);
+  .use(Dialog)
+  .use(Toast);
 export default {
   inject: ["reload"],
   data() {
@@ -724,17 +746,21 @@ export default {
       headers: {
         token: self.getToken
       }
-    }).then(rest => {
-      self.getJsSdkData = rest.data;
-      wx.config({
-        debug: false,
-        appId: rest.data.appId,
-        timestamp: rest.data.timestamp,
-        nonceStr: rest.data.nonceStr,
-        signature: rest.data.signature,
-        jsApiList: ["chooseWXPay"]
+    })
+      .then(rest => {
+        self.getJsSdkData = rest.data;
+        wx.config({
+          debug: false,
+          appId: rest.data.appId,
+          timestamp: rest.data.timestamp,
+          nonceStr: rest.data.nonceStr,
+          signature: rest.data.signature,
+          jsApiList: ["chooseWXPay"]
+        });
+      })
+      .catch(err => {
+        window.location.href = "http://d.wbgapp.com/api/v2/code/user";
       });
-    });
 
     this.nopaymentli();
     //所有订单
@@ -746,23 +772,25 @@ export default {
         token: that.getToken
         // token: "9b85bc5fa49dce8a5ef0e29f4f0076b5"
       }
-    }).then(res => {
-      console.log(res.data);
-      if (res.data.error_code == 0) {
-        that.all = "";
-      } else {
-        for (let i = 0; i < res.data.length; i++) {
-          if (res.data[i].order_id == 240) {
-            console.log("有");
+    })
+      .then(res => {
+        if (res.data.error_code == 0) {
+          that.all = "";
+        } else {
+          for (let i = 0; i < res.data.length; i++) {
+            if (res.data[i].order_id == 240) {
+            }
           }
+          that.all = res.data;
         }
-        that.all = res.data;
-        console.log(that.all);
-      }
-    });
+      })
+      .catch(err => {
+        window.location.href = "https://api.ddjingxuan.cn/api/v2/code/user";
+      });
 
     //收货地址
 
+    // console.log(that);
     // console.log(that);
     this.$axios({
       method: "get",
@@ -771,11 +799,67 @@ export default {
         token: that.getToken
         // token: "9b85bc5fa49dce8a5ef0e29f4f0076b5"
       }
-    }).then(res => {
-      that.ste.push(res.data);
-    });
+    })
+      .then(res => {
+        for (let i = 0; i < res.data.length; i++) {
+          if (res.data[i].is_default == 1) {
+            that.ste.push(res.data[i]);
+          }
+        }
+      })
+      .catch(err => {
+        window.location.href = "https://api.ddjingxuan.cn/api/v2/code/user";
+      });
   },
+
   methods: {
+    // cabuy(item) {
+    //   console.log(item.order_id);
+    //   this.$axios({
+    //     method: "get",
+    //     url: Config.restUrl + "api/v2/order/cancel?id=" + item.order_id,
+    //     headers: {
+    //       token: this.getToken
+    //       // token: "237cf94848711e2399fa1e8c1a74a395"
+    //     }
+    //   }).then(res => {
+    //     this.$router.go(0);
+    //   });
+    // },
+    gobuy(item) {
+      console.log(item);
+      var that = this;
+      //支付
+      this.$axios({
+        method: "POST",
+        url: Config.restUrl + "api/v2/pay/pre_order",
+        headers: {
+          token: this.getToken
+          // token: "237cf94848711e2399fa1e8c1a74a395"
+        },
+        data: { id: item.order_id }
+      }).then(pre_order => {
+        let jsapi = pre_order.data;
+        wx.ready(function() {
+          wx.chooseWXPay({
+            timestamp: jsapi.timeStamp,
+            nonceStr: jsapi.nonceStr,
+            package: jsapi.package,
+            signType: jsapi.signType,
+            paySign: jsapi.paySign,
+            success: function(res) {
+              that.$router.go(0);
+            },
+            fail: function(res) {
+              alert("支付失败");
+            },
+            cancel: function(res) {
+              alert("支付取消");
+            }
+          });
+        });
+      });
+    },
     // 返回布尔值 图片上传的检验
     beforeRead(file) {
       if (file.type !== "image/jpeg") {
@@ -785,65 +869,13 @@ export default {
 
       return true;
     },
-    gobuy() {
-      var that = this;
-      var datas = [];
-      console.log(this.checkedgoods);
-      for (let i = 0; i < this.checkedgoods.length; i++) {
-        datas.push({
-          goods_id: this.checkedgoods[i].goods_id,
-          goods_num: this.checkedgoods[i].goods_num
-        });
-      }
-      //下订单
-      this.$axios({
-        method: "POST",
-        url: Config.restUrl + "api/v2/order",
-        data: { goods: JSON.stringify(datas) },
-        headers: {
-          token: this.getToken
-          // token: "237cf94848711e2399fa1e8c1a74a395"
-        }
-      }).then(ress => {
-        console.log(ress.data.order_no);
-        window.localStorage.setItem(
-          "order_no",
-          JSON.stringify(ress.data.order_no)
-        );
-        //支付
-        this.$axios({
-          method: "POST",
-          url: Config.restUrl + "api/v2/pay/pre_order",
-          headers: {
-            token: this.getToken
-            // token: "237cf94848711e2399fa1e8c1a74a395"
-          },
-          data: { id: ress.data.order_id }
-        }).then(pre_order => {
-          let jsapi = pre_order.data;
-          wx.ready(function() {
-            wx.chooseWXPay({
-              timestamp: jsapi.timeStamp,
-              nonceStr: jsapi.nonceStr,
-              package: jsapi.package,
-              signType: jsapi.signType,
-              paySign: jsapi.paySign,
-              success: function(jsres) {
-                // alert("支付成功");
-                console.log(jsres);
-              }
-            });
-          });
-        });
-      });
-    },
+
     selectall() {},
     selected(index, item) {
       this.act1 = index;
       var that = this;
       let getid = item.id;
-      console.log(item);
-      console.log(item);
+
       if (item.id >= 0) {
         this.$axios({
           method: "get",
@@ -855,78 +887,130 @@ export default {
             token: this.getToken
             // token: "9b85bc5fa49dce8a5ef0e29f4f0076b5"
           }
-        }).then(res => {
-          console.log(res);
-          if (res.data.error_code == 0) {
-            console.log("暂无订单");
-          } else {
-            if (getid == 0) {
-              that.noshipments = res.data;
-              console.log(that.noshipments);
-            } else if (getid == 1) {
-              that.nopaymentli1 = res.data; //待收货
-            } else if (getid == 3) {
-              that.nopevaluate = res.data; //待评价
-              console.log(that.nopevaluate);
-            } else if (getid == 4) {
-              that.achieve = res.data; //已完成
-            } else if (getid == 6) {
-              that.retreat = res.data; //退货
+        })
+          .then(res => {
+            console.log(res);
+            if (res.data.error_code == 0) {
+              console.log("暂无订单");
+            } else {
+              if (getid == 0) {
+                that.noshipments = res.data;
+                console.log(that.noshipments);
+              } else if (getid == 1) {
+                that.nopaymentli1 = res.data; //待收货
+              } else if (getid == 3) {
+                that.nopevaluate = res.data; //待评价
+                console.log(that.nopevaluate);
+              } else if (getid == 4) {
+                that.achieve = res.data; //已完成
+              } else if (getid == 6) {
+                that.retreat = res.data; //退货
+              }
             }
-          }
-        });
+          })
+          .catch(err => {
+            window.location.href = "https://api.ddjingxuan.cn/api/v2/code/user";
+          });
       } else {
-        console.log("没有id");
+        let that = this;
+        this.$axios({
+          method: "get",
+          url: Config.restUrl + "api/v2/order/all",
+          headers: {
+            token: that.getToken
+            // token: "9b85bc5fa49dce8a5ef0e29f4f0076b5"
+          }
+        })
+          .then(res => {
+            if (res.data.error_code == 0) {
+              that.all = "";
+            } else {
+              for (let i = 0; i < res.data.length; i++) {
+                if (
+                  res.data[i].pay_status == 0 &&
+                  res.data[i].order_status == 0
+                ) {
+                  that.nopayment = res.data;
+                }
+              }
+              that.all = res.data;
+            }
+          })
+          .catch(err => {
+            window.location.href = "http://d.wbgapp.com/api/v2/code/user";
+          });
       }
     },
     back() {
       this.$router.go(-1); //返回上一层
     },
     // 确认收货
-    affirm() {
-      this.$dialog.alert({
-        title: "确认收货",
-        message: "请确认是否收货",
-        showCancelButton: true
-      })
-        .then(() => {
+    affirm(id) {
+      console.log(id);
+      var ua_id = id;
+      this.$dialog
+        .alert({
+          title: "确认收货",
+          message: "请确认是否收货",
+          showCancelButton: true
+        })
+        .then(res => {
           var that = this;
           this.$axios({
             method: "get",
-            url: Config.restUrl + "api/v2/order/verify",
+            url: Config.restUrl + "api/v2/order/confirm?id=" + ua_id * 1,
             headers: {
               token: this.getToken
               // token: "9b85bc5fa49dce8a5ef0e29f4f0076b5"
             }
-          }).then(res => {
-            console.log(res);
-            this.$router.go(0);
-            this.reload();
-          });
+          })
+            .then(vres => {
+              console.log(vres);
+              that.$router.go(0);
+              that.reload();
+            })
+            .catch(err => {
+              Toast("订单已确认过了，别再点了");
+            });
         })
-        .catch(() => {
-          // on cancel
+        .catch(error => {
+          // window.location.href = "http://d.wbgapp.com/api/v2/code/user";
+        });
+    },
+    cancel(item) {
+      var that=this
+      console.log(item)
+      Dialog.alert({
+          title: "取消订单",
+          message: "请是否取消订单",
+          showCancelButton: true
+        })
+        .then(res => {
+       
+          this.$axios({
+            method: "get",
+            url: Config.restUrl + "api/v2/order/cancel?id=" + item.order_id* 1,
+            headers: {
+              token: this.getToken
+              // token: "9b85bc5fa49dce8a5ef0e29f4f0076b5"
+            }
+          })
+            .then(vres => {
+              console.log(vres);
+              that.$router.go(0);
+              that.reload();
+            })
+            .catch(err => {
+       
+            });
+        })
+        .catch(error => {
+          // window.location.href = "http://d.wbgapp.com/api/v2/code/user";
         });
     },
 
     //未付款的
-    nopaymentli() {
-      var that = this;
-      this.$axios({
-        method: "get",
-        url: Config.restUrl + "api/v2/order/pay",
-        headers: {
-          token: that.getToken
-          // token: "9b85bc5fa49dce8a5ef0e29f4f0076b5"
-        }
-      }).then(res => {
-        if (res.data.error_code == 0) {
-          that.nopayment = "";
-        } else {
-          that.nopayment = res.data;
-        }
-      });
-    },
+    nopaymentli() {},
     descInput() {
       var txtVal = this.desc.length; //desc 是设置v-model的值
       this.remnant = txtVal;
@@ -935,7 +1019,7 @@ export default {
     //申请退款
     SalerReturn() {
       Dialog.alert({
-        message: "已为你联系客服，稍后留意微信通知"
+        message: "已为你联系客服，稍后留意微信公众号通知"
       }).then(() => {
         // on close
       });
@@ -1012,11 +1096,13 @@ export default {
     background: #fff;
     .Order-main-main-shop {
       .Order-main-main-shop-list {
+        .Order-main-main-header {
+          padding: 0.8rem 0;
+        }
         .Order-main-main-shop-main {
           padding: 0.8rem;
           border-bottom: #dedede 1px solid;
           display: flex;
-          justify-content: space-between;
           .Order-main-main-shop-main-img {
             width: 10.3rem;
             img {

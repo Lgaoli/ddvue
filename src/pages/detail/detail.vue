@@ -29,7 +29,7 @@
             <div class="shopname">
               <p style="font-weight:600">{{items.goods_name}}</p>
             </div>
-            <div class="goods_sales" style="padding:0.95rem">
+            <div class="goods_sales" style="padding:0.95rem;font-size: 1.4rem">
               <div
                 class="goods_sale_text"
                 style="  text-decoration: line-through;"
@@ -143,36 +143,7 @@ export default {
       isshow: false
     };
   },
-  beforeCreate() {
-    let that = this;
-    let url = window.location.href;
-    //let url =
-    //  "http://pub.hqyulin.com/?token=899a7451d56be0b3e66cf98fc8ea9f12#/";
-    let str = url.split("?")[1].split("#")[0];
-    let arr = str.split("=");
-    let strs = str.split("=")[1];
-    this.$axios({
-      //调用接口
-      method: "post",
-      url: Config.restUrl + "api/v2/user/isb",
-      // params: {
-      //   token: Token
-      // },
-      headers: {
-        token: strs
-        // token: "221f8fd0ca0be03bdefccf62b1f5ff6b"
-      }
-    }).then(
-      function(res) {
-        //接口返回数据
-        console.log(res);
-        // that.$router.push({ path: "/My" })
-      },
-      function(error) {
-        that.$router.push({ path: "/Call" });
-      }
-    );
-  },
+
 
   created() {
     this.list();
@@ -182,10 +153,10 @@ export default {
     prev() {
       this.$router.go(-1);
     },
-    fixUrlFormat(text) {
-      let reg = new RegExp("http://api.ddjingxuan.cn/", "g");
-      return text.replace(reg, "http://d.wbgapp.com/");
-    },
+    // fixUrlFormat(text) {
+    //   let reg = new RegExp("http://api.ddjingxuan.cn/", "g");
+    //   return text.replace(reg, "http://d.wbgapp.com/");
+    // },
     setMaskShow() {
       this.maskShow = !this.maskShow;
     },
@@ -198,7 +169,7 @@ export default {
       this.$store.commit("addCart", data);
     },
     plank(data) {
-      this.$router.push({ path: "/Indent" });
+      this.$router.push({ path: "/shop" });
       this.$store.commit("addCart", data);
     },
     comment() {
@@ -221,9 +192,7 @@ export default {
         .get(Config.restUrl + "api/v2/goods/" + newsID)
         .then(function(res) {
           that.detileswiper = res.data.banner;
-
-          let alter = that.fixUrlFormat(res.data.detail.goods_content);
-
+          let alter = res.data.detail.goods_content
           that.$set(res.data.detail, "goods_content", alter);
           console.log(res.data.detail);
           that.shopdetall.push(res.data.detail);
@@ -251,7 +220,9 @@ export default {
   }
 };
 </script>
-<style lang="scss">
+
+
+<style lang="scss" scoped>
 .pop {
   display: flex;
   justify-content: center;
@@ -388,7 +359,7 @@ export default {
       }
     }
     .shopname {
-      font-size: 1.1rem;
+      font-size: 1.8rem;
       padding: 0.7rem;
     }
     .detail-main-main-content {

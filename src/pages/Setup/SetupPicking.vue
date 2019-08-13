@@ -25,7 +25,7 @@
                         收货人：{{item.consigner
                         }}&nbsp;&nbsp;&nbsp;&nbsp;{{item.phone}}
                       </div>
-                      <div>收货地址：{{item.province}}{{item.city}}{{district}}</div>
+                      <div>收货地址：{{item.province}}{{item.city}}{{item.district}}{{item.address}}</div>
                     </div>
                   </div>
                 </div>
@@ -108,18 +108,34 @@ export default {
     this.money = this.$route.query.money;
 
     //收货地址
+
     let that = this;
-    // console.log(that);
-    this.$axios({
-      method: "get",
-      url: Config.restUrl + "api/v2/address",
-      headers: {
-        token: that.getToken
-        // token: "9b85bc5fa49dce8a5ef0e29f4f0076b5"
-      }
-    }).then(res => {
-      that.ste.push(res.data);
-    });
+      // console.log(that);
+      this.$axios({
+        method: "get",
+        url: Config.restUrl + "api/v2/address",
+        headers: {
+          token: that.getToken
+          // token: "9b85bc5fa49dce8a5ef0e29f4f0076b5"
+        }
+      }).then(res => {
+        for (let i = 0; i < res.data.length; i++) {
+          if (res.data[i].is_default == 1) {
+            that.ste.push(res.data[i]);
+          }
+        }
+      });
+
+
+
+
+
+
+
+
+
+
+
 
     this.$axios({
       method: "get",

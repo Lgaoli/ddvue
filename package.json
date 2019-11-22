@@ -28,7 +28,7 @@
     "qs": "^6.7.0",
     "sass-loader": "^7.1.0",
     "swiper": "^4.5.0",
-    "vant": "^1.6.23",
+    "vant": "^2.1.8",
     "vue": "^2.5.2",
     "vue-awesome-swiper": "^2.6.7",
     "vue-jsonp": "^0.1.8",
